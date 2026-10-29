@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppLayout, PageHeader } from '../components/Layout';
-import { Button, Card, Select, Skeleton } from '../components/ui';
+import { Button, Card, Skeleton } from '../components/ui';
 import { resumesApi, jdsApi, analysesApi, type ResumeResponse, type JobDescriptionResponse } from '../lib/api';
-import { Sparkles, FileText, Briefcase, ArrowRight, Info } from 'lucide-react';
+import { Sparkles, FileText, Briefcase, Info } from 'lucide-react';
 
 export default function NewAnalysisPage() {
   const navigate = useNavigate();

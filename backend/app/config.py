@@ -7,7 +7,7 @@ VERSION = "1.0.0"
 DEBUG = os.getenv("DEBUG", "true").lower() == "true"
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./resume_analyzer.db")
 SECRET_KEY = os.getenv("SECRET_KEY", "resume-analyzer-secret-key-super-secure-production-ready-2026")
-UPLOAD_DIR = os.getenv("UPLOAD_DIR", "./uploads")
+UPLOAD_DIR = os.getenv("UPLOAD_DIR", os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "uploads")))
 
 # Default Scoring Weights (Must sum to 1.0)
 DEFAULT_SCORING_WEIGHTS: Dict[str, float] = {

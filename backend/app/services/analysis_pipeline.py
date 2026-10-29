@@ -1,6 +1,6 @@
 import uuid
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional, Tuple
 
 from ..models.schemas import (
@@ -162,7 +162,7 @@ def run_analysis_pipeline(
         "Scoring evaluates alignment between resume evidence and JD requirements, and should serve as an objective screening aid rather than an automated hiring decision."
     ]
     
-    created_at = datetime.utcnow().isoformat()
+    created_at = datetime.now(timezone.utc).isoformat()
     
     response = AnalysisResponse(
         id=analysis_id,

@@ -14,13 +14,13 @@ GITHUB_REGEX = re.compile(r'github\.com/([a-zA-Z0-9_-]+)', re.IGNORECASE)
 
 # Standard section header triggers
 SECTION_PATTERNS = {
-    "summary": re.compile(r'^\s*(professional\s+summary|summary|profile|about\s+me|objective)\s*$', re.IGNORECASE),
-    "skills": re.compile(r'^\s*(technical\s+skills|skills|technologies|core\s+competencies|tools\s+&\s+technologies|skills\s+&\s+abilities)\s*$', re.IGNORECASE),
-    "experience": re.compile(r'^\s*(work\s+experience|experience|employment\s+history|professional\s+experience|internships|work\s+history)\s*$', re.IGNORECASE),
-    "projects": re.compile(r'^\s*(projects|technical\s+projects|academic\s+projects|personal\s+projects|key\s+projects)\s*$', re.IGNORECASE),
-    "education": re.compile(r'^\s*(education|academic\s+background|academic\s+qualifications|degrees)\s*$', re.IGNORECASE),
-    "certifications": re.compile(r'^\s*(certifications|certificates|licenses|courses)\s*$', re.IGNORECASE),
-    "achievements": re.compile(r'^\s*(achievements|awards|honors|publications)\s*$', re.IGNORECASE),
+    "summary": re.compile(r'^\s*(professional\s+summary|summary|profile|about\s+me|objective)[\s:\-]*$', re.IGNORECASE),
+    "skills": re.compile(r'^\s*(technical\s+skills|skills|technologies|core\s+competencies|tools\s+&\s+technologies|skills\s+&\s+abilities)[\s:\-]*$', re.IGNORECASE),
+    "experience": re.compile(r'^\s*(work\s+experience|experience|employment\s+history|professional\s+experience|internships|work\s+history)[\s:\-]*$', re.IGNORECASE),
+    "projects": re.compile(r'^\s*(projects|technical\s+projects|academic\s+projects|personal\s+projects|key\s+projects)[\s:\-]*$', re.IGNORECASE),
+    "education": re.compile(r'^\s*(education|academic\s+background|academic\s+qualifications|degrees)[\s:\-]*$', re.IGNORECASE),
+    "certifications": re.compile(r'^\s*(certifications|certificates|licenses|courses)[\s:\-]*$', re.IGNORECASE),
+    "achievements": re.compile(r'^\s*(achievements|awards|honors|publications)[\s:\-]*$', re.IGNORECASE),
 }
 
 KNOWN_LANGUAGES = {"python", "javascript", "typescript", "java", "c++", "c#", "c", "go", "ruby", "rust", "php", "swift", "kotlin", "scala", "r", "sql", "html", "css", "bash", "shell"}

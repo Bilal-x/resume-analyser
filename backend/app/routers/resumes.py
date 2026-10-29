@@ -1,7 +1,7 @@
 import uuid
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from ..models.schemas import ResumeResponse
 from ..services.parser import parse_resume
@@ -53,7 +53,7 @@ async def upload_resume(
     extracted_text = "\n".join(structured_data.raw_sections.values())
     
     resume_id = str(uuid.uuid4())
-    created_at = datetime.utcnow().isoformat()
+    created_at = datetime.now(timezone.utc).isoformat()
     
     conn = get_connection()
     conn.execute(

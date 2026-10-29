@@ -1,6 +1,6 @@
 import uuid
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends
 from ..models.schemas import JobDescriptionCreate, JobDescriptionResponse
 from ..services.jd_analyzer import parse_job_description
@@ -26,7 +26,7 @@ def _row_to_response(row) -> JobDescriptionResponse:
 def create_jd(jd_data: JobDescriptionCreate, current_user: dict = Depends(get_current_user)):
     requirements = parse_job_description(jd_data.description)
     jd_id = str(uuid.uuid4())
-    created_at = datetime.utcnow().isoformat()
+    created_at = datetime.now(timezone.utc).isoformat()
     
     conn = get_connection()
     conn.execute(

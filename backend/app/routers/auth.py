@@ -1,6 +1,6 @@
 import uuid
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, status
 from ..models.schemas import UserCreate, UserLogin, UserResponse, TokenResponse
 from ..database import get_connection
@@ -20,7 +20,7 @@ def register(user_data: UserCreate):
         raise HTTPException(status_code=409, detail="An account with this email already exists.")
     
     user_id = str(uuid.uuid4())
-    created_at = datetime.utcnow().isoformat()
+    created_at = datetime.now(timezone.utc).isoformat()
     pw_hash = hash_password(user_data.password)
     role = user_data.role if user_data.role in ["candidate", "recruiter"] else "candidate"
     

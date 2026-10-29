@@ -4,7 +4,7 @@ import hashlib
 import hmac
 import base64
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -26,7 +26,7 @@ def create_token(user_id: str, email: str, role: str) -> str:
         "sub": user_id,
         "email": email,
         "role": role,
-        "exp": (datetime.utcnow() + timedelta(hours=TOKEN_EXPIRE_HOURS)).isoformat()
+        "exp": (datetime.now(timezone.utc) + timedelta(hours=TOKEN_EXPIRE_HOURS)).isoformat()
     }
     payload_encoded = base64.urlsafe_b64encode(json.dumps(payload).encode()).decode()
     signature = hmac.new(SECRET_KEY.encode(), payload_encoded.encode(), hashlib.sha256).hexdigest()
@@ -43,7 +43,10 @@ def decode_token(token: str) -> dict:
         if not hmac.compare_digest(signature, expected_sig):
             raise ValueError("Invalid signature")
         payload = json.loads(base64.urlsafe_b64decode(payload_encoded + "==").decode())
-        if datetime.fromisoformat(payload["exp"]) < datetime.utcnow():
+        exp_dt = datetime.fromisoformat(payload["exp"])
+        if exp_dt.tzinfo is None:
+            exp_dt = exp_dt.replace(tzinfo=timezone.utc)
+        if exp_dt < datetime.now(timezone.utc):
             raise ValueError("Token expired")
         return payload
     except Exception as e:

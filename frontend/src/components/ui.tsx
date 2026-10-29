@@ -1,29 +1,68 @@
 import React from 'react';
 import { clsx } from 'clsx';
 
+/* ============================================================
+   BUTTON
+   ============================================================ */
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'success';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   loading?: boolean;
   icon?: React.ReactNode;
+  iconRight?: React.ReactNode;
 }
 
 export function Button({
-  children, variant = 'primary', size = 'md', loading, icon, className, disabled, ...props
+  children, variant = 'primary', size = 'md', loading, icon, iconRight, className, disabled, ...props
 }: ButtonProps) {
-  const base = 'inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-950 disabled:opacity-50 disabled:cursor-not-allowed';
+  const base = [
+    'relative inline-flex items-center justify-center gap-2 font-semibold rounded-xl',
+    'transition-all duration-200 ease-out',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
+    'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
+    'select-none',
+  ].join(' ');
 
   const variants = {
-    primary: 'bg-gradient-to-r from-indigo-500 to-violet-600 text-white hover:from-indigo-400 hover:to-violet-500 shadow-lg shadow-indigo-500/25 focus:ring-indigo-500',
-    secondary: 'bg-white/10 text-white border border-white/20 hover:bg-white/20 focus:ring-white/30',
-    ghost: 'text-gray-400 hover:text-white hover:bg-white/10 focus:ring-white/20',
-    danger: 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30 focus:ring-red-500',
+    primary: [
+      'bg-gradient-to-r from-indigo-600 to-violet-600',
+      'text-white shadow-lg',
+      'hover:from-indigo-500 hover:to-violet-500',
+      'hover:shadow-indigo-500/30 hover:shadow-xl',
+      'active:scale-[0.98]',
+      'focus-visible:ring-indigo-500',
+    ].join(' '),
+    secondary: [
+      'bg-zinc-800/80 text-zinc-100 border border-zinc-700/60',
+      'hover:bg-zinc-700/80 hover:border-zinc-600/60',
+      'active:scale-[0.98]',
+      'focus-visible:ring-zinc-500',
+    ].join(' '),
+    ghost: [
+      'text-zinc-400 bg-transparent',
+      'hover:text-white hover:bg-zinc-800/60',
+      'active:scale-[0.98]',
+      'focus-visible:ring-zinc-500',
+    ].join(' '),
+    danger: [
+      'bg-red-500/10 text-red-400 border border-red-500/25',
+      'hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300',
+      'active:scale-[0.98]',
+      'focus-visible:ring-red-500',
+    ].join(' '),
+    success: [
+      'bg-emerald-500/10 text-emerald-400 border border-emerald-500/25',
+      'hover:bg-emerald-500/20 hover:border-emerald-500/40',
+      'active:scale-[0.98]',
+      'focus-visible:ring-emerald-500',
+    ].join(' '),
   };
 
   const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2.5 text-sm',
-    lg: 'px-6 py-3 text-base',
+    xs: 'px-2.5 py-1 text-xs',
+    sm: 'px-3.5 py-2 text-sm',
+    md: 'px-5 py-2.5 text-sm',
+    lg: 'px-7 py-3.5 text-base',
   };
 
   return (
@@ -33,31 +72,45 @@ export function Button({
       {...props}
     >
       {loading ? (
-        <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+        <svg className="animate-spin h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
-      ) : icon}
+      ) : icon ? (
+        <span className="shrink-0">{icon}</span>
+      ) : null}
       {children}
+      {!loading && iconRight && <span className="shrink-0">{iconRight}</span>}
     </button>
   );
 }
 
-// Card component
+/* ============================================================
+   CARD
+   ============================================================ */
 interface CardProps {
   children: React.ReactNode;
   className?: string;
   hover?: boolean;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  gradient?: boolean;
 }
 
-export function Card({ children, className, hover, onClick }: CardProps) {
+export function Card({ children, className, hover, onClick, gradient }: CardProps) {
   return (
     <div
       onClick={onClick}
       className={clsx(
-        'bg-gray-900/60 border border-white/10 rounded-2xl',
-        hover && 'hover:border-indigo-500/40 hover:bg-gray-900/80 transition-all duration-200 cursor-pointer',
+        'relative overflow-hidden rounded-2xl border transition-all duration-200',
+        gradient
+          ? 'bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 border-zinc-700/40'
+          : 'bg-zinc-900/70 border-zinc-800/60',
+        hover && [
+          'cursor-pointer',
+          'hover:border-indigo-500/30 hover:bg-zinc-900/90',
+          'hover:shadow-lg hover:shadow-indigo-500/5',
+          'hover:-translate-y-0.5',
+        ],
         onClick && 'cursor-pointer',
         className
       )}
@@ -67,108 +120,223 @@ export function Card({ children, className, hover, onClick }: CardProps) {
   );
 }
 
-// Badge component
+/* ============================================================
+   BADGE
+   ============================================================ */
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'success' | 'warning' | 'danger' | 'info' | 'neutral';
-  size?: 'sm' | 'md';
+  variant?: 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'purple';
+  size?: 'xs' | 'sm' | 'md';
+  dot?: boolean;
+  className?: string;
 }
 
-export function Badge({ children, variant = 'neutral', size = 'sm' }: BadgeProps) {
+export function Badge({ children, variant = 'neutral', size = 'sm', dot, className }: BadgeProps) {
   const variants = {
-    success: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25',
-    warning: 'bg-amber-500/15 text-amber-400 border-amber-500/25',
-    danger: 'bg-red-500/15 text-red-400 border-red-500/25',
-    info: 'bg-blue-500/15 text-blue-400 border-blue-500/25',
-    neutral: 'bg-white/10 text-gray-300 border-white/15',
+    success: 'bg-emerald-500/12 text-emerald-400 border-emerald-500/20 ring-emerald-500/10',
+    warning: 'bg-amber-500/12 text-amber-400 border-amber-500/20 ring-amber-500/10',
+    danger: 'bg-red-500/12 text-red-400 border-red-500/20 ring-red-500/10',
+    info: 'bg-blue-500/12 text-blue-400 border-blue-500/20 ring-blue-500/10',
+    neutral: 'bg-zinc-800/80 text-zinc-300 border-zinc-700/50',
+    purple: 'bg-violet-500/12 text-violet-400 border-violet-500/20',
+  };
+
+  const dotColors = {
+    success: 'bg-emerald-400',
+    warning: 'bg-amber-400',
+    danger: 'bg-red-400',
+    info: 'bg-blue-400',
+    neutral: 'bg-zinc-400',
+    purple: 'bg-violet-400',
+  };
+
+  const sizes = {
+    xs: 'px-1.5 py-0.5 text-[10px]',
+    sm: 'px-2.5 py-0.5 text-xs',
+    md: 'px-3.5 py-1 text-sm',
   };
 
   return (
     <span className={clsx(
-      'inline-flex items-center border rounded-full font-medium',
-      size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-sm',
-      variants[variant]
+      'inline-flex items-center gap-1.5 border rounded-full font-medium leading-none',
+      variants[variant],
+      sizes[size],
+      className
     )}>
+      {dot && <span className={clsx('w-1.5 h-1.5 rounded-full shrink-0', dotColors[variant])} />}
       {children}
     </span>
   );
 }
 
-// Input component
+/* ============================================================
+   INPUT
+   ============================================================ */
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  hint?: string;
   icon?: React.ReactNode;
+  iconRight?: React.ReactNode;
 }
 
-export function Input({ label, error, icon, className, ...props }: InputProps) {
+export function Input({ label, error, hint, icon, iconRight, className, id, ...props }: InputProps) {
+  const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
   return (
     <div className="space-y-1.5">
-      {label && <label className="block text-sm font-medium text-gray-300">{label}</label>}
+      {label && (
+        <label htmlFor={inputId} className="block text-sm font-medium text-zinc-300">
+          {label}
+        </label>
+      )}
       <div className="relative">
-        {icon && <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{icon}</span>}
+        {icon && (
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none">
+            {icon}
+          </span>
+        )}
         <input
+          id={inputId}
           className={clsx(
-            'w-full bg-gray-800/50 border rounded-xl text-white placeholder-gray-500 transition-colors duration-200',
+            'w-full bg-zinc-900/70 border rounded-xl text-zinc-100 placeholder-zinc-600',
+            'transition-all duration-200',
             'focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50',
-            error ? 'border-red-500/50' : 'border-white/10 hover:border-white/20',
+            error
+              ? 'border-red-500/50 focus:ring-red-500/30'
+              : 'border-zinc-700/50 hover:border-zinc-600/60',
             icon ? 'pl-10 pr-4 py-2.5' : 'px-4 py-2.5',
+            iconRight ? 'pr-10' : '',
             className
           )}
           {...props}
         />
+        {iconRight && (
+          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500">
+            {iconRight}
+          </span>
+        )}
       </div>
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-400 flex items-center gap-1">{error}</p>}
+      {hint && !error && <p className="text-xs text-zinc-500">{hint}</p>}
     </div>
   );
 }
 
-// Textarea component
+/* ============================================================
+   TEXTAREA
+   ============================================================ */
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
+  hint?: string;
 }
 
-export function Textarea({ label, error, className, ...props }: TextareaProps) {
+export function Textarea({ label, error, hint, className, id, ...props }: TextareaProps) {
+  const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
   return (
     <div className="space-y-1.5">
-      {label && <label className="block text-sm font-medium text-gray-300">{label}</label>}
+      {label && (
+        <label htmlFor={inputId} className="block text-sm font-medium text-zinc-300">
+          {label}
+        </label>
+      )}
       <textarea
+        id={inputId}
         className={clsx(
-          'w-full bg-gray-800/50 border rounded-xl text-white placeholder-gray-500 transition-colors duration-200 resize-none',
+          'w-full bg-zinc-900/70 border rounded-xl text-zinc-100 placeholder-zinc-600',
+          'transition-all duration-200 resize-none',
           'focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50',
-          error ? 'border-red-500/50' : 'border-white/10 hover:border-white/20',
+          error
+            ? 'border-red-500/50 focus:ring-red-500/30'
+            : 'border-zinc-700/50 hover:border-zinc-600/60',
           'px-4 py-3',
           className
         )}
         {...props}
       />
       {error && <p className="text-xs text-red-400">{error}</p>}
+      {hint && !error && <p className="text-xs text-zinc-500">{hint}</p>}
     </div>
   );
 }
 
-// Score ring SVG
+/* ============================================================
+   SELECT
+   ============================================================ */
+interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  error?: string;
+  options: Array<{ value: string; label: string }>;
+}
+
+export function Select({ label, error, options, className, id, ...props }: SelectProps) {
+  const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
+  return (
+    <div className="space-y-1.5">
+      {label && (
+        <label htmlFor={inputId} className="block text-sm font-medium text-zinc-300">
+          {label}
+        </label>
+      )}
+      <select
+        id={inputId}
+        className={clsx(
+          'w-full bg-zinc-900/70 border rounded-xl text-zinc-100',
+          'transition-all duration-200 cursor-pointer',
+          'focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50',
+          error
+            ? 'border-red-500/50'
+            : 'border-zinc-700/50 hover:border-zinc-600/60',
+          'px-4 py-2.5',
+          className
+        )}
+        {...props}
+      >
+        {options.map(o => (
+          <option key={o.value} value={o.value} className="bg-zinc-900">
+            {o.label}
+          </option>
+        ))}
+      </select>
+      {error && <p className="text-xs text-red-400">{error}</p>}
+    </div>
+  );
+}
+
+/* ============================================================
+   SCORE RING
+   ============================================================ */
 interface ScoreRingProps {
   score: number;
   size?: number;
   strokeWidth?: number;
   className?: string;
+  animated?: boolean;
 }
 
-export function ScoreRing({ score, size = 120, strokeWidth = 8, className }: ScoreRingProps) {
+export function ScoreRing({ score, size = 120, strokeWidth = 8, className, animated = true }: ScoreRingProps) {
   const radius = (size - strokeWidth * 2) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 10) * circumference;
 
-  const color = score >= 7.5 ? '#10b981' : score >= 6.0 ? '#f59e0b' : score >= 4.0 ? '#f97316' : '#ef4444';
+  const color =
+    score >= 8 ? '#10b981' :
+    score >= 6.5 ? '#f59e0b' :
+    score >= 4.5 ? '#f97316' :
+    '#ef4444';
+
+  const glowColor =
+    score >= 8 ? 'rgba(16, 185, 129, 0.3)' :
+    score >= 6.5 ? 'rgba(245, 158, 11, 0.3)' :
+    score >= 4.5 ? 'rgba(249, 115, 22, 0.3)' :
+    'rgba(239, 68, 68, 0.3)';
 
   return (
     <div className={clsx('relative inline-flex items-center justify-center', className)}>
-      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)', filter: `drop-shadow(0 0 8px ${glowColor})` }}>
         <circle
           cx={size / 2} cy={size / 2} r={radius}
-          fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={strokeWidth}
+          fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeWidth}
         />
         <circle
           cx={size / 2} cy={size / 2} r={radius}
@@ -176,94 +344,203 @@ export function ScoreRing({ score, size = 120, strokeWidth = 8, className }: Sco
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          style={{ transition: 'stroke-dashoffset 1.5s ease-out' }}
+          style={{
+            transition: animated ? 'stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+          }}
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold text-white">{score.toFixed(1)}</span>
-        <span className="text-xs text-gray-400">/10</span>
+        <span className="font-extrabold text-white" style={{ fontSize: size * 0.22 }}>{score.toFixed(1)}</span>
+        <span className="text-zinc-500 font-medium" style={{ fontSize: size * 0.1 }}>/10</span>
       </div>
     </div>
   );
 }
 
-// Progress bar
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
 interface ProgressBarProps {
-  value: number; max?: number; label?: string; color?: string; size?: 'sm' | 'md';
+  value: number;
+  max?: number;
+  label?: string;
+  color?: string;
+  size?: 'xs' | 'sm' | 'md';
+  showValue?: boolean;
 }
 
-export function ProgressBar({ value, max = 10, label, color, size = 'md' }: ProgressBarProps) {
-  const pct = Math.min(100, (value / max) * 100);
-  const barColor = color || (pct >= 75 ? '#10b981' : pct >= 50 ? '#f59e0b' : '#f97316');
+export function ProgressBar({ value, max = 10, label, color, size = 'md', showValue = true }: ProgressBarProps) {
+  const pct = Math.min(100, Math.max(0, (value / max) * 100));
+  const barColor = color || (
+    pct >= 75 ? '#10b981' :
+    pct >= 50 ? '#f59e0b' :
+    pct >= 30 ? '#f97316' :
+    '#ef4444'
+  );
+
+  const heights = { xs: 'h-1', sm: 'h-1.5', md: 'h-2' };
 
   return (
     <div className="space-y-1.5">
-      {label && (
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-400">{label}</span>
-          <span className="text-white font-medium">{value.toFixed(1)}/{max}</span>
+      {(label || showValue) && (
+        <div className="flex justify-between items-center text-sm">
+          {label && <span className="text-zinc-400 text-xs">{label}</span>}
+          {showValue && (
+            <span className="text-zinc-200 font-semibold text-xs tabular-nums">
+              {value.toFixed(1)}<span className="text-zinc-500">/{max}</span>
+            </span>
+          )}
         </div>
       )}
-      <div className={clsx('bg-white/10 rounded-full overflow-hidden', size === 'sm' ? 'h-1.5' : 'h-2.5')}>
+      <div className={clsx('bg-zinc-800/70 rounded-full overflow-hidden', heights[size])}>
         <div
-          className="h-full rounded-full transition-all duration-1000"
-          style={{ width: `${pct}%`, backgroundColor: barColor }}
+          className="h-full rounded-full transition-all duration-1000 ease-out"
+          style={{
+            width: `${pct}%`,
+            background: `linear-gradient(90deg, ${barColor}cc, ${barColor})`,
+            boxShadow: `0 0 8px ${barColor}40`,
+          }}
         />
       </div>
     </div>
   );
 }
 
-// Loading skeleton
+/* ============================================================
+   SKELETON
+   ============================================================ */
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={clsx('shimmer rounded-lg', className)} />;
+  return <div className={clsx('shimmer rounded-xl', className)} />;
 }
 
-// Empty state
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
 interface EmptyStateProps {
   icon: React.ReactNode;
   title: string;
   description: string;
   action?: React.ReactNode;
+  size?: 'sm' | 'md' | 'lg';
 }
 
-export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+export function EmptyState({ icon, title, description, action, size = 'md' }: EmptyStateProps) {
+  const paddings = { sm: 'py-10', md: 'py-16', lg: 'py-24' };
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="p-4 rounded-2xl bg-white/5 text-gray-500 mb-4">{icon}</div>
-      <h3 className="text-lg font-semibold text-gray-200 mb-2">{title}</h3>
-      <p className="text-gray-500 text-sm max-w-sm mb-6">{description}</p>
+    <div className={clsx('flex flex-col items-center justify-center text-center', paddings[size])}>
+      <div className="w-14 h-14 rounded-2xl bg-zinc-800/60 border border-zinc-700/40 text-zinc-500 flex items-center justify-center mb-4">
+        {icon}
+      </div>
+      <h3 className="text-base font-semibold text-zinc-200 mb-2">{title}</h3>
+      <p className="text-sm text-zinc-500 max-w-sm mb-6 leading-relaxed">{description}</p>
       {action}
     </div>
   );
 }
 
-// Select component
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
-  error?: string;
-  options: Array<{ value: string; label: string }>;
+/* ============================================================
+   STAT CARD
+   ============================================================ */
+interface StatCardProps {
+  label: string;
+  value: string | number;
+  icon: React.ReactNode;
+  color?: 'indigo' | 'violet' | 'emerald' | 'amber' | 'blue' | 'rose';
+  trend?: string;
 }
 
-export function Select({ label, error, options, className, ...props }: SelectProps) {
+export function StatCard({ label, value, icon, color = 'indigo', trend }: StatCardProps) {
+  const colors = {
+    indigo: 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400',
+    violet: 'bg-violet-500/10 border-violet-500/20 text-violet-400',
+    emerald: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
+    amber: 'bg-amber-500/10 border-amber-500/20 text-amber-400',
+    blue: 'bg-blue-500/10 border-blue-500/20 text-blue-400',
+    rose: 'bg-rose-500/10 border-rose-500/20 text-rose-400',
+  };
+
   return (
-    <div className="space-y-1.5">
-      {label && <label className="block text-sm font-medium text-gray-300">{label}</label>}
-      <select
-        className={clsx(
-          'w-full bg-gray-800/50 border rounded-xl text-white transition-colors duration-200',
-          'focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50',
-          error ? 'border-red-500/50' : 'border-white/10 hover:border-white/20',
-          'px-4 py-2.5',
-          className
-        )}
-        {...props}
-      >
-        {options.map(o => (
-          <option key={o.value} value={o.value} className="bg-gray-900">{o.label}</option>
-        ))}
-      </select>
-      {error && <p className="text-xs text-red-400">{error}</p>}
+    <Card className="p-5">
+      <div className="flex items-center gap-4">
+        <div className={clsx('w-12 h-12 rounded-xl border flex items-center justify-center shrink-0', colors[color])}>
+          {icon}
+        </div>
+        <div className="min-w-0">
+          <p className="text-2xl font-bold text-white tabular-nums">{value}</p>
+          <p className="text-xs text-zinc-400 mt-0.5">{label}</p>
+          {trend && <p className="text-xs text-emerald-400 mt-1">{trend}</p>}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+/* ============================================================
+   DIVIDER
+   ============================================================ */
+export function Divider({ className }: { className?: string }) {
+  return <div className={clsx('border-t border-zinc-800/60', className)} />;
+}
+
+/* ============================================================
+   ALERT / NOTICE
+   ============================================================ */
+interface AlertProps {
+  children: React.ReactNode;
+  variant?: 'info' | 'success' | 'warning' | 'danger';
+  icon?: React.ReactNode;
+  className?: string;
+}
+
+export function Alert({ children, variant = 'info', icon, className }: AlertProps) {
+  const variants = {
+    info: 'bg-blue-500/8 border-blue-500/20 text-blue-300',
+    success: 'bg-emerald-500/8 border-emerald-500/20 text-emerald-300',
+    warning: 'bg-amber-500/8 border-amber-500/20 text-amber-300',
+    danger: 'bg-red-500/8 border-red-500/20 text-red-300',
+  };
+
+  return (
+    <div className={clsx('flex items-start gap-3 p-4 rounded-xl border text-sm', variants[variant], className)}>
+      {icon && <span className="shrink-0 mt-0.5">{icon}</span>}
+      <div>{children}</div>
+    </div>
+  );
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+interface TabsProps {
+  tabs: Array<{ id: string; label: string; icon?: React.ReactNode }>;
+  activeTab: string;
+  onChange: (id: string) => void;
+  className?: string;
+}
+
+export function Tabs({ tabs, activeTab, onChange, className }: TabsProps) {
+  return (
+    <div className={clsx('flex gap-1 overflow-x-auto', className)}
+      style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+      {tabs.map(tab => {
+        const active = activeTab === tab.id;
+        return (
+          <button
+            key={tab.id}
+            onClick={() => onChange(tab.id)}
+            className={clsx(
+              'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap shrink-0',
+              'transition-all duration-200',
+              active
+                ? 'bg-indigo-500/15 text-white border border-indigo-500/30 shadow-sm'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
+            )}
+          >
+            {tab.icon && <span className="shrink-0 opacity-70">{tab.icon}</span>}
+            {tab.label}
+          </button>
+        );
+      })}
     </div>
   );
 }

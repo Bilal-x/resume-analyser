@@ -1,122 +1,285 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --primary: 238 90% 56%;
-    --primary-foreground: 0 0% 100%;
-  }
+/* ============================================================
+   DESIGN TOKENS — AI Resume Analyzer Premium Theme
+   ============================================================ */
+:root {
+  /* Colors */
+  --color-bg: #09090b;
+  --color-surface: #18181b;
+  --color-surface-2: #27272a;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.15);
+
+  --color-primary: #6366f1;
+  --color-primary-hover: #818cf8;
+  --color-primary-muted: rgba(99, 102, 241, 0.15);
+  --color-primary-border: rgba(99, 102, 241, 0.3);
+
+  --color-violet: #8b5cf6;
+  --color-violet-muted: rgba(139, 92, 246, 0.12);
+
+  --color-success: #10b981;
+  --color-success-muted: rgba(16, 185, 129, 0.12);
+  --color-warning: #f59e0b;
+  --color-warning-muted: rgba(245, 158, 11, 0.12);
+  --color-danger: #ef4444;
+  --color-danger-muted: rgba(239, 68, 68, 0.12);
+  --color-info: #3b82f6;
+  --color-info-muted: rgba(59, 130, 246, 0.12);
+
+  --color-text: #fafafa;
+  --color-text-2: #a1a1aa;
+  --color-text-3: #71717a;
+
+  /* Typography */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Spacing */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --shadow-primary: 0 4px 24px rgba(99, 102, 241, 0.3);
 }
 
-* {
+/* ============================================================
+   BASE RESET
+   ============================================================ */
+*, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100vh;
   width: 100%;
-  text-align: left;
-  border: none;
 }
 
-/* Custom scrollbar */
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #1e1e2e;
+  background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #4a4a6a;
-  border-radius: 3px;
+  background: var(--color-surface-2);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
 }
 
-/* Glassmorphism utility */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Score circle animation */
-@keyframes scoreReveal {
-  from { stroke-dashoffset: 339; }
-  to { stroke-dashoffset: var(--target-offset); }
-}
-
-.score-ring {
-  animation: scoreReveal 1.5s ease-out forwards;
-}
-
-/* Fade in animation */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in-up {
-  animation: fadeInUp 0.4s ease-out forwards;
-}
-
-/* Pulse glow */
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
-}
-
-.pulse-glow {
-  animation: pulseGlow 2s ease-in-out infinite;
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+.text-gradient {
+  background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 50%, #f9a8d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Tab indicator */
-.tab-active {
-  background: linear-gradient(135deg, rgba(129, 140, 248, 0.2), rgba(192, 132, 252, 0.2));
-  border-color: rgba(129, 140, 248, 0.5);
+.text-gradient-green {
+  background: linear-gradient(135deg, #6ee7b7, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Shimmer loading effect */
+/* ============================================================
+   GLASS MORPHISM
+   ============================================================ */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(24, 24, 27, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
 
-.shimmer {
-  background: linear-gradient(90deg, #1e1e2e 25%, #2a2a3e 50%, #1e1e2e 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+@keyframes scoreReveal {
+  from { stroke-dashoffset: 339; }
+  to { stroke-dashoffset: var(--target-offset); }
 }
 
-/* Progress bar animation */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.25); }
+  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.5); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes progressFill {
   from { width: 0%; }
   to { width: var(--target-width); }
 }
 
-.progress-fill {
-  animation: progressFill 1s ease-out forwards;
+/* Animation classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
 }
 
-/* Floating particle */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-8px) rotate(1deg); }
-  66% { transform: translateY(4px) rotate(-1deg); }
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
-.float-animation {
-  animation: float 6s ease-in-out infinite;
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideInRight 0.4s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+.score-ring {
+  animation: scoreReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ============================================================
+   SHIMMER SKELETON
+   ============================================================ */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    var(--color-surface-2) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+}
+
+/* ============================================================
+   STAGGER ANIMATION DELAYS
+   ============================================================ */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.20s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.30s; }
+
+/* ============================================================
+   FOCUS STYLES (Accessibility)
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   SELECTION COLOR
+   ============================================================ */
+::selection {
+  background-color: rgba(99, 102, 241, 0.3);
+  color: #fff;
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
 }
