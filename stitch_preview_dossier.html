@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TalentLens - Executive Candidate Match Dossier &amp; Architectural Analysis</title>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration Verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed": "#6ffbbe",
+            "error-container": "#93000a",
+            "tertiary-container": "#9699ff",
+            "secondary": "#4cd7f6",
+            "inverse-primary": "#006c49",
+            "surface-bright": "#353943",
+            "on-error-container": "#ffdad6",
+            "secondary-fixed-dim": "#4cd7f6",
+            "secondary-container": "#03b5d3",
+            "secondary-fixed": "#acedff",
+            "inverse-on-surface": "#2c303a",
+            "surface-container-high": "#262a34",
+            "on-secondary": "#003640",
+            "background": "#0f131c",
+            "primary-container": "#10b981",
+            "error": "#ffb4ab",
+            "surface-dim": "#0f131c",
+            "on-primary-fixed-variant": "#005236",
+            "on-background": "#dfe2ef",
+            "on-tertiary-fixed": "#07006c",
+            "surface-container": "#1c1f29",
+            "on-surface": "#dfe2ef",
+            "on-primary-container": "#00422b",
+            "outline-variant": "#3c4a42",
+            "on-secondary-fixed": "#001f26",
+            "tertiary-fixed": "#e1e0ff",
+            "on-secondary-fixed-variant": "#004e5c",
+            "tertiary-fixed-dim": "#c0c1ff",
+            "primary": "#4edea3",
+            "surface": "#0f131c",
+            "inverse-surface": "#dfe2ef",
+            "tertiary": "#c0c1ff",
+            "primary-fixed-dim": "#4edea3",
+            "outline": "#86948a",
+            "on-tertiary-fixed-variant": "#2f2ebe",
+            "on-primary": "#003824",
+            "surface-container-low": "#181b25",
+            "on-tertiary-container": "#1d17b2",
+            "surface-container-highest": "#31353f",
+            "surface-variant": "#31353f",
+            "surface-container-lowest": "#0a0e17",
+            "on-primary-fixed": "#002113",
+            "on-tertiary": "#1000a9",
+            "on-secondary-container": "#00424e",
+            "surface-tint": "#4edea3",
+            "on-surface-variant": "#bbcabf",
+            "on-error": "#690005"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-lg": "1.25rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "2rem",
+            "margin": "1rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "margin-tablet": "1.5rem"
+          },
+          "fontFamily": {
+            "mono-label": ["JetBrains Mono"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "mono-metric-md": ["JetBrains Mono"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Inter"],
+            "display": ["Inter"],
+            "mono-metric-lg": ["JetBrains Mono"],
+            "headline-lg-mobile": ["Inter"],
+            "display-mobile": ["Inter"],
+            "label-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "mono-data": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "mono-label": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "500" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "label-md": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "mono-metric-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "mono-metric-lg": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "display-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "mono-data": ["12px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-glass {
+      background: rgba(19, 28, 49, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+    }
+    .sentinel-spine {
+      border-left: 2px solid #06b6d4;
+      background: linear-gradient(90deg, rgba(6, 182, 212, 0.08) 0%, rgba(13, 19, 34, 0.4) 100%);
+    }
+    .emerald-glow {
+      box-shadow: 0 0 24px -4px rgba(16, 185, 129, 0.28);
+    }
+    .cyan-glow {
+      box-shadow: 0 0 24px -4px rgba(76, 215, 246, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface antialiased min-h-screen selection:bg-primary selection:text-on-primary-container">
+<!-- TOP APP BAR (from Shared Components JSON: TopNavBar) -->
+<header class="bg-surface-container-low dark:bg-surface-container-low border-b border-outline-variant dark:border-outline-variant sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-gutter-desktop max-w-[1720px] mx-auto h-16">
+<!-- Brand & Status Pill -->
+<div class="flex items-center gap-space-lg">
+<div class="font-headline-sm text-headline-sm font-semibold text-primary dark:text-primary flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-lg bg-surface-container-highest border border-primary flex items-center justify-center text-primary relative">
+<span class="material-symbols-outlined text-[18px]">psychology</span>
+<span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary animate-ping opacity-75"></span>
+</div>
+<span>TalentLens</span>
+</div>
+<span class="h-4 w-px bg-outline-variant hidden md:block"></span>
+<div class="hidden lg:flex items-center gap-space-xs bg-surface-container-highest px-space-sm py-0.5 rounded border border-outline-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">AI Talent Intelligence Engine v3.4</span>
+</div>
+</div>
+<!-- Center Contextual Breadcrumb -->
+<nav class="hidden md:flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant">
+<span class="hover:text-primary transition-colors cursor-pointer">Candidates</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-medium">Sarah Chen</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-secondary truncate max-w-[180px]">Principal Distributed Systems</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-semibold">Match Dossier</span>
+</nav>
+<!-- Right Header Actions -->
+<div class="flex items-center gap-space-sm">
+<button class="hidden sm:inline-flex items-center gap-space-xs bg-surface-container px-space-md py-space-xs rounded border border-outline-variant text-on-surface font-label-lg text-label-lg hover:text-primary hover:border-primary transition-all duration-150" type="button">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+<span>Export PDF Report</span>
+</button>
+<button class="hidden sm:inline-flex items-center gap-space-xs bg-surface-container px-space-md py-space-xs rounded border border-outline-variant text-on-surface-variant font-label-lg text-label-lg hover:text-on-surface hover:border-outline transition-all duration-150" type="button">
+<span class="material-symbols-outlined text-[16px]">share</span>
+<span>Share Dossier</span>
+</button>
+<button class="inline-flex items-center gap-space-xs bg-surface-container-high px-space-md py-space-xs rounded border border-secondary text-secondary font-label-lg text-label-lg hover:bg-surface-variant transition-all duration-150" type="button">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+<span class="hidden md:inline">Compare</span>
+</button>
+<!-- Executive Shortlist Badge -->
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-primary-container/20 border border-primary text-primary emerald-glow">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-mono-data text-mono-data font-semibold">Shortlisted (Top 3%)</span>
+</div>
+<div class="h-6 w-px bg-outline-variant mx-1"></div>
+<button aria-label="Settings and calibrations" class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN CANVAS WITH EXPANDED EXECUTIVE LAYOUT -->
+<div class="max-w-[1720px] mx-auto px-gutter md:px-gutter-desktop py-space-lg flex flex-col gap-space-lg">
+<!-- 1. HERO CANDIDATE & JOB SPECIFICATION PROFILE CARD -->
+<section class="custom-glass rounded-xl border border-outline-variant p-space-md md:p-space-lg flex flex-col xl:flex-row justify-between gap-space-lg">
+<!-- Candidate Identity Card -->
+<div class="flex items-start gap-space-md min-w-[340px]">
+<div class="relative flex-shrink-0">
+<div class="w-20 h-20 rounded-xl overflow-hidden border-2 border-primary emerald-glow p-0.5 bg-surface-container-lowest">
+<img class="w-full h-full object-cover rounded-lg" data-alt="High precision photorealistic corporate portrait of Sarah Chen, an Asian female staff infrastructure engineer in her early thirties, wearing modern dark minimalist tech attire, sharp analytical expression with soft neon emerald ambient backlighting in a high-tech data lab." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAClNURcIRZx3Kx0_4BGKAfTN0P81_QGULbohYoZEvrr_ow9Db3Dc7KrBwjVk-dNjoh-IRJOlO9J8wgu8IY_UjQbG4_QA6YRUE0b4lARkfZJXEshb2GzlDFLjIxfmOgfh2gXfnEt6nU9HhA-DYlGeCXfZxkJ86VdsJ235IAleI0mbkd62jz0PEb07fB20pd1gDuVe3GG4YIDMRxJdikcqqPdQWPB8tz6oe2hq8SEwNluBM4xBQ85jXJA9ry62Uljr01M3jDtoeAWWA"/>
+</div>
+<span class="absolute -bottom-1 -right-1 bg-primary text-on-primary-container p-0.5 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Sarah Chen</h1>
+<span class="px-space-xs py-0.5 bg-surface-container-highest rounded border border-outline-variant text-on-surface-variant font-mono-label text-mono-label">L6 Principal Target</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">Staff Infrastructure Engineer at <span class="text-on-surface font-medium">ScaleOps Systems</span></p>
+<div class="flex flex-wrap items-center gap-space-xs mt-space-sm">
+<span class="inline-flex items-center gap-1 text-on-surface-variant font-mono-data text-mono-data bg-surface-container-highest px-space-xs py-0.5 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-[13px]">history</span> 8.5 Years Exp
+            </span>
+<span class="inline-flex items-center gap-1 text-on-surface-variant font-mono-data text-mono-data bg-surface-container-highest px-space-xs py-0.5 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-[13px]">location_on</span> San Francisco, CA
+            </span>
+<span class="inline-flex items-center gap-1 text-primary font-mono-data text-mono-data bg-surface-container-highest px-space-xs py-0.5 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-[13px]">verified_user</span> GitHub / LinkedIn Verified
+            </span>
+</div>
+</div>
+</div>
+<!-- Center Target Job Requisition -->
+<div class="flex flex-col justify-center border-t xl:border-t-0 xl:border-l border-outline-variant pt-space-md xl:pt-0 xl:pl-space-lg flex-1">
+<div class="flex items-center justify-between">
+<span class="font-mono-label text-mono-label text-secondary uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">target</span>
+            Matched Requisition Specification
+          </span>
+<span class="font-mono-data text-mono-data text-on-surface-variant bg-surface-container-highest px-space-sm py-0.5 rounded border border-outline-variant">REQ-4091</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mt-1">Principal Distributed Infrastructure Engineer (Payments Platform)</h2>
+<div class="flex flex-wrap items-center gap-space-md mt-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">corporate_fare</span> Core Cloud Systems Dept
+          </span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">payments</span> $210,000 - $245,000 + Equity Band
+          </span>
+<span class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[16px]">speed</span> High Urgency Priority Hire
+          </span>
+</div>
+</div>
+<!-- Right Telemetry Panel -->
+<div class="flex flex-row xl:flex-col justify-between items-end border-t xl:border-t-0 xl:border-l border-outline-variant pt-space-md xl:pt-0 xl:pl-space-lg gap-space-sm min-w-[240px]">
+<div class="flex flex-col xl:items-end w-full">
+<span class="font-mono-label text-mono-label text-on-surface-variant">ENGINE TELEMETRY</span>
+<div class="grid grid-cols-2 gap-2 mt-1.5 w-full">
+<div class="bg-surface-container px-space-sm py-1 rounded border border-outline-variant text-left">
+<span class="font-mono-label text-mono-label text-outline block">SPEED</span>
+<span class="font-mono-metric-md text-mono-metric-md text-primary">1.4s</span>
+</div>
+<div class="bg-surface-container px-space-sm py-1 rounded border border-outline-variant text-left">
+<span class="font-mono-label text-mono-label text-outline block">EVIDENCE</span>
+<span class="font-mono-metric-md text-mono-metric-md text-secondary">94%</span>
+</div>
+</div>
+</div>
+<div class="w-full flex flex-col gap-1 mt-1 font-mono-data text-mono-data text-right">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span>Model Engine</span>
+<span class="text-on-surface">Deterministic v2.4</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span>Calibration</span>
+<span class="text-secondary font-medium">Strict L5/L6 Grid</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. MASTER SCORE HERO & DIMENSION BREAKDOWN (Bento Layout) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Radial Match Score Card (4 Columns) -->
+<div class="lg:col-span-4 custom-glass rounded-xl border border-outline-variant p-space-lg flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<span class="font-label-lg text-label-lg text-on-surface">Overall Match Index</span>
+</div>
+<span class="font-mono-label text-mono-label px-2 py-0.5 rounded bg-surface-container border border-outline-variant text-primary">ALGO-CONF 99.2%</span>
+</div>
+<!-- Radial Gauge Visual Presentation -->
+<div class="flex flex-col items-center justify-center my-space-md relative">
+<svg class="w-48 h-48 transform -rotate-90" viewbox="0 0 120 120">
+<!-- Background Circle -->
+<circle cx="60" cy="60" fill="none" r="50" stroke="#1c1f29" stroke-width="8"></circle>
+<!-- Progress Arc (88% of circumference = 314.15 * 0.88 = 276.4) -->
+<circle class="filter drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" cx="60" cy="60" fill="none" r="50" stroke="#10b981" stroke-dasharray="314.15" stroke-dashoffset="37.7" stroke-linecap="round" stroke-width="8"></circle>
+<!-- Inner secondary accent ring -->
+<circle cx="60" cy="60" fill="none" r="41" stroke="#31353f" stroke-dasharray="4 4" stroke-width="1.5"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-mono-metric-lg text-mono-metric-lg text-on-surface font-bold tracking-tighter">8.8<span class="font-body-sm text-body-sm text-outline">/10</span></span>
+<span class="font-mono-label text-mono-label text-primary uppercase tracking-widest mt-1">Tier 1 Rating</span>
+</div>
+</div>
+<div class="space-y-space-sm">
+<div class="p-space-sm rounded bg-surface-container border border-primary/30 flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface">Strong Alignment Recommendation</span>
+</div>
+<span class="font-mono-data text-mono-data text-primary font-semibold">Ready for L6 Loop</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Candidate exceeds architectural criteria with exceptional concurrency depth and automated failover design experience.</p>
+</div>
+</div>
+<!-- Dimension Breakdown Multi-Progress Bars (8 Columns) -->
+<div class="lg:col-span-8 custom-glass rounded-xl border border-outline-variant p-space-lg flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Weighted Dimension Breakdown</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Deterministic scoring computed across 6 requisition vectors.</p>
+</div>
+<div class="hidden sm:flex items-center gap-space-sm text-on-surface-variant font-mono-label text-mono-label">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> 9.0+ Benchmark</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> 8.0-8.9 Target</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-surface-bright"></span> &lt;8.0 Probe</span>
+</div>
+</div>
+<div class="space-y-space-md">
+<!-- Dimension 1 -->
+<div class="space-y-1">
+<div class="flex justify-between items-center text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Mandatory Requirements</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">(Weight: 30%)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-data text-mono-data text-on-surface-variant hidden md:inline">Golang, Kubernetes, High-Throughput Arch</span>
+<span class="font-mono-metric-md text-mono-metric-md text-primary font-bold">9.2<span class="text-xs text-outline">/10</span></span>
+</div>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 92%;"></div>
+</div>
+</div>
+<!-- Dimension 2 -->
+<div class="space-y-1">
+<div class="flex justify-between items-center text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Core Technical Skills</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">(Weight: 20%)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-data text-mono-data text-on-surface-variant hidden md:inline">gRPC, Apache Kafka, Distributed Caching</span>
+<span class="font-mono-metric-md text-mono-metric-md text-primary font-bold">8.5<span class="text-xs text-outline">/10</span></span>
+</div>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 85%;"></div>
+</div>
+</div>
+<!-- Dimension 3 -->
+<div class="space-y-1">
+<div class="flex justify-between items-center text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Project Relevance &amp; Depth</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">(Weight: 20%)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-data text-mono-data text-on-surface-variant hidden md:inline">Payment Clearing Engine, Multi-Region Active-Active</span>
+<span class="font-mono-metric-md text-mono-metric-md text-primary font-bold">9.0<span class="text-xs text-outline">/10</span></span>
+</div>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 90%;"></div>
+</div>
+</div>
+<!-- Dimension 4 -->
+<div class="space-y-1">
+<div class="flex justify-between items-center text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Experience Implementation</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">(Weight: 15%)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-data text-mono-data text-on-surface-variant hidden md:inline">High concurrency, production incident mitigation</span>
+<span class="font-mono-metric-md text-mono-metric-md text-secondary font-bold">8.4<span class="text-xs text-outline">/10</span></span>
+</div>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 84%;"></div>
+</div>
+</div>
+<!-- Dimension 5 -->
+<div class="space-y-1">
+<div class="flex justify-between items-center text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Domain Knowledge</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">(Weight: 10%)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-data text-mono-data text-on-surface-variant hidden md:inline">Financial transaction atomicity, PCI-DSS compliance</span>
+<span class="font-mono-metric-md text-mono-metric-md text-secondary font-bold">8.0<span class="text-xs text-outline">/10</span></span>
+</div>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 80%;"></div>
+</div>
+</div>
+<!-- Dimension 6 -->
+<div class="space-y-1">
+<div class="flex justify-between items-center text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Qualifications &amp; Certifications</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">(Weight: 5%)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-data text-mono-data text-on-surface-variant hidden md:inline">AWS Solutions Architect Pro, CKA Kubernetes</span>
+<span class="font-mono-metric-md text-mono-metric-md text-tertiary font-bold">7.5<span class="text-xs text-outline">/10</span></span>
+</div>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 75%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Metric Diagnostic Chips -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm pt-space-md border-t border-outline-variant mt-space-md">
+<div class="bg-surface-container px-space-sm py-2 rounded border border-primary/40 flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<div>
+<span class="font-mono-metric-md text-mono-metric-md text-primary font-bold leading-none block">18</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">Direct Skills</span>
+</div>
+</div>
+<div class="bg-surface-container px-space-sm py-2 rounded border border-secondary/40 flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">auto_awesome</span>
+<div>
+<span class="font-mono-metric-md text-mono-metric-md text-secondary font-bold leading-none block">7</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">Indirect Skills</span>
+</div>
+</div>
+<div class="bg-surface-container px-space-sm py-2 rounded border border-outline-variant flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px]">shield</span>
+<div>
+<span class="font-mono-metric-md text-mono-metric-md text-tertiary font-bold leading-none block">4</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">Verified Projects</span>
+</div>
+</div>
+<div class="bg-surface-container px-space-sm py-2 rounded border border-error/40 flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-error text-[18px]">warning</span>
+<div>
+<span class="font-mono-metric-md text-mono-metric-md text-error font-bold leading-none block">2</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">Gaps to Probe</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. INTERACTIVE SECTION TABS -->
+<nav aria-label="Dossier Sections" class="flex items-center gap-space-sm border-b border-outline-variant overflow-x-auto pb-1 scrollbar-none">
+<button class="px-space-md py-space-sm font-label-lg text-label-lg font-semibold text-primary border-b-2 border-primary whitespace-nowrap flex items-center gap-1.5 shadow-[0_4px_12px_-2px_rgba(16,185,129,0.3)]">
+<span class="material-symbols-outlined text-[16px]">dashboard</span>
+<span>Overview &amp; Match Breakdown</span>
+</button>
+<button class="px-space-md py-space-sm font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors whitespace-nowrap flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">task_alt</span>
+<span>Direct Skill Matches (18)</span>
+</button>
+<button class="px-space-md py-space-sm font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors whitespace-nowrap flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+<span>Indirect Skill Discovery (7)</span>
+</button>
+<button class="px-space-md py-space-sm font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors whitespace-nowrap flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+<span>Project Deep Dives (4)</span>
+</button>
+<button class="px-space-md py-space-sm font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors whitespace-nowrap flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">rule</span>
+<span>Missing Requirements &amp; Gaps (2)</span>
+</button>
+<button class="px-space-md py-space-sm font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors whitespace-nowrap flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">quiz</span>
+<span>Interview Probe Questions (3)</span>
+</button>
+<button class="px-space-md py-space-sm font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors whitespace-nowrap flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">manage_search</span>
+<span>Resume ATS Optimization</span>
+</button>
+</nav>
+<!-- 4. MAIN CONTENT TWO-COLUMN GRID -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- LEFT COLUMN: Direct Skill Matches with Verbatim Resume Citations (6 Columns) -->
+<div class="lg:col-span-6 flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary">verified</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Direct Skill Matches</h2>
+</div>
+<span class="font-mono-label text-mono-label text-on-surface-variant">VERBATIM RESUME CITATIONS</span>
+</div>
+<!-- Evidence Card 1: Go (Golang) -->
+<article class="custom-glass rounded-xl border border-outline-variant p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center font-mono-data text-mono-data text-primary font-bold">
+                Go
+              </div>
+<div>
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold">Go (Golang) Microservice Concurrency</h3>
+<span class="font-mono-label text-mono-label text-outline">PRIMARY SYSTEM LANGUAGE</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-space-sm py-0.5 rounded bg-primary-container/20 border border-primary text-primary">
+<span class="font-mono-data text-mono-data font-semibold">98% Match</span>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest border border-outline-variant font-mono-data text-mono-data text-on-surface-variant relative">
+<span class="text-secondary font-bold">"</span>Architected event-driven microservices processing 45k RPS with sub-50ms latency across 6 AWS availability zones.<span class="text-secondary font-bold">"</span>
+<div class="mt-2 flex items-center justify-between font-mono-label text-mono-label text-outline border-t border-outline-variant/60 pt-1">
+<span>Source: ScaleOps — Lead Backend Role (2022-2024)</span>
+<span class="text-primary flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">verified</span> Validated Claim</span>
+</div>
+</div>
+</article>
+<!-- Evidence Card 2: Distributed Event Streaming (Kafka) -->
+<article class="custom-glass rounded-xl border border-outline-variant p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center font-mono-data text-mono-data text-secondary font-bold">
+                Kf
+              </div>
+<div>
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold">Distributed Event Streaming (Kafka)</h3>
+<span class="font-mono-label text-mono-label text-outline">CORE STREAMING FABRIC</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-space-sm py-0.5 rounded bg-secondary-container/20 border border-secondary text-secondary">
+<span class="font-mono-data text-mono-data font-semibold">95% Match</span>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest border border-outline-variant font-mono-data text-mono-data text-on-surface-variant relative">
+<span class="text-secondary font-bold">"</span>Engineered transactional outbox pattern atop Apache Kafka cluster handling 1.8B events/day with exactly-once semantic guarantees.<span class="text-secondary font-bold">"</span>
+<div class="mt-2 flex items-center justify-between font-mono-label text-mono-label text-outline border-t border-outline-variant/60 pt-1">
+<span>Source: ScaleOps — Financial Message Pipeline (2023)</span>
+<span class="text-primary flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">verified</span> Validated Claim</span>
+</div>
+</div>
+</article>
+<!-- Evidence Card 3: Kubernetes & Infrastructure as Code -->
+<article class="custom-glass rounded-xl border border-outline-variant p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center font-mono-data text-mono-data text-tertiary font-bold">
+                K8s
+              </div>
+<div>
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold">Kubernetes &amp; Infrastructure as Code</h3>
+<span class="font-mono-label text-mono-label text-outline">ORCHESTRATION &amp; DEPLOYMENT</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-space-sm py-0.5 rounded bg-surface-container-highest border border-outline-variant text-on-surface">
+<span class="font-mono-data text-mono-data font-semibold">92% Match</span>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest border border-outline-variant font-mono-data text-mono-data text-on-surface-variant relative">
+<span class="text-secondary font-bold">"</span>Maintained Terraform and Helm charts orchestrating 12 multi-tenant EKS clusters with automated canary rollouts via Argo Rollouts.<span class="text-secondary font-bold">"</span>
+<div class="mt-2 flex items-center justify-between font-mono-label text-mono-label text-outline border-t border-outline-variant/60 pt-1">
+<span>Source: CloudScale Global — Staff SRE (2020-2022)</span>
+<span class="text-primary flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">verified</span> Validated Claim</span>
+</div>
+</div>
+</article>
+</div>
+<!-- RIGHT COLUMN: AI Indirect Skills Discovery (Standout Flagship Capability) -->
+<div class="lg:col-span-6 flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary">auto_awesome</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">AI Indirect Skills Discovery</h2>
+</div>
+<span class="font-mono-label text-mono-label px-2 py-0.5 rounded bg-secondary-container/20 border border-secondary text-secondary">FLAGSHIP REASONING</span>
+</div>
+<!-- Inferred Skill 1: Distributed Consensus & Saga -->
+<article class="custom-glass rounded-xl border border-secondary/30 p-space-md flex flex-col gap-space-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-ping"></span>
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold">Distributed Consensus &amp; Saga Orchestration</h3>
+</div>
+<span class="font-mono-data text-mono-data text-secondary px-2 py-0.5 rounded bg-surface-container border border-secondary/30">94% Confidence</span>
+</div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-mono-label text-mono-label text-outline">DERIVED FROM:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant font-mono-data text-mono-data text-on-surface">Kafka event choreography</span>
+<span class="text-secondary font-mono-data text-mono-data">+</span>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant font-mono-data text-mono-data text-on-surface">Two-phase commit outbox</span>
+</div>
+<!-- Sentinel AI Insight Callout -->
+<div class="sentinel-spine rounded-r p-space-sm">
+<span class="font-mono-label text-mono-label text-secondary uppercase block mb-0.5">TALENTLENS SYNTHESIS ENGINE</span>
+<p class="font-body-sm text-body-sm text-on-surface">"Candidate did not list 'Saga Pattern' in resume keywords, but implementation of transactional outbox and distributed financial state rollback guarantees mastery of distributed transaction consensus."</p>
+</div>
+</article>
+<!-- Inferred Skill 2: Database Sharding & Caching Topologies -->
+<article class="custom-glass rounded-xl border border-outline-variant p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold">Database Sharding &amp; Caching Topologies</h3>
+</div>
+<span class="font-mono-data text-mono-data text-primary px-2 py-0.5 rounded bg-surface-container border border-primary/30">91% Confidence</span>
+</div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-mono-label text-mono-label text-outline">DERIVED FROM:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant font-mono-data text-mono-data text-on-surface">Redis Cluster multi-tier</span>
+<span class="text-primary font-mono-data text-mono-data">+</span>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant font-mono-data text-mono-data text-on-surface">CockroachDB distributed SQL</span>
+</div>
+<div class="sentinel-spine rounded-r p-space-sm">
+<span class="font-mono-label text-mono-label text-secondary uppercase block mb-0.5">TALENTLENS SYNTHESIS ENGINE</span>
+<p class="font-body-sm text-body-sm text-on-surface">"Active-active CockroachDB ranges paired with read-through Redis caching indicates practical sharding and eventual-consistency reconciliation expertise."</p>
+</div>
+</article>
+<!-- Inferred Skill 3: Zero-Downtime Deployment & Chaos Engineering -->
+<article class="custom-glass rounded-xl border border-outline-variant p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold">Zero-Downtime Deployment &amp; Chaos Engineering</h3>
+</div>
+<span class="font-mono-data text-mono-data text-tertiary px-2 py-0.5 rounded bg-surface-container border border-tertiary/30">88% Confidence</span>
+</div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-mono-label text-mono-label text-outline">DERIVED FROM:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant font-mono-data text-mono-data text-on-surface">ArgoCD GitOps pipelines</span>
+<span class="text-tertiary font-mono-data text-mono-data">+</span>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant font-mono-data text-mono-data text-on-surface">LitmusChaos failure injection</span>
+</div>
+<div class="sentinel-spine rounded-r p-space-sm">
+<span class="font-mono-label text-mono-label text-secondary uppercase block mb-0.5">TALENTLENS SYNTHESIS ENGINE</span>
+<p class="font-body-sm text-body-sm text-on-surface">"Demonstrated resilience testing through automated chaos experiments during high-traffic clearing cycles."</p>
+</div>
+</article>
+</div>
+</section>
+<!-- 5. FEATURED PROJECT ARCHITECTURAL RELEVANCE CARD -->
+<section class="custom-glass rounded-xl border border-outline-variant p-space-md md:p-space-lg flex flex-col gap-space-md relative">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest border border-primary flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">account_tree</span>
+</div>
+<div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-label text-mono-label text-primary uppercase">FEATURED PRODUCTION RELEVANCE</span>
+<span class="px-2 py-0.5 rounded bg-primary-container/20 border border-primary text-primary font-mono-label text-mono-label">High Complexity (L5/L6)</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mt-0.5">Global Real-time Settlement Gateway</h2>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs font-mono-data text-mono-data">
+<span class="px-space-sm py-1 rounded bg-surface-container border border-outline-variant text-on-surface">Production Scale: 12M tx/day</span>
+<span class="px-space-sm py-1 rounded bg-surface-container border border-outline-variant text-secondary">Multi-Region Active-Active</span>
+</div>
+</div>
+<!-- Architectural Tech Stack Tags -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-mono-label text-mono-label text-outline mr-1">TECH STACK:</span>
+<span class="px-2.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-primary font-mono-data text-mono-data">Go 1.22</span>
+<span class="px-2.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-secondary font-mono-data text-mono-data">gRPC</span>
+<span class="px-2.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-on-surface font-mono-data text-mono-data">Apache Kafka</span>
+<span class="px-2.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-on-surface font-mono-data text-mono-data">CockroachDB</span>
+<span class="px-2.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-on-surface font-mono-data text-mono-data">Kubernetes</span>
+<span class="px-2.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-tertiary font-mono-data text-mono-data">Envoy Service Mesh</span>
+</div>
+<!-- Impact Metric Box -->
+<div class="p-space-md rounded-lg bg-surface-container-lowest border border-outline-variant flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded bg-surface-container-high border border-outline flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[28px]">trending_up</span>
+</div>
+<div>
+<span class="font-mono-label text-mono-label text-outline uppercase">PROVEN OPERATIONAL IMPACT</span>
+<p class="font-body-md text-body-md text-on-surface font-medium">Reduced p99 settlement latency by <span class="text-primary font-semibold">42%</span> across 12M daily transactions while maintaining <span class="text-secondary font-semibold">99.999%</span> ledger uptime.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm w-full md:w-auto">
+<button class="w-full md:w-auto inline-flex items-center justify-center gap-space-xs bg-surface-container-high px-space-md py-space-sm rounded border border-outline-variant text-on-surface font-label-lg text-label-lg hover:border-secondary hover:text-secondary transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+<span>Inspect Flow Diagram</span>
+</button>
+<button class="w-full md:w-auto inline-flex items-center justify-center gap-space-xs bg-surface-container-high px-space-md py-space-sm rounded border border-outline-variant text-on-surface-variant font-label-lg text-label-lg hover:text-on-surface transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>View Excerpt</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 6. TAILORED TECHNICAL INTERVIEW GUIDE (Gap & Depth Verification) -->
+<section class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary">quiz</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Tailored Technical Interview Guide</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Precision questions generated by matching engine to verify high-stakes claims and address dossier blind spots.</p>
+</div>
+<span class="font-mono-label text-mono-label px-2 py-0.5 rounded bg-surface-container border border-outline-variant text-on-surface-variant hidden sm:inline">FOR INTERVIEW COMMITTEE</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Interview Probe 1 -->
+<article class="custom-glass rounded-xl border border-outline-variant p-space-md flex flex-col justify-between gap-space-md">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-mono-label text-mono-label px-2 py-0.5 rounded bg-surface-container border border-primary/30 text-primary">QUESTION 01 • ARCHITECTURE</span>
+<span class="font-mono-label text-mono-label text-outline">CLAIM VERIFICATION</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">"Walk through how your transactional outbox pattern handled partition rebalancing during Kafka broker failover without duplicate message dispatch."</p>
+<div class="space-y-space-xs pt-1 border-t border-outline-variant/60">
+<span class="font-mono-label text-mono-label text-secondary uppercase block">EVALUATION TARGET</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Verifies Kafka exactly-once processing claims and idempotency token storage mechanisms.</p>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest border border-outline-variant font-mono-data text-mono-data">
+<span class="text-primary font-bold">Key Signal:</span> Mentions consumer group rebalance listener, de-duplication idempotency keys in Redis, and atomic DB commit markers.
+          </div>
+</article>
+<!-- Interview Probe 2 -->
+<article class="custom-glass rounded-xl border border-outline-variant p-space-md flex flex-col justify-between gap-space-md">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-mono-label text-mono-label px-2 py-0.5 rounded bg-surface-container border border-secondary/30 text-secondary">QUESTION 02 • DISTRIBUTED CONSENSUS</span>
+<span class="font-mono-label text-mono-label text-outline">DEPTH PROBE</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">"In your CockroachDB deployment, how did you tune Raft consensus leases to avoid cross-region latency penalties on localized balance mutations?"</p>
+<div class="space-y-space-xs pt-1 border-t border-outline-variant/60">
+<span class="font-mono-label text-mono-label text-secondary uppercase block">EVALUATION TARGET</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Verifies multi-region active-active CockroachDB range leaseholder configuration depth.</p>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest border border-outline-variant font-mono-data text-mono-data">
+<span class="text-secondary font-bold">Key Signal:</span> Articulates zone config pinned leaseholders, follower reads under bounded staleness, and surviving region loss.
+          </div>
+</article>
+<!-- Interview Probe 3 -->
+<article class="custom-glass rounded-xl border border-error/40 p-space-md flex flex-col justify-between gap-space-md">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-mono-label text-mono-label px-2 py-0.5 rounded bg-surface-container border border-error/30 text-error">QUESTION 03 • COMPLIANCE GAP</span>
+<span class="font-mono-label text-mono-label text-error">PROBE IDENTIFIED GAP</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">"You lack formal PCI-DSS Level 1 audit leadership in the dossier. How would you design tokenization pipelines to satisfy strict scope reduction?"</p>
+<div class="space-y-space-xs pt-1 border-t border-outline-variant/60">
+<span class="font-mono-label text-mono-label text-error uppercase block">EVALUATION TARGET</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Probes identified financial regulatory gap for the Core Payments Platform target.</p>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest border border-outline-variant font-mono-data text-mono-data">
+<span class="text-error font-bold">Key Signal:</span> Proposes zero-trust tokenization vaults, PCI perimeter isolation, and hardware HSM enclave integrations.
+          </div>
+</article>
+</div>
+</section>
+<!-- FOOTER TELEMETRY & SYSTEM IDENTITY -->
+<footer class="mt-space-md pt-space-md border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-mono-label text-mono-label">
+<div class="flex items-center gap-space-md">
+<span>TALENTLENS NEURAL DOSSIER SYSTEM</span>
+<span>•</span>
+<span>CANDIDATE ID: SC-89104-EKS</span>
+<span>•</span>
+<span>CALIBRATION PROTOCOL: V4_STRICT</span>
+</div>
+<div class="flex items-center gap-space-sm text-outline">
+<span>ENCRYPTED REQUISITION AUDIT LOG: SHA-256: 8f9b...a12c</span>
+</div>
+</footer>
+</div>
+</body></html>

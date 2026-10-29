@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TalentLens Intelligence | Pipeline &amp; Candidate Screening Hub</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#4edea3",
+            "on-tertiary-fixed-variant": "#2f2ebe",
+            "on-tertiary": "#1000a9",
+            "surface-container": "#1c1f29",
+            "secondary": "#4cd7f6",
+            "on-error-container": "#ffdad6",
+            "error-container": "#93000a",
+            "error": "#ffb4ab",
+            "tertiary": "#c0c1ff",
+            "tertiary-container": "#9699ff",
+            "inverse-on-surface": "#2c303a",
+            "outline-variant": "#3c4a42",
+            "inverse-primary": "#006c49",
+            "surface-container-high": "#262a34",
+            "primary-container": "#10b981",
+            "primary": "#4edea3",
+            "outline": "#86948a",
+            "on-tertiary-fixed": "#07006c",
+            "on-surface-variant": "#bbcabf",
+            "on-surface": "#dfe2ef",
+            "on-background": "#dfe2ef",
+            "surface-bright": "#353943",
+            "primary-fixed": "#6ffbbe",
+            "surface-container-lowest": "#0a0e17",
+            "on-secondary-fixed": "#001f26",
+            "on-primary": "#003824",
+            "on-secondary": "#003640",
+            "surface-tint": "#4edea3",
+            "inverse-surface": "#dfe2ef",
+            "background": "#0f131c",
+            "on-tertiary-container": "#1d17b2",
+            "surface": "#0f131c",
+            "tertiary-fixed-dim": "#c0c1ff",
+            "surface-container-highest": "#31353f",
+            "secondary-fixed-dim": "#4cd7f6",
+            "on-primary-fixed-variant": "#005236",
+            "on-primary-container": "#00422b",
+            "surface-container-low": "#181b25",
+            "on-secondary-fixed-variant": "#004e5c",
+            "on-primary-fixed": "#002113",
+            "secondary-fixed": "#acedff",
+            "surface-variant": "#31353f",
+            "surface-dim": "#0f131c",
+            "tertiary-fixed": "#e1e0ff",
+            "on-secondary-container": "#00424e",
+            "on-error": "#690005",
+            "secondary-container": "#03b5d3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-md": "0.75rem",
+            "space-xl": "2rem",
+            "space-lg": "1.25rem",
+            "margin-tablet": "1.5rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "2rem",
+            "gutter-desktop": "1.5rem"
+          },
+          "fontFamily": {
+            "label-md": ["Inter"],
+            "headline-md": ["Inter"],
+            "label-lg": ["Inter"],
+            "mono-metric-md": ["JetBrains Mono"],
+            "display-mobile": ["Inter"],
+            "display": ["Inter"],
+            "mono-metric-lg": ["JetBrains Mono"],
+            "mono-label": ["JetBrains Mono"],
+            "mono-data": ["JetBrains Mono"],
+            "headline-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-sm": ["Inter"]
+          },
+          "fontSize": {
+            "label-md": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "mono-metric-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "display-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "display": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "mono-metric-lg": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "mono-label": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "500" }],
+            "mono-data": ["12px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0a0e17;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #262c3d;
+      border-radius: 2px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #3c4a42;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md overflow-x-hidden antialiased select-none">
+<!-- TOP APP BAR -->
+<header class="bg-surface-container-low border-b border-outline-variant w-full sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-gutter-desktop max-w-[1720px] mx-auto h-16">
+<!-- Brand & Neural Badge & Requisition Switcher -->
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-sm cursor-pointer">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest border border-outline-variant flex items-center justify-center relative shadow-[0_0_12px_rgba(78,222,163,0.25)]">
+<span class="material-symbols-outlined text-primary text-[20px]">psychology</span>
+<div class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-secondary ring-2 ring-background animate-pulse"></div>
+</div>
+<span class="font-headline-sm text-headline-sm font-semibold text-primary tracking-tight">TalentLens</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high border border-outline-variant text-secondary font-mono-label text-mono-label">v3.4</span>
+</div>
+<div class="h-5 w-px bg-outline-variant"></div>
+<!-- Requisition Selector Dropdown -->
+<div class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg bg-surface-container border border-outline-variant hover:border-secondary transition-colors cursor-pointer group">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-lowest text-primary font-mono-label text-mono-label border border-outline-variant">REQ-4091</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors flex items-center gap-1">
+              Principal Distributed Infrastructure Engineer (Payments)
+              <span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary transition-colors">expand_more</span>
+</span>
+</div>
+<span class="ml-space-xs px-2 py-0.5 rounded-full bg-surface-container-lowest text-primary font-mono-label text-mono-label border border-primary/30 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+            42 Screened · 6 Shortlisted
+          </span>
+</div>
+</div>
+<!-- Navigation Links from Shared Components JSON -->
+<nav class="hidden xl:flex items-center gap-6">
+<a class="text-on-surface-variant font-label-lg text-label-lg hover:text-primary transition-colors" href="#">Candidates</a>
+<a class="text-primary border-b-2 border-primary font-label-lg text-label-lg pb-1 flex items-center gap-1" href="#">
+<span>Pipelines</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</a>
+<a class="text-on-surface-variant font-label-lg text-label-lg hover:text-primary transition-colors" href="#">Dossier Views</a>
+<a class="text-on-surface-variant font-label-lg text-label-lg hover:text-primary transition-colors" href="#">Benchmarks</a>
+</nav>
+<!-- Trailing Action Center -->
+<div class="flex items-center gap-space-md">
+<!-- Search Prompt -->
+<div class="relative hidden lg:flex items-center">
+<input class="bg-surface-container-lowest text-on-surface placeholder:text-outline-variant font-body-sm text-body-sm rounded-lg pl-8 pr-10 py-1.5 border border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none w-56 transition-all" placeholder="Quick filter pipeline..." type="text"/>
+<span class="material-symbols-outlined absolute left-2 text-outline text-[16px]">search</span>
+<kbd class="absolute right-2 font-mono-label text-mono-label text-on-surface-variant bg-surface-container px-1 py-0.5 rounded border border-outline-variant">⌘K</kbd>
+</div>
+<!-- Export CSV Outline Button -->
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container border border-outline-variant hover:border-secondary hover:text-on-surface text-on-surface-variant font-label-lg text-label-lg flex items-center gap-space-xs transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px]">download</span>
+<span>Export Pipeline CSV</span>
+</button>
+<!-- New Resume Batch Primary Action -->
+<button class="px-space-md py-1.5 rounded-lg bg-primary-container text-on-primary-container font-label-lg text-label-lg flex items-center gap-space-xs shadow-[0_0_16px_rgba(16,185,129,0.35)] hover:shadow-[0_0_24px_rgba(16,185,129,0.55)] border border-primary/40 font-semibold transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+<span>+ New Resume Batch</span>
+</button>
+<div class="h-5 w-px bg-outline-variant"></div>
+<!-- Trailing System Icons -->
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-secondary hover:bg-surface-container-high transition-colors" title="Telemetry Calibration">
+<span class="material-symbols-outlined">tune</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-secondary hover:bg-surface-container-high transition-colors relative" title="Alerts">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary"></span>
+</button>
+</div>
+<!-- Lead Recruiter Avatar -->
+<div class="flex items-center gap-space-xs pl-space-xs cursor-pointer group">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest border border-primary/40 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-resolution portrait photograph of a senior talent intelligence partner in an executive dark-themed command operations room with soft glowing cyan and emerald monitors in the background, confident expression, sharp attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxmmUPEfVpcywIqXeG7AHX14O5wm1g2b0mXIdY0Z78JAE4Ec2cIz0cRI-Gn7hEb4lYjheCAzB9mLe7B2xhGDMldNlGx3VxQjxy1PGumCRefFLTf2RvOO_71EXyUD6HxsTKeTRKZ2Fps0Vv0IIZHZY1KAuaivUYVOcnKaLZBHFxPLdBE_AnHRwmnXckNp5X1WX-jYZtFL_ObFuI_6wL-jZjAQmuf58orMbGnl8YAI6UNYYGlc0T3QWm1vLDyHWaxcaQTcdb92c6ygc"/>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary transition-colors">arrow_drop_down</span>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN APP CONTAINER -->
+<div class="flex-1 flex w-full max-w-[1720px] mx-auto overflow-hidden">
+<!-- COLLAPSIBLE SIDE NAV RAIL -->
+<aside class="w-64 flex-shrink-0 bg-surface-container-lowest border-r border-outline-variant flex flex-col justify-between py-space-lg px-space-md hidden lg:flex">
+<!-- Top Section -->
+<div class="flex flex-col gap-space-lg">
+<!-- Requisition Badge -->
+<div class="px-space-md py-space-sm rounded-lg bg-surface-container-low border border-outline-variant flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">insights</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Telemetry Grid</span>
+<span class="font-mono-data text-mono-data text-outline">Cluster 4091.Active</span>
+</div>
+</div>
+<!-- Nav Items -->
+<div class="flex flex-col gap-1">
+<div class="text-outline font-mono-label text-mono-label px-space-md py-1 uppercase tracking-wider">Screening Modes</div>
+<a class="bg-surface-container-high text-primary font-label-md text-label-md rounded border-l-2 border-primary px-space-md py-space-sm flex items-center justify-between" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+<span>Overview</span>
+</div>
+<span class="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono-label text-mono-label">42</span>
+</a>
+<a class="text-on-surface-variant font-label-md text-label-md rounded px-space-md py-space-sm flex items-center justify-between hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">fact_check</span>
+<span>Evaluation Match</span>
+</div>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono-label text-mono-label">6 Top</span>
+</a>
+<a class="text-on-surface-variant font-label-md text-label-md rounded px-space-md py-space-sm flex items-center justify-between hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">psychology</span>
+<span>Inferred Skills</span>
+</div>
+<span class="px-1.5 py-0.5 rounded bg-secondary/10 text-secondary font-mono-label text-mono-label">+16</span>
+</a>
+<a class="text-on-surface-variant font-label-md text-label-md rounded px-space-md py-space-sm flex items-center gap-space-sm hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">account_tree</span>
+<span>Architecture</span>
+</a>
+<a class="text-on-surface-variant font-label-md text-label-md rounded px-space-md py-space-sm flex items-center gap-space-sm hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">quiz</span>
+<span>Interview Probes</span>
+</a>
+</div>
+<!-- Fast Filter Watchers -->
+<div class="flex flex-col gap-1">
+<div class="text-outline font-mono-label text-mono-label px-space-md py-1 uppercase tracking-wider">Candidate Filters</div>
+<div class="px-space-md py-2 flex flex-col gap-2">
+<label class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface cursor-pointer">
+<span class="flex items-center gap-2">
+<input checked="" class="w-3.5 h-3.5 rounded bg-surface-container-lowest border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+<span>Tier 1 Alignment</span>
+</span>
+<span class="font-mono-data text-mono-data text-primary">3</span>
+</label>
+<label class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface cursor-pointer">
+<span class="flex items-center gap-2">
+<input checked="" class="w-3.5 h-3.5 rounded bg-surface-container-lowest border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+<span>Tier 2 Strong</span>
+</span>
+<span class="font-mono-data text-mono-data text-secondary">8</span>
+</label>
+<label class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface cursor-pointer">
+<span class="flex items-center gap-2">
+<input class="w-3.5 h-3.5 rounded bg-surface-container-lowest border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+<span>Flagged Gaps</span>
+</span>
+<span class="font-mono-data text-mono-data text-error">12</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Footer Rail Section -->
+<div class="flex flex-col gap-space-sm pt-space-md border-t border-outline-variant">
+<a class="text-on-surface-variant font-label-md text-label-md rounded px-space-md py-space-sm flex items-center gap-space-sm hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>Calibration</span>
+</a>
+<a class="text-on-surface-variant font-label-md text-label-md rounded px-space-md py-space-sm flex items-center gap-space-sm hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span>Settings</span>
+</a>
+<!-- Neural Engine Health Metric -->
+<div class="mt-space-xs p-space-sm rounded-lg bg-surface-container-low border border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-mono-label text-mono-label text-outline">Engine Latency</span>
+</div>
+<span class="font-mono-data text-mono-data text-primary">18ms</span>
+</div>
+</div>
+</aside>
+<!-- CENTRAL CONTENT & COMPARISON DRAWER -->
+<main class="flex-1 flex flex-col overflow-y-auto custom-scrollbar p-space-md lg:p-gutter-desktop gap-space-md">
+<!-- EXECUTIVE PIPELINE KPI BAR (4 Glassmorphic Metrics Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Card 1: Top Candidate Fit Score -->
+<div class="p-space-lg rounded-xl bg-surface-container-low/85 backdrop-blur-md border border-outline-variant relative overflow-hidden group hover:border-primary/50 transition-all shadow-[0_0_28px_-6px_rgba(16,185,129,0.15)]">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-lg text-label-lg text-outline">Top Candidate Fit</span>
+<span class="px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/30 font-mono-label text-mono-label">Top 3%</span>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-mono-metric-lg text-mono-metric-lg text-primary font-bold">8.8</span>
+<span class="font-mono-data text-mono-data text-on-surface-variant">/ 10</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-1.5 mb-1">
+<span class="material-symbols-outlined text-primary text-[15px]">verified</span>
+            Sarah Chen (ScaleOps)
+          </div>
+<p class="font-body-sm text-body-sm text-outline">8.5y Exp · Cleared Architecture Benchmark</p>
+</div>
+<!-- Card 2: Average Pipeline Alignment -->
+<div class="p-space-lg rounded-xl bg-surface-container-low/85 backdrop-blur-md border border-outline-variant relative overflow-hidden group hover:border-secondary/50 transition-all">
+<div class="absolute top-0 right-0 w-24 h-24 bg-secondary/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-lg text-label-lg text-outline">Pipeline Alignment</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/15 text-secondary border border-secondary/30 font-mono-label text-mono-label">+0.4 vs Bench</span>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-mono-metric-lg text-mono-metric-lg text-on-surface font-bold">7.2</span>
+<span class="font-mono-data text-mono-data text-on-surface-variant">/ 10</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface font-semibold mb-1">
+            Median Calibrated Cohort
+          </div>
+<p class="font-body-sm text-body-sm text-outline">Evaluated across 42 verified engineering resumes</p>
+</div>
+<!-- Card 3: Indirect Skill Discovery Yield -->
+<div class="p-space-lg rounded-xl bg-surface-container-low/85 backdrop-blur-md border border-outline-variant relative overflow-hidden group hover:border-tertiary/50 transition-all">
+<div class="absolute top-0 right-0 w-24 h-24 bg-tertiary/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-lg text-label-lg text-outline">Inferred Skill Yield</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/15 text-secondary border border-secondary/30 font-mono-label text-mono-label flex items-center gap-1">
+<span>✦</span> 16 Discovered
+            </span>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-mono-metric-lg text-mono-metric-lg text-secondary font-bold">38%</span>
+<span class="font-mono-data text-mono-data text-on-surface-variant">of candidates</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface font-semibold mb-1">
+            Consensus &amp; Sagas Inferred
+          </div>
+<p class="font-body-sm text-body-sm text-outline">Extracted deep distributed patterns past resume text</p>
+</div>
+<!-- Card 4: Critical Gap Deficit -->
+<div class="p-space-lg rounded-xl bg-surface-container-low/85 backdrop-blur-md border border-outline-variant relative overflow-hidden group hover:border-error/50 transition-all">
+<div class="absolute top-0 right-0 w-24 h-24 bg-error/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-lg text-label-lg text-outline">Critical Gap Deficit</span>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-error border border-error/30 font-mono-label text-mono-label">High Priority</span>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-mono-metric-lg text-mono-metric-lg text-error font-bold">12</span>
+<span class="font-mono-data text-mono-data text-on-surface-variant">Candidates (28%)</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface font-semibold mb-1">
+            Missing Core Concurrency
+          </div>
+<p class="font-body-sm text-body-sm text-outline">Deficits in high-throughput Raft or PCI-DSS L1</p>
+</div>
+</div>
+<!-- AI SENTINEL INSIGHT BANNER -->
+<div class="rounded-xl border-l-4 border-secondary bg-gradient-to-r from-secondary/10 via-surface-container-low to-surface-container-lowest p-space-md border border-outline-variant flex items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="p-2 rounded bg-secondary/10 text-secondary mt-0.5">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">AI Talent Sentinel Insight</span>
+<span class="font-mono-label text-mono-label px-1.5 py-0.5 rounded bg-surface-container text-secondary">Neural Synthesis</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline-variant text-on-surface-variant">
+              Top candidate <strong class="text-primary font-medium">Sarah Chen (8.8)</strong> demonstrates 3 unlisted distributed architecture patterns (Active-Active Distributed Sagas, Raft Quorum Tuning) not mentioned explicitly in her resume headline, offsetting minor PCI-DSS gaps.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<button class="px-space-md py-1 rounded bg-surface-container-high border border-outline-variant text-on-surface font-label-md text-label-md hover:border-secondary transition-colors">
+            Inspect Calibration Rules
+          </button>
+</div>
+</div>
+<!-- PIPELINE CONTROLS & FILTER TOOLBAR -->
+<div class="flex flex-col gap-space-sm bg-surface-container-low/70 backdrop-blur-md p-space-md rounded-xl border border-outline-variant">
+<div class="flex flex-wrap items-center justify-between gap-space-md">
+<!-- Tab Toggles -->
+<div class="flex items-center p-1 rounded-lg bg-surface-container-lowest border border-outline-variant">
+<button class="px-space-md py-1 rounded bg-surface-container-high text-primary font-label-md text-label-md flex items-center gap-1.5 shadow-sm">
+<span>All Screened</span>
+<span class="font-mono-data text-mono-data text-primary font-bold">42</span>
+</button>
+<button class="px-space-md py-1 rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors">
+<span>Shortlisted</span>
+<span class="font-mono-data text-mono-data text-secondary">6</span>
+</button>
+<button class="px-space-md py-1 rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors">
+<span>Archived / Gaps</span>
+<span class="font-mono-data text-mono-data text-outline">14</span>
+</button>
+</div>
+<!-- Quick Filters Cluster -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Search Input -->
+<div class="relative">
+<input class="bg-surface-container-lowest text-on-surface placeholder:text-outline-variant font-body-sm text-body-sm rounded-lg pl-8 pr-4 py-1.5 border border-outline-variant focus:border-secondary outline-none w-72 md:w-80" placeholder="Filter by keyword, skill, company (Golang, Raft)..." type="text"/>
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-outline text-[16px]">filter_alt</span>
+</div>
+<!-- Fit Tier Dropdown -->
+<div class="relative">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container border border-outline-variant text-on-surface font-label-md text-label-md flex items-center gap-1.5 hover:border-secondary transition-colors">
+<span class="text-outline">Fit Tier:</span>
+<span>Tier 1 &amp; 2</span>
+<span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+</button>
+</div>
+<!-- Mandatory Match Pill Dropdown -->
+<div class="relative">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container border border-outline-variant text-on-surface font-label-md text-label-md flex items-center gap-1.5 hover:border-secondary transition-colors">
+<span class="text-outline">Mandatory:</span>
+<span>&gt;80% Match</span>
+<span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+</button>
+</div>
+<!-- Inferred Skills Active Toggle -->
+<button class="px-space-md py-1.5 rounded-lg bg-secondary/10 border border-secondary/40 text-secondary font-label-md text-label-md flex items-center gap-1.5">
+<span>✦ Has Indirect Skills</span>
+</button>
+<!-- Sort Selector -->
+<div class="relative">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container border border-outline-variant text-on-surface font-label-md text-label-md flex items-center gap-1.5 hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-[15px] text-outline">sort</span>
+<span>Score: Desc</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- MAIN SPLIT VIEW (Candidate Table ~70% + Comparison Drawer ~30%) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md flex-1 items-start">
+<!-- LEFT/CENTER: INTERACTIVE SCREENING MATRIX (~70% -> 8 cols) -->
+<div class="lg:col-span-8 rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-space-md border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface">Candidate Screening Matrix</span>
+<span class="font-mono-label text-mono-label px-2 py-0.5 rounded bg-surface-container-highest text-secondary">Cohort 4091.Live</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono-data text-mono-data text-outline">Showing 5 of 42 candidates</span>
+<button class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+</button>
+</div>
+</div>
+<!-- High-Density Data Table -->
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest text-outline font-mono-label text-mono-label uppercase tracking-wider border-b border-outline-variant">
+<th class="py-space-sm px-space-md w-10 text-center">
+<input checked="" class="w-3.5 h-3.5 rounded bg-surface-container border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+</th>
+<th class="py-space-sm px-space-md">Candidate Profile</th>
+<th class="py-space-sm px-space-md text-center">Fit Score</th>
+<th class="py-space-sm px-space-md">Mandatory Match</th>
+<th class="py-space-sm px-space-md">Arch Depth</th>
+<th class="py-space-sm px-space-md">Inferred Skills</th>
+<th class="py-space-sm px-space-md">Critical Gaps</th>
+<th class="py-space-sm px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/60 font-body-sm text-body-sm">
+<!-- ROW 1: SARAH CHEN -->
+<tr class="hover:bg-surface-container-high/40 transition-colors group bg-primary/5">
+<td class="py-space-md px-space-md text-center">
+<input checked="" class="w-3.5 h-3.5 rounded bg-surface-container border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest border border-primary/50 relative overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close-up professional studio portrait of Sarah Chen, a brilliant Asian female infrastructure software architect in modern high-contrast executive lighting with clean dark blurred background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr_cYbxGCBMEOaS_ZN79O6LlaCqfNK0Zo35mE8oYeEGQK95HzexKAJOuVxfnZ71VSCMbFxOn5KJaU1rzoEjvtMux_s3MKl9X-jKqjvpgotkz01ry41NgYFAMEWi8htSYIgsWPOX-Tv3-YOZzCL9iQRyTapR48yi7DSiYfq-KNFZtw3sPQq_Wr4Xdt0-3zwseQ0xHHYTKU-mchXTE9KrZSj4WAwvpFB7N9H-YrDQc9hqYfpheVYLMm0kyAaC5Ngp-zIGLX2eGJMFw4"/>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg font-bold text-on-surface group-hover:text-primary transition-colors">Sarah Chen</span>
+<span class="material-symbols-outlined text-primary text-[14px]" title="Identity Verified">verified</span>
+</div>
+<span class="text-on-surface-variant font-body-sm text-[12px] truncate">Staff Infra Engineer · ScaleOps</span>
+<div class="flex items-center gap-2 text-outline font-mono-data text-[11px] mt-0.5">
+<span>8.5y Exp</span>
+<span>•</span>
+<span>San Francisco, CA</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-center">
+<div class="inline-flex flex-col items-center">
+<div class="px-2.5 py-1 rounded-full bg-primary/15 border border-primary/40 text-primary font-mono-metric-md text-mono-metric-md font-bold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                        8.8
+                      </div>
+<span class="font-mono-label text-mono-label text-primary mt-1">Tier 1 · Top 3%</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex justify-between font-mono-data text-mono-data">
+<span class="text-on-surface-variant">Golang/K8s</span>
+<span class="text-primary font-bold">96%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 96%"></div>
+</div>
+<div class="flex justify-between font-mono-data text-[10px] text-outline">
+<span>Core: 92%</span>
+<span>Consensus: High</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-block px-2 py-1 rounded bg-surface-container border border-outline-variant font-mono-data text-[11px] text-on-surface">
+<strong class="text-secondary font-medium">L6 Principal</strong><br/>
+                      12M tx/day active-active
+                    </span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1 max-w-[160px]">
+<span class="px-1.5 py-0.5 rounded bg-secondary/15 border border-secondary/30 text-secondary font-mono-data text-[11px] flex items-center gap-1">
+<span>✦</span> Saga Pattern
+                      </span>
+<span class="px-1.5 py-0.5 rounded bg-secondary/15 border border-secondary/30 text-secondary font-mono-data text-[11px] flex items-center gap-1">
+<span>✦</span> Raft Consensus
+                      </span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono-data text-[11px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+                      Missing PCI-DSS L1
+                    </span>
+</td>
+<td class="py-space-md px-space-md text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="px-2 py-1 rounded bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold hover:opacity-90 transition-opacity">
+                        Dossier
+                      </button>
+<button class="p-1 rounded text-outline hover:text-secondary hover:bg-surface-container transition-colors" title="Compare Spot">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 2: ALEX RIVERA -->
+<tr class="hover:bg-surface-container-high/40 transition-colors group bg-secondary/5">
+<td class="py-space-md px-space-md text-center">
+<input checked="" class="w-3.5 h-3.5 rounded bg-surface-container border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest border border-secondary/50 relative overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Professional studio portrait photograph of Alex Rivera, a Latino male senior distributed systems engineer with neat dark hair and smart dark corporate aesthetic, gentle ambient lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH3iWFGsz4DvEgHXmRKz81iwMnj0_tP2geWTPH5yHlKlnp6xyhT_sgMZpXkXK9cikf90fVbCImrK9uT1vlOh-nn2Q1quBrbYrJHoJFu_oIX8d7MOWxWWpiPwvdcVfjhSu2ySRL9X5xv2seeBJiWONu21ZcdkCWkQ6_lVsCAQGTjXBoco1mjJf79_vj0jCgamlW51pyYpB66DLTnUfwXxmRbdn2jBHspqnCZEpyQkhvzZmoxUZFfW2j2YtadK0Zy5NgC2NCN1rqhSA"/>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg font-bold text-on-surface group-hover:text-secondary transition-colors">Alex Rivera</span>
+<span class="material-symbols-outlined text-secondary text-[14px]">verified</span>
+</div>
+<span class="text-on-surface-variant font-body-sm text-[12px] truncate">Lead Backend Architect · FinTechCore</span>
+<div class="flex items-center gap-2 text-outline font-mono-data text-[11px] mt-0.5">
+<span>7.0y Exp</span>
+<span>•</span>
+<span>Austin, TX</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-center">
+<div class="inline-flex flex-col items-center">
+<div class="px-2.5 py-1 rounded-full bg-secondary/15 border border-secondary/40 text-secondary font-mono-metric-md text-mono-metric-md font-bold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                        8.1
+                      </div>
+<span class="font-mono-label text-mono-label text-secondary mt-1">Tier 2 · Strong</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex justify-between font-mono-data text-mono-data">
+<span class="text-on-surface-variant">Golang/Kafka</span>
+<span class="text-secondary font-bold">90%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 90%"></div>
+</div>
+<div class="flex justify-between font-mono-data text-[10px] text-outline">
+<span>Core: 86%</span>
+<span>Clearing: Pass</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-block px-2 py-1 rounded bg-surface-container border border-outline-variant font-mono-data text-[11px] text-on-surface">
+<strong class="text-secondary font-medium">L5 Staff</strong><br/>
+                      5M tx/day Clearing
+                    </span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1 max-w-[160px]">
+<span class="px-1.5 py-0.5 rounded bg-secondary/15 border border-secondary/30 text-secondary font-mono-data text-[11px] flex items-center gap-1">
+<span>✦</span> CQRS Arch
+                      </span>
+<span class="px-1.5 py-0.5 rounded bg-secondary/15 border border-secondary/30 text-secondary font-mono-data text-[11px] flex items-center gap-1">
+<span>✦</span> Dist. Locks
+                      </span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant text-outline font-mono-data text-[11px]">
+                      No CockroachDB
+                    </span>
+</td>
+<td class="py-space-md px-space-md text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="px-2 py-1 rounded bg-surface-container-high hover:bg-secondary hover:text-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold transition-colors">
+                        Dossier
+                      </button>
+<button class="p-1 rounded text-outline hover:text-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 3: PRIYA SHARMA -->
+<tr class="hover:bg-surface-container-high/40 transition-colors group bg-tertiary/5">
+<td class="py-space-md px-space-md text-center">
+<input checked="" class="w-3.5 h-3.5 rounded bg-surface-container border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest border border-tertiary/50 relative overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Portrait photograph of Priya Sharma, an Indian female principal cloud backend developer, sharp professional gaze, minimalist slate-dark room background with subtle tech reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIDKBEsLMKMoafTahOVFvExjhKvYbEGHVkAHIWTkbTTR9iG8EbrfL18kFB4Y9ZPMU7b1E14keHtpYIPXTv-H7QQc5l5PhNp-BDDZ9FZOWsApFo2h_Yd1xej1jTRoHZjUSHj_bhFRQoenf026PWqUywk-VMy3BuoE-Mp4OKYZQ4SOwSPNi1iTNL4f1OVOcP5bas_mHfp4oeddeH4PFQHtnNOCtwCQFbKUw4T3j1X4zDiCLaNBmr0pRbYAHuEUW718ZO7QyfuhCWsNU"/>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg font-bold text-on-surface group-hover:text-tertiary transition-colors">Priya Sharma</span>
+<span class="material-symbols-outlined text-secondary text-[14px]">verified</span>
+</div>
+<span class="text-on-surface-variant font-body-sm text-[12px] truncate">Staff Systems Engineer · DataGrid</span>
+<div class="flex items-center gap-2 text-outline font-mono-data text-[11px] mt-0.5">
+<span>9.0y Exp</span>
+<span>•</span>
+<span>Seattle, WA</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-center">
+<div class="inline-flex flex-col items-center">
+<div class="px-2.5 py-1 rounded-full bg-secondary/10 border border-secondary/30 text-secondary font-mono-metric-md text-mono-metric-md font-bold flex items-center gap-1">
+                        7.6
+                      </div>
+<span class="font-mono-label text-mono-label text-on-surface-variant mt-1">Tier 2 · Solid</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex justify-between font-mono-data text-mono-data">
+<span class="text-on-surface-variant">Distributed</span>
+<span class="text-secondary font-bold">84%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 84%"></div>
+</div>
+<div class="flex justify-between font-mono-data text-[10px] text-outline">
+<span>Core: 80%</span>
+<span>Throughput: High</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-block px-2 py-1 rounded bg-surface-container border border-outline-variant font-mono-data text-[11px] text-on-surface">
+<strong class="text-secondary font-medium">L5 Staff</strong><br/>
+                      2.8M msgs/sec stream
+                    </span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1 max-w-[160px]">
+<span class="px-1.5 py-0.5 rounded bg-tertiary/15 border border-tertiary/30 text-tertiary font-mono-data text-[11px] flex items-center gap-1">
+<span>✦</span> Kafka Event Sourcing
+                      </span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono-data text-[11px]">
+                      Missing K8s Operator
+                    </span>
+</td>
+<td class="py-space-md px-space-md text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="px-2 py-1 rounded bg-surface-container-high hover:bg-tertiary hover:text-on-tertiary text-on-surface font-label-md text-label-md font-semibold transition-colors">
+                        Dossier
+                      </button>
+<button class="p-1 rounded text-outline hover:text-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 4: MARCUS VANCE -->
+<tr class="hover:bg-surface-container-high/40 transition-colors group">
+<td class="py-space-md px-space-md text-center">
+<input class="w-3.5 h-3.5 rounded bg-surface-container border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest border border-outline-variant relative overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Executive portrait photograph of Marcus Vance, a Caucasian male senior software infrastructure engineer with glasses, looking directly into the camera in a moody modern cybersecurity tech office." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZyR5Jah15At0SOUJCcB7bGHCEDONp1tp9rtz54Krp9-xDasiZAs39euR-8ZtvY9ZbEn5ezBIWPMmsESx1-qXj6rhwkco4laXq0K3Sxv-_1kwNOQApCuPpUXXM8hWxQdxvAa0cwHnBqW95MPNy79sMof7mQ8Yls6pCGtL2DEfbI7d2z-1h0KKOSCY814iY8-nxyI3A_95JMWsiB0WTomMjQGpdyWjSUYrxJuS8EP1YI2umWJJizK5PWNolFSHFqt9mMYMgx9y6xWk"/>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg font-bold text-on-surface group-hover:text-primary transition-colors">Marcus Vance</span>
+</div>
+<span class="text-on-surface-variant font-body-sm text-[12px] truncate">Senior Dist. Systems · CloudStream</span>
+<div class="flex items-center gap-2 text-outline font-mono-data text-[11px] mt-0.5">
+<span>6.5y Exp</span>
+<span>•</span>
+<span>New York, NY</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-center">
+<div class="inline-flex flex-col items-center">
+<div class="px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant text-on-surface font-mono-metric-md text-mono-metric-md font-bold">
+                        6.9
+                      </div>
+<span class="font-mono-label text-mono-label text-outline mt-1">Tier 3 · Baseline</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex justify-between font-mono-data text-mono-data">
+<span class="text-on-surface-variant">General</span>
+<span class="text-on-surface font-bold">72%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-outline rounded-full" style="width: 72%"></div>
+</div>
+<div class="flex justify-between font-mono-data text-[10px] text-outline">
+<span>Core: 74%</span>
+<span>Microservices</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-block px-2 py-1 rounded bg-surface-container border border-outline-variant font-mono-data text-[11px] text-outline">
+                      L4 Senior<br/>
+                      Microservices Platform
+                    </span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1 max-w-[160px]">
+<span class="px-1.5 py-0.5 rounded bg-surface-container border border-outline-variant text-on-surface-variant font-mono-data text-[11px]">
+                        Redis Optimization
+                      </span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="px-2 py-0.5 rounded bg-error-container/40 border border-error/30 text-error font-mono-data text-[11px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">close</span>
+                      No Multi-Region Failover
+                    </span>
+</td>
+<td class="py-space-md px-space-md text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors">
+                        Dossier
+                      </button>
+<button class="p-1 rounded text-outline hover:text-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 5: ELENA ROSTOVA -->
+<tr class="hover:bg-surface-container-high/40 transition-colors group">
+<td class="py-space-md px-space-md text-center">
+<input class="w-3.5 h-3.5 rounded bg-surface-container border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest border border-outline-variant relative overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Portrait photograph of Elena Rostova, an Eastern European female systems programmer with dark pulled-back hair, looking serious and analytical in a deep slate futuristic workstation environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW_8Z2sRqRmzJyRkOcqb17RUv864EboGui7L_8oiV8QSdXHd9hrycjY4Hlwr6XAKOD_RTS1Ow_rzuDt6-I8p5Bn1d_DcM9ltLkf_95EjXjZ4YNVnTdSAP32Fjs5ppb6-_rXksdSG73lLvJjjfUTJ8T3dJOns6SjBPyT9gjIqpjZwwIFzrvSx8qmfRxz3-T0k2fI066Q_l4QDADo_o6-RDHs-44NbBCs6gteDJu7jVzl7kd-_AIDAq59K87OZ0M_eRC6fDOYkloB-A"/>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg font-bold text-on-surface group-hover:text-primary transition-colors">Elena Rostova</span>
+</div>
+<span class="text-on-surface-variant font-body-sm text-[12px] truncate">Principal Infra Engineer · VaultScale</span>
+<div class="flex items-center gap-2 text-outline font-mono-data text-[11px] mt-0.5">
+<span>8.0y Exp</span>
+<span>•</span>
+<span>Berlin, DE</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-center">
+<div class="inline-flex flex-col items-center">
+<div class="px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant text-outline font-mono-metric-md text-mono-metric-md font-bold">
+                        6.4
+                      </div>
+<span class="font-mono-label text-mono-label text-outline mt-1">Tier 3 · Pivot</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex justify-between font-mono-data text-mono-data">
+<span class="text-on-surface-variant">Storage Engine</span>
+<span class="text-outline font-bold">65%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-outline-variant rounded-full" style="width: 65%"></div>
+</div>
+<div class="flex justify-between font-mono-data text-[10px] text-outline">
+<span>Core: 70%</span>
+<span>C++/Rust Primary</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-block px-2 py-1 rounded bg-surface-container border border-outline-variant font-mono-data text-[11px] text-outline">
+                      L5 Storage<br/>
+                      LSM-tree IO Engine
+                    </span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1 max-w-[160px]">
+<span class="px-1.5 py-0.5 rounded bg-secondary/10 border border-secondary/20 text-secondary font-mono-data text-[11px] flex items-center gap-1">
+<span>✦</span> eBPF Telemetry
+                      </span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="px-2 py-0.5 rounded bg-error-container/40 border border-error/30 text-error font-mono-data text-[11px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">close</span>
+                      No Golang Prod Experience
+                    </span>
+</td>
+<td class="py-space-md px-space-md text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors">
+                        Dossier
+                      </button>
+<button class="p-1 rounded text-outline hover:text-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Bottom Pagination & Metrics Summary -->
+<div class="px-space-md py-space-sm border-t border-outline-variant bg-surface-container-lowest flex items-center justify-between text-outline font-mono-data text-[11px]">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span>Active Requisition Calibration: <strong class="text-primary">Strict L5/L6 Distributed Grid</strong></span>
+</span>
+<span>•</span>
+<span>Auto-refreshing resumes via Workday ATS</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface disabled:opacity-30" disabled="">Previous</button>
+<span class="px-2 py-0.5 text-on-surface">Page 1 of 8</span>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface">Next</button>
+</div>
+</div>
+</div>
+<!-- RIGHT: LIVE CANDIDATE COMPARISON DRAWER (~30% -> 4 cols) -->
+<div class="lg:col-span-4 rounded-xl bg-surface-container-low/95 backdrop-blur-md border border-outline-variant flex flex-col shadow-xl">
+<!-- Drawer Header -->
+<div class="p-space-md border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary">compare</span>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Deep Comparison</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/15 text-secondary border border-secondary/30 font-mono-label text-mono-label font-bold">3 Selected</span>
+</div>
+<p class="font-mono-data text-[11px] text-outline">Multi-Axis Skill &amp; Architecture Alignment</p>
+</div>
+</div>
+<button class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-outline hover:text-on-surface transition-colors" title="Collapse Panel">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Drawer Body Content -->
+<div class="p-space-md flex flex-col gap-space-md overflow-y-auto custom-scrollbar max-h-[720px]">
+<!-- Candidate Avatars & High-Level Match Pills -->
+<div class="grid grid-cols-3 gap-2 pb-space-sm border-b border-outline-variant">
+<!-- C1: Sarah -->
+<div class="flex flex-col items-center text-center p-2 rounded-lg bg-primary/10 border border-primary/30 relative">
+<span class="absolute -top-2 left-1/2 -translate-x-1/2 px-1.5 py-0.2 rounded bg-primary text-on-primary font-mono-label text-[9px] font-bold">#1 FIT</span>
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest border border-primary overflow-hidden mb-1 mt-1">
+<img class="w-full h-full object-cover" data-alt="Square avatar portrait of Sarah Chen, female software architect, focused expression with dark emerald backdrop accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCadgOHzFPUo9z0LCuaRuZHFw2aVTH-cYPuZ7mMHPY0RZqSLCaS_lXBacMcAubu5iOUfS4WUQyp9iNTEnqt6G2mG-0QbpVOQGgXNkx16sbgnYvKc0grO1m7lj-za-klMaHyFxtOtSje7ycZVjeAOc82GylaJfUJg3aEyxpmvR2oKz5SpP__jx1F1OB8VJBQek9CIE4v32k-oJgY6zpBdlVCNTqnmJSpcdaB9q7LRJ7CcAQL4PUHGnp23ewvhy3mfRN-cuv4L6jXuhI"/>
+</div>
+<span class="font-label-md text-label-md text-on-surface truncate w-full">Sarah C.</span>
+<span class="font-mono-metric-md text-mono-metric-md text-primary font-bold">8.8</span>
+<span class="text-outline font-mono-data text-[10px]">ScaleOps</span>
+</div>
+<!-- C2: Alex -->
+<div class="flex flex-col items-center text-center p-2 rounded-lg bg-secondary/10 border border-secondary/30">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest border border-secondary overflow-hidden mb-1 mt-1">
+<img class="w-full h-full object-cover" data-alt="Square avatar portrait of Alex Rivera, male backend architect, executive headshot with cyan neon reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCY86miopE-CmBdk7gzMcR7xJh27P9dEAs66bt_iFT5ZfYS-VHZZn0jk6lGp1aN8nxbWSYoXiuGvzoLMVW8V1Nz45vDFYvozJcfI3h2wpjwGwe7IK5JE2GjKN1cPvPeBi_CnYXgQMkpVSjjiKcMcKD6jKACCygagpcx-tVLkMVqatoM-PR_cS-OnjHgjYRbNKPHYNi0OcVRAcmMQnyKap2kyw8BUhGpC0FqjnCRGTAXnH-NMIGPaqhOYVQ8J0U32z4QNTdHL_6otE"/>
+</div>
+<span class="font-label-md text-label-md text-on-surface truncate w-full">Alex R.</span>
+<span class="font-mono-metric-md text-mono-metric-md text-secondary font-bold">8.1</span>
+<span class="text-outline font-mono-data text-[10px]">FinTechCore</span>
+</div>
+<!-- C3: Priya -->
+<div class="flex flex-col items-center text-center p-2 rounded-lg bg-tertiary/10 border border-tertiary/30">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest border border-tertiary overflow-hidden mb-1 mt-1">
+<img class="w-full h-full object-cover" data-alt="Square avatar portrait of Priya Sharma, female distributed systems lead, soft purple backlighting and sharp analytical style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0IdN_qJxp9GSIj8dWNrdDS2-HntSAM9RXIoH8KQU4KlOaarOSO48nNUCHvh8PoRKVFhaXFKdqCJ9K_Ze9oUxVxbcAwaw78YIuVdo0fmmD_1BnwjUsio2J-V1jZu01ttQcT6nHl2kixiv0lKR-AF4mpzgCrJ4O03lmEFyb1upxB8TUxcw5-15ntJ72RrzzuouUUvbwIPV8O-clF-KiCHZThin5LU0zMW0YTonf-M4G6v2napvLt6URiQXkqoNKadIgz4Ojy7OhINU"/>
+</div>
+<span class="font-label-md text-label-md text-on-surface truncate w-full">Priya S.</span>
+<span class="font-mono-metric-md text-mono-metric-md text-tertiary font-bold">7.6</span>
+<span class="text-outline font-mono-data text-[10px]">DataGrid</span>
+</div>
+</div>
+<!-- SVG Multi-Axis Radar / Spider Chart -->
+<div class="p-space-sm rounded-lg bg-surface-container-lowest border border-outline-variant flex flex-col items-center">
+<div class="w-full flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md text-on-surface">5-Axis Competency Radar</span>
+<div class="flex items-center gap-3 font-mono-label text-[10px]">
+<span class="flex items-center gap-1 text-primary"><span class="w-2 h-0.5 bg-primary"></span> Sarah</span>
+<span class="flex items-center gap-1 text-secondary"><span class="w-2 h-0.5 bg-secondary"></span> Alex</span>
+<span class="flex items-center gap-1 text-tertiary"><span class="w-2 h-0.5 bg-tertiary"></span> Priya</span>
+</div>
+</div>
+<!-- Clean Vector Radar Visualization -->
+<svg class="w-full h-48 overflow-visible" viewbox="0 0 300 240">
+<!-- Concentric Polygons -->
+<polygon fill="none" points="150,20 270,75 220,200 80,200 30,75" stroke="#262c3d" stroke-width="1"></polygon>
+<polygon fill="none" points="150,45 240,88 202,185 98,185 60,88" stroke="#262c3d" stroke-dasharray="3,3" stroke-width="1"></polygon>
+<polygon fill="none" points="150,75 210,105 185,170 115,170 90,105" stroke="#262c3d" stroke-width="1"></polygon>
+<!-- Spoke Lines -->
+<line stroke="#262c3d" stroke-width="1" x1="150" x2="150" y1="120" y2="20"></line>
+<line stroke="#262c3d" stroke-width="1" x1="150" x2="270" y1="120" y2="75"></line>
+<line stroke="#262c3d" stroke-width="1" x1="150" x2="220" y1="120" y2="200"></line>
+<line stroke="#262c3d" stroke-width="1" x1="150" x2="80" y1="120" y2="200"></line>
+<line stroke="#262c3d" stroke-width="1" x1="150" x2="30" y1="120" y2="75"></line>
+<!-- Axis Labels -->
+<text fill="#86948a" font-family="JetBrains Mono" font-size="9" text-anchor="middle" x="150" y="14">Concurrency (Raft)</text>
+<text fill="#86948a" font-family="JetBrains Mono" font-size="9" text-anchor="start" x="275" y="75">Scalability</text>
+<text fill="#86948a" font-family="JetBrains Mono" font-size="9" text-anchor="start" x="228" y="212">Inferred</text>
+<text fill="#86948a" font-family="JetBrains Mono" font-size="9" text-anchor="end" x="72" y="212">Domain (PCI)</text>
+<text fill="#86948a" font-family="JetBrains Mono" font-size="9" text-anchor="end" x="22" y="75">Arch Depth</text>
+<!-- PRIYA (Purple Polygon) -->
+<polygon fill="rgba(192,193,255,0.12)" points="150,50 220,100 170,165 110,150 70,95" stroke="#c0c1ff" stroke-width="1.5"></polygon>
+<!-- ALEX (Cyan Polygon) -->
+<polygon fill="rgba(76,215,246,0.15)" points="150,38 235,90 195,175 140,160 62,85" stroke="#4cd7f6" stroke-width="1.5"></polygon>
+<!-- SARAH (Emerald Polygon - Flagship) -->
+<polygon fill="rgba(78,222,163,0.22)" points="150,24 260,80 215,190 100,160 38,78" stroke="#4edea3" stroke-width="2"></polygon>
+<!-- Data Nodes -->
+<circle cx="150" cy="24" fill="#4edea3" r="3"></circle>
+<circle cx="260" cy="80" fill="#4edea3" r="3"></circle>
+<circle cx="215" cy="190" fill="#4edea3" r="3"></circle>
+<circle cx="100" cy="160" fill="#4edea3" r="3"></circle>
+<circle cx="38" cy="78" fill="#4edea3" r="3"></circle>
+</svg>
+</div>
+<!-- Side-by-Side Detailed Breakdown -->
+<div class="flex flex-col gap-space-sm">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider">Attribute Calibration Comparison</span>
+<!-- Row 1: Concurrency -->
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex flex-col gap-1.5">
+<span class="font-body-sm text-[12px] text-on-surface-variant font-medium">Mandatory Concurrency Stack</span>
+<div class="grid grid-cols-3 gap-2 text-center font-mono-data text-[11px]">
+<span class="p-1 rounded bg-primary/10 text-primary font-bold">✓ 96% Match</span>
+<span class="p-1 rounded bg-secondary/10 text-secondary">✓ 90% Match</span>
+<span class="p-1 rounded bg-tertiary/10 text-tertiary">✓ 84% Match</span>
+</div>
+</div>
+<!-- Row 2: Inferred Arch -->
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex flex-col gap-1.5">
+<span class="font-body-sm text-[12px] text-on-surface-variant font-medium">Inferred Architecture Patterns</span>
+<div class="grid grid-cols-3 gap-2 text-center font-mono-data text-[11px]">
+<span class="p-1 rounded bg-surface-container-highest text-primary font-bold">3 Flagship (Saga)</span>
+<span class="p-1 rounded bg-surface-container-highest text-secondary">2 Flagship (CQRS)</span>
+<span class="p-1 rounded bg-surface-container-highest text-tertiary">1 Inferred</span>
+</div>
+</div>
+<!-- Row 3: Throughput Benchmark -->
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex flex-col gap-1.5">
+<span class="font-body-sm text-[12px] text-on-surface-variant font-medium">Production Throughput Proven</span>
+<div class="grid grid-cols-3 gap-2 text-center font-mono-data text-[11px]">
+<span class="p-1 rounded bg-surface-container-highest text-on-surface">12M tx/day</span>
+<span class="p-1 rounded bg-surface-container-highest text-on-surface">5M tx/day</span>
+<span class="p-1 rounded bg-surface-container-highest text-on-surface">2.8M msgs/sec</span>
+</div>
+</div>
+<!-- Row 4: Comp & Availability -->
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex flex-col gap-1.5">
+<span class="font-body-sm text-[12px] text-on-surface-variant font-medium">Target Comp &amp; Notice Period</span>
+<div class="grid grid-cols-3 gap-2 text-center font-mono-data text-[11px]">
+<span class="p-1 rounded bg-surface-container-highest text-outline">$230k · 2 wks</span>
+<span class="p-1 rounded bg-surface-container-highest text-outline">$215k · 4 wks</span>
+<span class="p-1 rounded bg-surface-container-highest text-outline">$225k · 3 wks</span>
+</div>
+</div>
+</div>
+<!-- Recommended Interview Probe Recommendation Card -->
+<div class="p-space-md rounded-xl bg-gradient-to-br from-surface-container-high to-surface-container-lowest border border-secondary/40 shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-secondary font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">psychology_alt</span>
+                  Targeted Calibration Probe
+                </span>
+<span class="font-mono-label text-[10px] text-outline">Target: Sarah Chen</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                "In ScaleOps, how did your Saga orchestrator handle edge-case split-brain scenarios when Kafka partitions rebalanced during active Raft leader re-elections?"
+              </p>
+<!-- Quick Decision CTAs -->
+<div class="flex flex-col gap-2 mt-2">
+<button class="w-full py-2 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 shadow-[0_0_12px_rgba(16,185,129,0.3)] hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all">
+<span class="material-symbols-outlined text-[16px]">schedule_send</span>
+                  Launch Technical Calibration Loop
+                </button>
+<button class="w-full py-1.5 rounded-lg bg-surface-container border border-outline-variant hover:border-secondary text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">forward_to_inbox</span>
+                  Send Dossier Summary to Hiring Manager
+                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BOTTOM PERSISTENT TELEMETRY AUDIT STATUS BAR -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant py-2 px-gutter-desktop text-outline font-mono-data text-[11px] flex flex-wrap items-center justify-between gap-space-md z-40">
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-on-surface font-medium">TalentLens Telemetry Live</span>
+</div>
+<span>Audit SHA: <strong class="text-on-surface-variant font-mono-label">c7f9-4091-payments-raft</strong></span>
+<span class="hidden md:inline">Protocol: Strict L5/L6 Grid v2.1</span>
+<span class="hidden lg:inline">Last Sync: Just now (14:32:08 UTC)</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="text-primary font-mono-label">42 Resumes Ingested</span>
+<span>•</span>
+<span class="text-secondary font-mono-label">6 Strong Alignment</span>
+<span>•</span>
+<span class="text-amber-400 font-mono-label">12 Gaps Flagged</span>
+<span class="text-outline-variant">|</span>
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span>Calibration Logs</span>
+<span class="material-symbols-outlined text-[12px]">open_in_new</span>
+</a>
+</div>
+</footer>
+</body></html>

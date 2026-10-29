@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { analysesApi, resumesApi, type AnalysisResponse, type ResumeResponse } from '../lib/api';
 import {
   FileText, Briefcase, Plus, ArrowRight, CheckCircle2,
-  BarChart3, TrendingUp, Sparkles, Circle
+  BarChart3, TrendingUp, Upload, Circle
 } from 'lucide-react';
 
 function AnalysisCard({ analysis, onClick }: { analysis: AnalysisResponse; onClick: () => void }) {
@@ -154,24 +154,24 @@ export default function CandidateDashboard() {
 
       {/* Quick Start if no resumes */}
       {resumes.length === 0 && (
-        <Card className="mb-8 p-8 border-indigo-500/20 bg-gradient-to-br from-indigo-950/30 to-zinc-900/60">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-            <div className="w-14 h-14 rounded-2xl bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center shrink-0">
-              <Sparkles size={24} className="text-indigo-400" />
+        <Card className="mb-8 p-6 border-zinc-800 bg-zinc-900/40">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+            <div className="w-10 h-10 rounded-lg bg-zinc-850 border border-zinc-800 flex items-center justify-center shrink-0 text-zinc-300">
+              <Upload size={18} />
             </div>
             <div className="flex-1 min-w-0">
               <Badge variant="info" size="xs" dot className="mb-2">Get Started</Badge>
-              <h2 className="text-lg font-bold text-white">Upload your first resume</h2>
-              <p className="text-sm text-zinc-400 mt-1 leading-relaxed">
-                Our AI will parse your skills, projects, and experience — then match them against any job description with evidence-backed scoring.
+              <h2 className="text-base font-semibold text-white">Upload your first resume</h2>
+              <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
+                Extract skills, technical projects, and career milestones — then benchmark them against target job descriptions with transparent evidence.
               </p>
             </div>
-            <div className="flex flex-col gap-2 shrink-0">
-              <Button icon={<FileText size={15} />} onClick={() => navigate('/resumes')}>
+            <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+              <Button icon={<FileText size={14} />} onClick={() => navigate('/resumes')}>
                 Upload Resume
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/jds')}>
-                Add a Job Description
+              <Button variant="secondary" size="sm" onClick={() => navigate('/jds')}>
+                Add Job Description
               </Button>
             </div>
           </div>

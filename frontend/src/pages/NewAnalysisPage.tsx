@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppLayout, PageHeader } from '../components/Layout';
 import { Button, Card, Skeleton } from '../components/ui';
 import { resumesApi, jdsApi, analysesApi, type ResumeResponse, type JobDescriptionResponse } from '../lib/api';
-import { Sparkles, FileText, Briefcase, Info } from 'lucide-react';
+import { FileText, Briefcase, Info, Play, Activity } from 'lucide-react';
 
 export default function NewAnalysisPage() {
   const navigate = useNavigate();
@@ -182,30 +182,30 @@ export default function NewAnalysisPage() {
           {/* Analysis pipeline preview */}
           {running && (
             <Card className="p-6">
-              <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-                <Sparkles size={16} className="text-indigo-400" />
-                Running Analysis Pipeline...
+              <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                <Activity size={16} className="text-zinc-300 animate-spin" />
+                Executing Analysis Pipeline...
               </h3>
               <div className="mb-4">
-                <div className="flex justify-between text-xs text-gray-400 mb-2">
+                <div className="flex justify-between text-xs text-zinc-400 mb-2">
                   <span>Progress</span>
-                  <span>{Math.round(progress)}%</span>
+                  <span className="font-mono">{Math.round(progress)}%</span>
                 </div>
-                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-500"
+                    className="h-full bg-zinc-200 rounded-full transition-all duration-300"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-1.5">
+              <div className="grid grid-cols-2 gap-2">
                 {pipeline.map((stage, i) => {
                   const stageProgress = (i / pipeline.length) * 100;
                   const done = progress > stageProgress + 10;
                   const active = progress > stageProgress && !done;
                   return (
-                    <div key={stage} className={`flex items-center gap-2 text-xs py-1 ${done ? 'text-emerald-400' : active ? 'text-indigo-300' : 'text-gray-600'}`}>
-                      <div className={`w-1.5 h-1.5 rounded-full ${done ? 'bg-emerald-400' : active ? 'bg-indigo-400 animate-pulse' : 'bg-gray-700'}`} />
+                    <div key={stage} className={`flex items-center gap-2 text-xs py-1 ${done ? 'text-emerald-400' : active ? 'text-zinc-200' : 'text-zinc-600'}`}>
+                      <div className={`w-1.5 h-1.5 rounded-full ${done ? 'bg-emerald-400' : active ? 'bg-zinc-200' : 'bg-zinc-800'}`} />
                       {stage}
                     </div>
                   );
@@ -221,11 +221,11 @@ export default function NewAnalysisPage() {
               size="lg"
               className="w-full"
               disabled={!selectedResume || !selectedJd}
-              icon={<Sparkles size={18} />}
+              icon={<Play size={16} />}
             >
-              Run Deep Analysis
+              Run Evidence Analysis
               {selectedResumeData && selectedJdData && (
-                <span className="text-white/60 text-sm ml-1">
+                <span className="text-zinc-600 text-xs ml-1.5 font-normal">
                   — {selectedResumeData.file_name} vs {selectedJdData.title}
                 </span>
               )}

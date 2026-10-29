@@ -2,7 +2,7 @@ import React from 'react';
 import { clsx } from 'clsx';
 
 /* ============================================================
-   BUTTON
+   BUTTON (Minimal, Tactile, Human)
    ============================================================ */
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'success';
@@ -16,53 +16,46 @@ export function Button({
   children, variant = 'primary', size = 'md', loading, icon, iconRight, className, disabled, ...props
 }: ButtonProps) {
   const base = [
-    'relative inline-flex items-center justify-center gap-2 font-semibold rounded-xl',
-    'transition-all duration-200 ease-out',
-    'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
+    'relative inline-flex items-center justify-center gap-2 font-medium rounded-lg',
+    'transition-all duration-150 ease-out select-none',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 focus-visible:ring-zinc-400',
     'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
-    'select-none',
   ].join(' ');
 
   const variants = {
     primary: [
-      'bg-gradient-to-r from-indigo-600 to-violet-600',
-      'text-white shadow-lg',
-      'hover:from-indigo-500 hover:to-violet-500',
-      'hover:shadow-indigo-500/30 hover:shadow-xl',
-      'active:scale-[0.98]',
-      'focus-visible:ring-indigo-500',
+      'bg-zinc-100 text-zinc-950 font-semibold',
+      'hover:bg-white hover:shadow-md',
+      'border border-white/20',
+      'active:scale-[0.99]',
     ].join(' '),
     secondary: [
-      'bg-zinc-800/80 text-zinc-100 border border-zinc-700/60',
-      'hover:bg-zinc-700/80 hover:border-zinc-600/60',
-      'active:scale-[0.98]',
-      'focus-visible:ring-zinc-500',
+      'bg-zinc-900 text-zinc-200 border border-zinc-800',
+      'hover:bg-zinc-850 hover:text-white hover:border-zinc-700',
+      'active:scale-[0.99]',
     ].join(' '),
     ghost: [
       'text-zinc-400 bg-transparent',
-      'hover:text-white hover:bg-zinc-800/60',
-      'active:scale-[0.98]',
-      'focus-visible:ring-zinc-500',
+      'hover:text-zinc-200 hover:bg-zinc-900',
+      'active:scale-[0.99]',
     ].join(' '),
     danger: [
-      'bg-red-500/10 text-red-400 border border-red-500/25',
-      'hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300',
-      'active:scale-[0.98]',
-      'focus-visible:ring-red-500',
+      'bg-red-500/10 text-red-400 border border-red-500/20',
+      'hover:bg-red-500/15 hover:border-red-500/30 hover:text-red-300',
+      'active:scale-[0.99]',
     ].join(' '),
     success: [
-      'bg-emerald-500/10 text-emerald-400 border border-emerald-500/25',
-      'hover:bg-emerald-500/20 hover:border-emerald-500/40',
-      'active:scale-[0.98]',
-      'focus-visible:ring-emerald-500',
+      'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
+      'hover:bg-emerald-500/15 hover:border-emerald-500/30',
+      'active:scale-[0.99]',
     ].join(' '),
   };
 
   const sizes = {
     xs: 'px-2.5 py-1 text-xs',
-    sm: 'px-3.5 py-2 text-sm',
-    md: 'px-5 py-2.5 text-sm',
-    lg: 'px-7 py-3.5 text-base',
+    sm: 'px-3 py-1.5 text-xs sm:text-sm',
+    md: 'px-4 py-2 text-sm',
+    lg: 'px-6 py-2.5 text-sm sm:text-base',
   };
 
   return (
@@ -86,7 +79,7 @@ export function Button({
 }
 
 /* ============================================================
-   CARD
+   CARD (Quiet, Structured Surface)
    ============================================================ */
 interface CardProps {
   children: React.ReactNode;
@@ -101,14 +94,13 @@ export function Card({ children, className, hover, onClick, gradient }: CardProp
     <div
       onClick={onClick}
       className={clsx(
-        'relative overflow-hidden rounded-2xl border transition-all duration-200',
+        'relative overflow-hidden rounded-xl border transition-all duration-200',
         gradient
-          ? 'bg-gradient-to-br from-zinc-900/90 to-zinc-800/50 border-zinc-700/40'
-          : 'bg-zinc-900/70 border-zinc-800/60',
+          ? 'bg-zinc-900/60 border-zinc-800'
+          : 'bg-zinc-900/40 border-zinc-800/80',
         hover && [
           'cursor-pointer',
-          'hover:border-indigo-500/30 hover:bg-zinc-900/90',
-          'hover:shadow-lg hover:shadow-indigo-500/5',
+          'hover:border-zinc-700 hover:bg-zinc-900/70',
           'hover:-translate-y-0.5',
         ],
         onClick && 'cursor-pointer',
@@ -121,7 +113,7 @@ export function Card({ children, className, hover, onClick, gradient }: CardProp
 }
 
 /* ============================================================
-   BADGE
+   BADGE (Clean, Legible Status Marker)
    ============================================================ */
 interface BadgeProps {
   children: React.ReactNode;
@@ -133,12 +125,12 @@ interface BadgeProps {
 
 export function Badge({ children, variant = 'neutral', size = 'sm', dot, className }: BadgeProps) {
   const variants = {
-    success: 'bg-emerald-500/12 text-emerald-400 border-emerald-500/20 ring-emerald-500/10',
-    warning: 'bg-amber-500/12 text-amber-400 border-amber-500/20 ring-amber-500/10',
-    danger: 'bg-red-500/12 text-red-400 border-red-500/20 ring-red-500/10',
-    info: 'bg-blue-500/12 text-blue-400 border-blue-500/20 ring-blue-500/10',
-    neutral: 'bg-zinc-800/80 text-zinc-300 border-zinc-700/50',
-    purple: 'bg-violet-500/12 text-violet-400 border-violet-500/20',
+    success: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    warning: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+    danger: 'bg-red-500/10 text-red-400 border-red-500/20',
+    info: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    neutral: 'bg-zinc-800/70 text-zinc-300 border-zinc-700/50',
+    purple: 'bg-zinc-800/70 text-zinc-300 border-zinc-700/50',
   };
 
   const dotColors = {
@@ -147,18 +139,18 @@ export function Badge({ children, variant = 'neutral', size = 'sm', dot, classNa
     danger: 'bg-red-400',
     info: 'bg-blue-400',
     neutral: 'bg-zinc-400',
-    purple: 'bg-violet-400',
+    purple: 'bg-zinc-400',
   };
 
   const sizes = {
     xs: 'px-1.5 py-0.5 text-[10px]',
-    sm: 'px-2.5 py-0.5 text-xs',
-    md: 'px-3.5 py-1 text-sm',
+    sm: 'px-2 py-0.5 text-xs',
+    md: 'px-3 py-1 text-xs',
   };
 
   return (
     <span className={clsx(
-      'inline-flex items-center gap-1.5 border rounded-full font-medium leading-none',
+      'inline-flex items-center gap-1.5 border rounded-md font-medium leading-none',
       variants[variant],
       sizes[size],
       className
@@ -185,7 +177,7 @@ export function Input({ label, error, hint, icon, iconRight, className, id, ...p
   return (
     <div className="space-y-1.5">
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-zinc-300">
+        <label htmlFor={inputId} className="block text-xs font-medium text-zinc-400">
           {label}
         </label>
       )}
@@ -198,13 +190,13 @@ export function Input({ label, error, hint, icon, iconRight, className, id, ...p
         <input
           id={inputId}
           className={clsx(
-            'w-full bg-zinc-900/70 border rounded-xl text-zinc-100 placeholder-zinc-600',
-            'transition-all duration-200',
-            'focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50',
+            'w-full bg-zinc-900/60 border rounded-lg text-zinc-100 placeholder-zinc-500 text-sm',
+            'transition-colors duration-150',
+            'focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:border-zinc-400',
             error
-              ? 'border-red-500/50 focus:ring-red-500/30'
-              : 'border-zinc-700/50 hover:border-zinc-600/60',
-            icon ? 'pl-10 pr-4 py-2.5' : 'px-4 py-2.5',
+              ? 'border-red-500/50 focus:ring-red-500/50'
+              : 'border-zinc-800 hover:border-zinc-700',
+            icon ? 'pl-10 pr-4 py-2' : 'px-3.5 py-2',
             iconRight ? 'pr-10' : '',
             className
           )}
@@ -236,20 +228,20 @@ export function Textarea({ label, error, hint, className, id, ...props }: Textar
   return (
     <div className="space-y-1.5">
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-zinc-300">
+        <label htmlFor={inputId} className="block text-xs font-medium text-zinc-400">
           {label}
         </label>
       )}
       <textarea
         id={inputId}
         className={clsx(
-          'w-full bg-zinc-900/70 border rounded-xl text-zinc-100 placeholder-zinc-600',
-          'transition-all duration-200 resize-none',
-          'focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50',
+          'w-full bg-zinc-900/60 border rounded-lg text-zinc-100 placeholder-zinc-500 text-sm',
+          'transition-colors duration-150 resize-none',
+          'focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:border-zinc-400',
           error
-            ? 'border-red-500/50 focus:ring-red-500/30'
-            : 'border-zinc-700/50 hover:border-zinc-600/60',
-          'px-4 py-3',
+            ? 'border-red-500/50 focus:ring-red-500/50'
+            : 'border-zinc-800 hover:border-zinc-700',
+          'px-3.5 py-2.5',
           className
         )}
         {...props}
@@ -274,20 +266,20 @@ export function Select({ label, error, options, className, id, ...props }: Selec
   return (
     <div className="space-y-1.5">
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-zinc-300">
+        <label htmlFor={inputId} className="block text-xs font-medium text-zinc-400">
           {label}
         </label>
       )}
       <select
         id={inputId}
         className={clsx(
-          'w-full bg-zinc-900/70 border rounded-xl text-zinc-100',
-          'transition-all duration-200 cursor-pointer',
-          'focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50',
+          'w-full bg-zinc-900/60 border rounded-lg text-zinc-100 text-sm',
+          'transition-colors duration-150 cursor-pointer',
+          'focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:border-zinc-400',
           error
             ? 'border-red-500/50'
-            : 'border-zinc-700/50 hover:border-zinc-600/60',
-          'px-4 py-2.5',
+            : 'border-zinc-800 hover:border-zinc-700',
+          'px-3.5 py-2',
           className
         )}
         {...props}
@@ -304,7 +296,7 @@ export function Select({ label, error, options, className, id, ...props }: Selec
 }
 
 /* ============================================================
-   SCORE RING
+   SCORE RING (Precise, Clean Radial Indicator)
    ============================================================ */
 interface ScoreRingProps {
   score: number;
@@ -314,7 +306,7 @@ interface ScoreRingProps {
   animated?: boolean;
 }
 
-export function ScoreRing({ score, size = 120, strokeWidth = 8, className, animated = true }: ScoreRingProps) {
+export function ScoreRing({ score, size = 120, strokeWidth = 7, className, animated = true }: ScoreRingProps) {
   const radius = (size - strokeWidth * 2) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 10) * circumference;
@@ -325,18 +317,12 @@ export function ScoreRing({ score, size = 120, strokeWidth = 8, className, anima
     score >= 4.5 ? '#f97316' :
     '#ef4444';
 
-  const glowColor =
-    score >= 8 ? 'rgba(16, 185, 129, 0.3)' :
-    score >= 6.5 ? 'rgba(245, 158, 11, 0.3)' :
-    score >= 4.5 ? 'rgba(249, 115, 22, 0.3)' :
-    'rgba(239, 68, 68, 0.3)';
-
   return (
-    <div className={clsx('relative inline-flex items-center justify-center', className)}>
-      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)', filter: `drop-shadow(0 0 8px ${glowColor})` }}>
+    <div className={clsx('relative inline-flex items-center justify-center shrink-0', className)}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
         <circle
           cx={size / 2} cy={size / 2} r={radius}
-          fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeWidth}
+          fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={strokeWidth}
         />
         <circle
           cx={size / 2} cy={size / 2} r={radius}
@@ -345,13 +331,15 @@ export function ScoreRing({ score, size = 120, strokeWidth = 8, className, anima
           strokeDashoffset={offset}
           strokeLinecap="round"
           style={{
-            transition: animated ? 'stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+            transition: animated ? 'stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
           }}
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-extrabold text-white" style={{ fontSize: size * 0.22 }}>{score.toFixed(1)}</span>
-        <span className="text-zinc-500 font-medium" style={{ fontSize: size * 0.1 }}>/10</span>
+        <span className="font-mono font-bold text-white tracking-tight" style={{ fontSize: size * 0.24 }}>
+          {score.toFixed(1)}
+        </span>
+        <span className="text-zinc-500 font-mono text-[10px]">/10</span>
       </div>
     </div>
   );
@@ -383,22 +371,21 @@ export function ProgressBar({ value, max = 10, label, color, size = 'md', showVa
   return (
     <div className="space-y-1.5">
       {(label || showValue) && (
-        <div className="flex justify-between items-center text-sm">
-          {label && <span className="text-zinc-400 text-xs">{label}</span>}
+        <div className="flex justify-between items-center text-xs">
+          {label && <span className="text-zinc-400">{label}</span>}
           {showValue && (
-            <span className="text-zinc-200 font-semibold text-xs tabular-nums">
+            <span className="text-zinc-300 font-mono tabular-nums">
               {value.toFixed(1)}<span className="text-zinc-500">/{max}</span>
             </span>
           )}
         </div>
       )}
-      <div className={clsx('bg-zinc-800/70 rounded-full overflow-hidden', heights[size])}>
+      <div className={clsx('bg-zinc-800/80 rounded-full overflow-hidden', heights[size])}>
         <div
-          className="h-full rounded-full transition-all duration-1000 ease-out"
+          className="h-full rounded-full transition-all duration-700 ease-out"
           style={{
             width: `${pct}%`,
-            background: `linear-gradient(90deg, ${barColor}cc, ${barColor})`,
-            boxShadow: `0 0 8px ${barColor}40`,
+            backgroundColor: barColor,
           }}
         />
       </div>
@@ -410,7 +397,7 @@ export function ProgressBar({ value, max = 10, label, color, size = 'md', showVa
    SKELETON
    ============================================================ */
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={clsx('shimmer rounded-xl', className)} />;
+  return <div className={clsx('bg-zinc-800/50 rounded-lg animate-pulse', className)} />;
 }
 
 /* ============================================================
@@ -425,14 +412,14 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ icon, title, description, action, size = 'md' }: EmptyStateProps) {
-  const paddings = { sm: 'py-10', md: 'py-16', lg: 'py-24' };
+  const paddings = { sm: 'py-10', md: 'py-16', lg: 'py-20' };
   return (
     <div className={clsx('flex flex-col items-center justify-center text-center', paddings[size])}>
-      <div className="w-14 h-14 rounded-2xl bg-zinc-800/60 border border-zinc-700/40 text-zinc-500 flex items-center justify-center mb-4">
+      <div className="w-12 h-12 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 flex items-center justify-center mb-3">
         {icon}
       </div>
-      <h3 className="text-base font-semibold text-zinc-200 mb-2">{title}</h3>
-      <p className="text-sm text-zinc-500 max-w-sm mb-6 leading-relaxed">{description}</p>
+      <h3 className="text-sm font-semibold text-zinc-200 mb-1.5">{title}</h3>
+      <p className="text-xs text-zinc-500 max-w-sm mb-5 leading-relaxed">{description}</p>
       {action}
     </div>
   );
@@ -449,26 +436,17 @@ interface StatCardProps {
   trend?: string;
 }
 
-export function StatCard({ label, value, icon, color = 'indigo', trend }: StatCardProps) {
-  const colors = {
-    indigo: 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400',
-    violet: 'bg-violet-500/10 border-violet-500/20 text-violet-400',
-    emerald: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
-    amber: 'bg-amber-500/10 border-amber-500/20 text-amber-400',
-    blue: 'bg-blue-500/10 border-blue-500/20 text-blue-400',
-    rose: 'bg-rose-500/10 border-rose-500/20 text-rose-400',
-  };
-
+export function StatCard({ label, value, icon, trend }: StatCardProps) {
   return (
-    <Card className="p-5">
-      <div className="flex items-center gap-4">
-        <div className={clsx('w-12 h-12 rounded-xl border flex items-center justify-center shrink-0', colors[color])}>
+    <Card className="p-4 sm:p-5">
+      <div className="flex items-center gap-3.5">
+        <div className="w-10 h-10 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center text-zinc-300 shrink-0">
           {icon}
         </div>
         <div className="min-w-0">
-          <p className="text-2xl font-bold text-white tabular-nums">{value}</p>
+          <p className="text-xl sm:text-2xl font-bold text-white tracking-tight tabular-nums">{value}</p>
           <p className="text-xs text-zinc-400 mt-0.5">{label}</p>
-          {trend && <p className="text-xs text-emerald-400 mt-1">{trend}</p>}
+          {trend && <p className="text-[11px] text-emerald-400 mt-0.5">{trend}</p>}
         </div>
       </div>
     </Card>
@@ -494,14 +472,14 @@ interface AlertProps {
 
 export function Alert({ children, variant = 'info', icon, className }: AlertProps) {
   const variants = {
-    info: 'bg-blue-500/8 border-blue-500/20 text-blue-300',
-    success: 'bg-emerald-500/8 border-emerald-500/20 text-emerald-300',
-    warning: 'bg-amber-500/8 border-amber-500/20 text-amber-300',
-    danger: 'bg-red-500/8 border-red-500/20 text-red-300',
+    info: 'bg-blue-500/5 border-blue-500/20 text-blue-300',
+    success: 'bg-emerald-500/5 border-emerald-500/20 text-emerald-300',
+    warning: 'bg-amber-500/5 border-amber-500/20 text-amber-300',
+    danger: 'bg-red-500/5 border-red-500/20 text-red-300',
   };
 
   return (
-    <div className={clsx('flex items-start gap-3 p-4 rounded-xl border text-sm', variants[variant], className)}>
+    <div className={clsx('flex items-start gap-3 p-3.5 rounded-lg border text-xs sm:text-sm', variants[variant], className)}>
       {icon && <span className="shrink-0 mt-0.5">{icon}</span>}
       <div>{children}</div>
     </div>
@@ -520,8 +498,10 @@ interface TabsProps {
 
 export function Tabs({ tabs, activeTab, onChange, className }: TabsProps) {
   return (
-    <div className={clsx('flex gap-1 overflow-x-auto', className)}
-      style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+    <div
+      className={clsx('flex items-center gap-1 p-1 bg-zinc-900/60 border border-zinc-800/80 rounded-lg overflow-x-auto', className)}
+      style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+    >
       {tabs.map(tab => {
         const active = activeTab === tab.id;
         return (
@@ -529,11 +509,11 @@ export function Tabs({ tabs, activeTab, onChange, className }: TabsProps) {
             key={tab.id}
             onClick={() => onChange(tab.id)}
             className={clsx(
-              'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap shrink-0',
-              'transition-all duration-200',
+              'flex items-center gap-2 px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium whitespace-nowrap shrink-0',
+              'transition-colors duration-150',
               active
-                ? 'bg-indigo-500/15 text-white border border-indigo-500/30 shadow-sm'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
+                ? 'bg-zinc-800 text-white shadow-sm'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850'
             )}
           >
             {tab.icon && <span className="shrink-0 opacity-70">{tab.icon}</span>}

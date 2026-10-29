@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import {
-  Sparkles, ArrowRight, CheckCircle2, BarChart3, FileSearch,
-  Zap, Users, Shield, Star, ChevronRight, Brain, Target,
-  TrendingUp, Eye
+  ArrowRight, CheckCircle2, BarChart3, FileSearch,
+  Zap, Users, Shield, ChevronRight, Brain, Target,
+  TrendingUp, Eye, Layers, Compass
 } from 'lucide-react';
 import { Button } from '../components/ui';
 
@@ -10,243 +10,215 @@ const features = [
   {
     icon: FileSearch,
     title: 'Deep Project Analysis',
-    description: 'Discovers skills demonstrated in real projects — not just listed keywords. Every implementation detail is evidence.',
-    color: 'from-indigo-500 to-violet-600',
-    glow: 'rgba(99, 102, 241, 0.3)',
+    description: 'Discovers skills demonstrated in real projects — not just listed keywords. Every implementation detail is verified as evidence.',
   },
   {
     icon: BarChart3,
-    title: 'Explainable Match Score',
-    description: 'Transparent weighted scoring out of 10 with full dimension breakdown, evidence trails, and confidence ratings.',
-    color: 'from-violet-500 to-purple-600',
-    glow: 'rgba(139, 92, 246, 0.3)',
+    title: 'Explainable Match Scoring',
+    description: 'Transparent weighted scoring out of 10 with full dimension breakdown, verifiable excerpts, and confidence ratings.',
   },
   {
     icon: Zap,
     title: 'Indirect Skill Discovery',
-    description: 'Identifies implied skills from project implementations — the difference between knowing React vs. having built production apps with it.',
-    color: 'from-amber-500 to-orange-500',
-    glow: 'rgba(245, 158, 11, 0.3)',
+    description: 'Identifies implied skills from project implementations — distinguishing between listing a library and architecting production systems.',
   },
   {
     icon: Users,
     title: 'Candidate Comparison',
-    description: 'Side-by-side candidate ranking with evidence-backed reasoning, mandatory skill coverage, and shortlisting tools for HR teams.',
-    color: 'from-emerald-500 to-teal-600',
-    glow: 'rgba(16, 185, 129, 0.3)',
+    description: 'Side-by-side candidate evaluations with structured reasoning, requirement coverage, and objective shortlisting for hiring teams.',
   },
   {
     icon: Brain,
-    title: 'AI Interview Questions',
-    description: 'Auto-generates evidence-based questions targeting each candidate\'s gaps and strengths relative to the specific JD.',
-    color: 'from-pink-500 to-rose-600',
-    glow: 'rgba(236, 72, 153, 0.3)',
+    title: 'Targeted Interview Prompts',
+    description: 'Generates evidence-backed technical questions targeting candidate gaps and strengths specific to each job description.',
   },
   {
     icon: Shield,
-    title: 'Evidence-Based Only',
-    description: 'Never fabricates. Direct, indirect, and unverified findings are clearly distinguished with source excerpts from the resume.',
-    color: 'from-sky-500 to-blue-600',
-    glow: 'rgba(14, 165, 233, 0.3)',
+    title: 'Strict Provenance & Verification',
+    description: 'Zero hallucinations. Direct, indirect, and unverified findings are strictly referenced against exact excerpts from the resume.',
   },
 ];
 
 const steps = [
-  { step: '01', icon: FileSearch, title: 'Upload Resume', desc: 'PDF or DOCX — our parser extracts every technical detail, project, and skill.' },
-  { step: '02', icon: Target, title: 'Add Job Description', desc: 'Paste the JD and we structure its requirements into a searchable skill matrix.' },
-  { step: '03', icon: Brain, title: 'Run Deep Analysis', desc: 'Multi-stage AI pipeline maps direct skills, infers indirect capabilities, and scores projects.' },
-  { step: '04', icon: TrendingUp, title: 'Review & Decide', desc: 'Get transparent scores, improvement plans, and custom interview questions.' },
+  { step: '01', icon: FileSearch, title: 'Upload Resume', desc: 'PDF or DOCX — extracts technical background, projects, and career history.' },
+  { step: '02', icon: Target, title: 'Job Description', desc: 'Parses the target role requirements into a structured competency matrix.' },
+  { step: '03', icon: Brain, title: 'Evidence Mapping', desc: 'Evaluates real demonstrated project impact, inferred capabilities, and technical depth.' },
+  { step: '04', icon: TrendingUp, title: 'Actionable Report', desc: 'Delivers clear scoring breakdown, targeted resume advice, and interview questions.' },
 ];
 
 const benefits = {
   candidates: [
-    'Know exactly how well your resume matches before applying',
-    'Discover which projects demonstrate the most relevant skills',
-    'Get specific resume improvements with suggested rewrites',
-    'Prepare for interviews with AI-generated evidence-based questions',
+    'Benchmark your resume against specific role requirements with transparent scoring',
+    'Identify which projects showcase your highest-impact technical abilities',
+    'Receive targeted phrasing and structural suggestions to highlight real achievements',
+    'Prepare for technical interviews with questions generated from your background',
   ],
   recruiters: [
-    'Reduce screening time with instant AI-scored evaluations',
-    'Compare candidates objectively on a transparent scoring matrix',
-    'Surface hidden talent whose skills are shown in projects',
-    'Generate structured interview questions for each candidate',
+    'Cut initial review cycles with objective, evidence-based score breakdowns',
+    'Compare applicant pools across standardized competency benchmarks',
+    'Uncover high-caliber talent whose skills are demonstrated in code and projects',
+    'Conduct targeted interviews with candidate-specific technical question sets',
   ],
 };
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white overflow-x-hidden">
+    <div className="min-h-screen w-full bg-zinc-950 text-zinc-100 overflow-x-hidden flex flex-col font-sans antialiased selection:bg-zinc-800 selection:text-white">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/6 bg-zinc-950/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <Sparkles size={17} className="text-white" />
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md">
+        <div className="w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 group shrink-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-200 group-hover:border-zinc-700 transition-colors">
+              <Layers size={14} />
             </div>
-            <div>
-              <span className="font-bold text-white text-sm">AI Resume Analyzer</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link to="/login">
-              <Button variant="ghost" size="sm">Sign in</Button>
+            <span className="font-semibold text-zinc-100 text-xs sm:text-sm tracking-tight whitespace-nowrap">
+              Resume <span className="hidden sm:inline text-zinc-500 font-normal">Analyzer</span>
+            </span>
+          </Link>
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            <Link to="/login" className="text-xs text-zinc-400 hover:text-zinc-100 px-2 py-1 transition-colors font-medium">
+              Sign in
             </Link>
             <Link to="/register">
-              <Button size="sm" icon={<Sparkles size={14} />}>Get started free</Button>
+              <Button size="sm" icon={<ArrowRight size={12} />} className="text-xs px-2.5 py-1 sm:px-3 sm:py-1.5">
+                <span className="sm:hidden">Start</span>
+                <span className="hidden sm:inline">Get started</span>
+              </Button>
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-36 pb-28 px-6 overflow-hidden">
-        {/* Background elements */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] opacity-20"
-            style={{ background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.4) 0%, transparent 70%)' }} />
-          <div className="absolute top-24 left-1/4 w-96 h-96 opacity-10 rounded-full blur-3xl"
-            style={{ background: 'rgba(139, 92, 246, 0.6)' }} />
-          <div className="absolute top-32 right-1/4 w-72 h-72 opacity-8 rounded-full blur-3xl"
-            style={{ background: 'rgba(99, 102, 241, 0.5)' }} />
-          {/* Grid pattern */}
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-            maskImage: 'radial-gradient(ellipse 80% 60% at 50% 0%, black 50%, transparent 100%)',
-          }} />
-        </div>
+      <section className="relative pt-20 pb-16 sm:pt-36 sm:pb-28 px-3.5 sm:px-6 lg:px-8 border-b border-zinc-800/60 overflow-hidden">
+        {/* Subtle geometric dot grid background */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)',
+            backgroundSize: '32px 32px',
+          }}
+        />
 
-        <div className="relative max-w-5xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/8 text-indigo-300 text-xs font-semibold mb-8 animate-fade-in-up">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-            AI-Powered Evidence-Based Analysis
+        <div className="relative max-w-4xl mx-auto text-center px-1">
+          {/* Tag */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/60 text-zinc-400 text-[11px] sm:text-xs font-mono mb-5 sm:mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            Evidence-Based Resume Intelligence
           </div>
 
-          {/* Headline */}
-          <h1 className="text-5xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-6 animate-fade-in-up stagger-1">
-            Understand every resume
-            <span className="block text-gradient mt-2">deeply and fairly</span>
+          {/* Clean human headline */}
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-snug sm:leading-[1.15] mb-4 sm:mb-6">
+            Understand every resume <br className="sm:hidden" />through verified evidence.
           </h1>
 
-          {/* Sub */}
-          <p className="text-lg lg:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up stagger-2">
-            Stop relying on keyword matching. Our AI discovers skills demonstrated in projects,
-            maps them to job requirements, and generates{' '}
-            <span className="text-zinc-200 font-medium">transparent, explainable match scores</span>.
+          {/* Subtitle */}
+          <p className="text-xs sm:text-base lg:text-lg text-zinc-400 max-w-2xl mx-auto mb-7 sm:mb-10 leading-relaxed font-normal px-2">
+            Move beyond superficial keyword matching. Evaluate candidates on actual skills demonstrated in projects,
+            with fully transparent scoring and verifiable excerpts.
           </p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-3">
-            <Link to="/register">
-              <Button size="lg" icon={<Sparkles size={17} />} iconRight={<ChevronRight size={15} />}
-                className="animate-pulse-glow">
-                Start analyzing for free
+          {/* Call to Actions */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 px-2 sm:px-0">
+            <Link to="/register" className="w-full sm:w-auto">
+              <Button size="lg" iconRight={<ChevronRight size={16} />} className="w-full sm:w-auto px-6 py-2.5 text-xs sm:text-sm">
+                Start evaluating free
               </Button>
             </Link>
-            <Link to="/login">
-              <Button variant="secondary" size="lg" icon={<Eye size={17} />}>
-                View dashboard demo
+            <Link to="/login" className="w-full sm:w-auto">
+              <Button variant="secondary" size="lg" icon={<Eye size={16} />} className="w-full sm:w-auto px-6 py-2.5 text-xs sm:text-sm">
+                Explore demo
               </Button>
             </Link>
           </div>
 
-          {/* Trust row */}
-          <div className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-zinc-500 animate-fade-in-up stagger-4">
+          {/* Trust Row */}
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mt-8 sm:mt-12 text-[11px] sm:text-xs text-zinc-500">
             {[
-              { icon: CheckCircle2, text: 'No credit card required' },
-              { icon: CheckCircle2, text: 'Free tier available' },
-              { icon: Shield, text: 'Privacy-first design' },
+              { text: 'No credit card required' },
+              { text: 'Deterministic scoring' },
+              { text: 'Source-backed citations' },
             ].map(t => (
-              <span key={t.text} className="flex items-center gap-2">
-                <t.icon size={14} className="text-emerald-400" />
+              <span key={t.text} className="flex items-center gap-1.5">
+                <CheckCircle2 size={13} className="text-zinc-400 shrink-0" />
                 {t.text}
               </span>
             ))}
           </div>
 
-          {/* Dashboard Preview */}
-          <div className="mt-20 animate-fade-in-up stagger-5">
-            <div className="relative mx-auto max-w-4xl">
-              <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 via-violet-500/20 to-purple-500/20 rounded-3xl blur-xl" />
-              <div className="relative rounded-2xl border border-white/8 bg-zinc-900/80 backdrop-blur-sm overflow-hidden shadow-2xl">
-                {/* Fake browser bar */}
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/6 bg-zinc-900/60">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                    <div className="w-3 h-3 rounded-full bg-amber-500/60" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
+          {/* Dashboard Preview Frame */}
+          <div className="mt-16 sm:mt-20 w-full text-left">
+            <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-1 sm:p-2 shadow-2xl backdrop-blur-sm">
+              <div className="rounded-lg border border-zinc-800/80 bg-zinc-950 overflow-hidden">
+                {/* Clean macOS-style header */}
+                <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-zinc-800/80 bg-zinc-900/50 min-w-0">
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
                   </div>
-                  <div className="flex-1 mx-4">
-                    <div className="bg-zinc-800/60 rounded-lg px-3 py-1 text-xs text-zinc-500 text-center max-w-48 mx-auto">
-                      app.airesumeanalyzer.com
-                    </div>
+                  <div className="text-[10px] sm:text-[11px] font-mono text-zinc-500 bg-zinc-900 px-2 sm:px-3 py-0.5 rounded border border-zinc-800 truncate max-w-[180px] sm:max-w-none">
+                    app.resumeanalyzer.com/evaluations/demo
                   </div>
+                  <div className="w-6 shrink-0" />
                 </div>
-                {/* Dashboard mockup */}
-                <div className="p-6 grid grid-cols-3 gap-4">
-                  <div className="col-span-3 flex items-center justify-between mb-2">
-                    <div>
-                      <div className="h-5 w-48 bg-zinc-800/80 rounded-lg" />
-                      <div className="h-3 w-64 bg-zinc-800/50 rounded mt-2" />
-                    </div>
-                    <div className="flex gap-2">
-                      <div className="h-8 w-20 bg-zinc-800/60 rounded-lg" />
-                      <div className="h-8 w-28 bg-indigo-500/30 border border-indigo-500/40 rounded-lg" />
+
+                {/* Clean developer interface mockup */}
+                <div className="p-4 sm:p-7 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 min-w-0">
+                  {/* Summary metric card 1 */}
+                  <div className="p-3.5 sm:p-4 rounded-lg bg-zinc-900/50 border border-zinc-800 min-w-0">
+                    <div className="text-xs text-zinc-500 font-medium">Evaluations Run</div>
+                    <div className="text-xl sm:text-2xl font-mono font-semibold text-zinc-100 mt-1">24</div>
+                    <div className="text-[11px] text-zinc-400 mt-1.5 sm:mt-2">Across 6 active engineering roles</div>
+                  </div>
+
+                  {/* Summary metric card 2 */}
+                  <div className="p-3.5 sm:p-4 rounded-lg bg-zinc-900/50 border border-zinc-800 min-w-0">
+                    <div className="text-xs text-zinc-500 font-medium">Median Match Index</div>
+                    <div className="text-xl sm:text-2xl font-mono font-semibold text-zinc-100 mt-1">7.8<span className="text-xs text-zinc-500 font-normal">/10</span></div>
+                    <div className="text-[11px] text-emerald-400 mt-1.5 sm:mt-2 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> High alignment threshold
                     </div>
                   </div>
-                  {[
-                    { label: 'Analyses Run', value: '24', color: 'bg-indigo-500/15 border-indigo-500/20' },
-                    { label: 'Avg Score', value: '7.8', color: 'bg-violet-500/15 border-violet-500/20' },
-                    { label: 'Strong Matches', value: '11', color: 'bg-emerald-500/15 border-emerald-500/20' },
-                  ].map(stat => (
-                    <div key={stat.label} className={`p-4 rounded-xl border ${stat.color}`}>
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
-                      <div className="text-xs text-zinc-400 mt-1">{stat.label}</div>
-                    </div>
-                  ))}
-                  <div className="col-span-2 p-4 rounded-xl bg-zinc-800/40 border border-white/5 space-y-3">
-                    {['Senior Frontend Dev @ Vercel', 'ML Engineer @ Hugging Face', 'Backend Lead @ Stripe'].map((job, i) => (
-                      <div key={job} className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center shrink-0">
-                          <div className="w-3 h-3 rounded-full bg-indigo-400" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-xs font-medium text-zinc-200">{job}</div>
-                          <div className="flex gap-1 mt-1">
-                            <div className="h-1.5 rounded-full bg-indigo-500/50" style={{ width: `${[85, 72, 60][i]}%` }} />
-                            <div className="h-1.5 w-3 rounded-full bg-zinc-700" />
-                          </div>
-                        </div>
-                        <div className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                          i === 0 ? 'bg-emerald-500/20 text-emerald-400' :
-                          i === 1 ? 'bg-amber-500/20 text-amber-400' :
-                          'bg-zinc-700/50 text-zinc-400'
-                        }`}>
-                          {['8.5', '7.2', '6.0'][i]}/10
+
+                  {/* Summary metric card 3 */}
+                  <div className="p-3.5 sm:p-4 rounded-lg bg-zinc-900/50 border border-zinc-800 min-w-0">
+                    <div className="text-xs text-zinc-500 font-medium">Qualified Shortlist</div>
+                    <div className="text-xl sm:text-2xl font-mono font-semibold text-zinc-100 mt-1">11</div>
+                    <div className="text-[11px] text-zinc-400 mt-1.5 sm:mt-2">Passed all mandatory criteria</div>
+                  </div>
+
+                  {/* Candidate evaluation table */}
+                  <div className="col-span-1 md:col-span-2 p-3.5 sm:p-4 rounded-lg bg-zinc-900/30 border border-zinc-800 space-y-2.5 sm:space-y-3 min-w-0 overflow-hidden">
+                    <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Recent Evaluations</div>
+                    {[
+                      { role: 'Staff Frontend Engineer', score: '8.8', level: 'High Match', status: 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5' },
+                      { role: 'Senior ML Engineer', score: '7.4', level: 'Moderate', status: 'text-amber-400 border-amber-500/20 bg-amber-500/5' },
+                      { role: 'Distributed Systems Lead', score: '6.2', level: 'Review', status: 'text-zinc-400 border-zinc-700 bg-zinc-800/40' },
+                    ].map(item => (
+                      <div key={item.role} className="flex items-center justify-between p-2.5 rounded-md bg-zinc-900/60 border border-zinc-800/80 text-xs min-w-0 gap-2">
+                        <div className="truncate text-zinc-200 font-medium min-w-0 flex-1">{item.role}</div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className={`px-2 py-0.5 rounded text-[11px] border font-mono ${item.status}`}>
+                            {item.score}/10
+                          </span>
                         </div>
                       </div>
                     ))}
                   </div>
-                  <div className="p-4 rounded-xl bg-zinc-800/40 border border-white/5">
-                    <div className="text-xs text-zinc-500 mb-2">Match Score</div>
-                    <div className="flex items-center justify-center py-2">
-                      <div className="relative">
-                        <svg width="80" height="80" style={{ transform: 'rotate(-90deg)' }}>
-                          <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="7" />
-                          <circle cx="40" cy="40" r="32" fill="none" stroke="#10b981" strokeWidth="7"
-                            strokeDasharray="201" strokeDashoffset="30" strokeLinecap="round" />
-                        </svg>
-                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                          <span className="text-lg font-extrabold text-white">8.5</span>
-                          <span className="text-[9px] text-zinc-500">/10</span>
-                        </div>
-                      </div>
+
+                  {/* Score Breakdown box */}
+                  <div className="p-3.5 sm:p-4 rounded-lg bg-zinc-900/30 border border-zinc-800 flex flex-col justify-between min-w-0">
+                    <div>
+                      <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2 sm:mb-3">Overall Confidence</div>
+                      <div className="text-2xl sm:text-3xl font-mono font-bold text-white mb-1">94%</div>
+                      <p className="text-xs text-zinc-500 leading-relaxed">
+                        Deterministic project citation rate across verified repository milestones.
+                      </p>
                     </div>
-                    <div className="text-center">
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
-                        Strong Match
-                      </span>
+                    <div className="pt-3 border-t border-zinc-800 text-[11px] text-zinc-400 flex items-center gap-1.5 mt-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      Auditable evidence log ready
                     </div>
                   </div>
                 </div>
@@ -257,41 +229,31 @@ export default function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-24 px-6">
+      <section className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-zinc-800/60">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/8 border border-violet-500/20 text-violet-400 text-xs font-semibold mb-4">
-              Features
-            </div>
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4 tracking-tight">
-              Built for evidence-based hiring
+          <div className="max-w-2xl mb-14">
+            <p className="text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">Capabilities</p>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3">
+              Engineered for objective, defensible hiring
             </h2>
-            <p className="text-zinc-400 max-w-xl mx-auto text-base leading-relaxed">
-              Every feature is designed to surface real skills with verifiable evidence — not assumptions or keyword spam.
+            <p className="text-sm sm:text-base text-zinc-400 leading-relaxed">
+              Every evaluation traces directly back to resume text and project descriptions. No opaque scores, no keyword illusions.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {features.map((f, i) => {
+            {features.map((f) => {
               const Icon = f.icon;
               return (
                 <div
                   key={f.title}
-                  className="group p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800/60 hover:border-zinc-700/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl animate-fade-in-up"
-                  style={{ animationDelay: `${i * 0.05}s`, boxShadow: 'none' }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 40px ${f.glow}`;
-                  }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                  }}
+                  className="p-6 rounded-xl bg-zinc-900/30 border border-zinc-800/80 hover:border-zinc-700 transition-colors"
                 >
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-5 shadow-lg transition-transform duration-300 group-hover:scale-105`}
-                    style={{ boxShadow: `0 8px 24px ${f.glow}` }}>
-                    <Icon size={22} className="text-white" />
+                  <div className="w-9 h-9 rounded-lg bg-zinc-850 border border-zinc-800 flex items-center justify-center text-zinc-300 mb-4">
+                    <Icon size={18} />
                   </div>
-                  <h3 className="text-base font-semibold text-white mb-2">{f.title}</h3>
-                  <p className="text-sm text-zinc-400 leading-relaxed">{f.description}</p>
+                  <h3 className="text-sm font-semibold text-zinc-100 mb-1.5">{f.title}</h3>
+                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">{f.description}</p>
                 </div>
               );
             })}
@@ -299,57 +261,67 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* For Candidates / For Recruiters */}
-      <section className="py-24 px-6 bg-gradient-to-b from-transparent to-zinc-900/30">
+      {/* Candidates & Recruiters Perspectives */}
+      <section className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-zinc-800/60">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4 tracking-tight">
-              Built for both sides of the table
+          <div className="max-w-2xl mb-14">
+            <p className="text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">Dual Workflows</p>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3">
+              Clarity for job seekers and hiring teams
             </h2>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Candidates */}
-            <div className="p-8 rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-950/30 to-zinc-900/60">
-              <div className="w-12 h-12 rounded-xl bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center mb-5">
-                <Star size={22} className="text-indigo-400" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Candidates Card */}
+            <div className="p-7 sm:p-8 rounded-xl bg-zinc-900/40 border border-zinc-800 flex flex-col justify-between">
+              <div>
+                <div className="w-9 h-9 rounded-lg bg-zinc-850 border border-zinc-800 flex items-center justify-center text-zinc-300 mb-5">
+                  <Compass size={18} />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">For Candidates</h3>
+                <p className="text-sm text-zinc-400 mb-6 leading-relaxed">
+                  Test your application against exact requirements to know where your resume shines and where to strengthen it.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  {benefits.candidates.map(b => (
+                    <li key={b} className="flex items-start gap-2.5 text-xs sm:text-sm text-zinc-300">
+                      <CheckCircle2 size={15} className="text-zinc-500 mt-0.5 shrink-0" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">For Candidates</h3>
-              <p className="text-zinc-400 text-sm mb-6">Know exactly how you measure up before submitting.</p>
-              <ul className="space-y-3">
-                {benefits.candidates.map(b => (
-                  <li key={b} className="flex items-start gap-3 text-sm text-zinc-300">
-                    <CheckCircle2 size={16} className="text-indigo-400 mt-0.5 shrink-0" />
-                    {b}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
+              <div className="pt-5 border-t border-zinc-800/80">
                 <Link to="/register?role=candidate">
-                  <Button icon={<ArrowRight size={15} />}>
-                    Analyze my resume
+                  <Button variant="secondary" icon={<ArrowRight size={14} />}>
+                    Analyze your resume
                   </Button>
                 </Link>
               </div>
             </div>
 
-            {/* Recruiters */}
-            <div className="p-8 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-950/20 to-zinc-900/60">
-              <div className="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/20 flex items-center justify-center mb-5">
-                <Users size={22} className="text-amber-400" />
+            {/* Recruiters Card */}
+            <div className="p-7 sm:p-8 rounded-xl bg-zinc-900/40 border border-zinc-800 flex flex-col justify-between">
+              <div>
+                <div className="w-9 h-9 rounded-lg bg-zinc-850 border border-zinc-800 flex items-center justify-center text-zinc-300 mb-5">
+                  <Users size={18} />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">For Recruiters</h3>
+                <p className="text-sm text-zinc-400 mb-6 leading-relaxed">
+                  Systematize inbound evaluation with transparent, auditable scoring criteria across candidate cohorts.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  {benefits.recruiters.map(b => (
+                    <li key={b} className="flex items-start gap-2.5 text-xs sm:text-sm text-zinc-300">
+                      <CheckCircle2 size={15} className="text-zinc-500 mt-0.5 shrink-0" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">For Recruiters</h3>
-              <p className="text-zinc-400 text-sm mb-6">Make faster, fairer, and more defensible hiring decisions.</p>
-              <ul className="space-y-3">
-                {benefits.recruiters.map(b => (
-                  <li key={b} className="flex items-start gap-3 text-sm text-zinc-300">
-                    <CheckCircle2 size={16} className="text-amber-400 mt-0.5 shrink-0" />
-                    {b}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
+              <div className="pt-5 border-t border-zinc-800/80">
                 <Link to="/register?role=recruiter">
-                  <Button variant="secondary" icon={<ArrowRight size={15} />}>
+                  <Button variant="secondary" icon={<ArrowRight size={14} />}>
                     Start evaluating candidates
                   </Button>
                 </Link>
@@ -359,31 +331,29 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/8 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-4">
-              How it works
-            </div>
-            <h2 className="text-3xl font-bold mb-4 tracking-tight">Four steps to complete analysis</h2>
-            <p className="text-zinc-400 max-w-md mx-auto">From upload to actionable insights in under 2 minutes.</p>
+      {/* Steps */}
+      <section className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-zinc-800/60">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-2xl mb-14">
+            <p className="text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">Process</p>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3">
+              How the analysis pipeline operates
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {steps.map((s, i) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {steps.map((s) => {
               const Icon = s.icon;
               return (
-                <div key={s.step} className="relative text-center group">
-                  {i < steps.length - 1 && (
-                    <div className="hidden lg:block absolute top-7 left-[calc(75%+8px)] right-[-25%] h-px bg-gradient-to-r from-zinc-700 to-transparent" />
-                  )}
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white font-bold text-lg mb-5 shadow-lg shadow-indigo-500/20 transition-transform duration-300 group-hover:scale-105">
-                    <Icon size={24} />
+                <div key={s.step} className="p-5 rounded-xl bg-zinc-900/30 border border-zinc-800/80">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-8 h-8 rounded-lg bg-zinc-850 border border-zinc-800 flex items-center justify-center text-zinc-300">
+                      <Icon size={16} />
+                    </div>
+                    <span className="font-mono text-xs text-zinc-500 font-semibold">{s.step}</span>
                   </div>
-                  <div className="text-xs text-zinc-600 font-mono mb-2">{s.step}</div>
-                  <h3 className="font-semibold text-zinc-100 mb-2 text-sm">{s.title}</h3>
-                  <p className="text-xs text-zinc-500 leading-relaxed px-2">{s.desc}</p>
+                  <h3 className="font-medium text-zinc-100 text-sm mb-1.5">{s.title}</h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed">{s.desc}</p>
                 </div>
               );
             })}
@@ -391,51 +361,45 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 px-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 via-violet-500/20 to-purple-500/20 rounded-3xl blur-xl" />
-            <div className="relative p-10 lg:p-14 rounded-2xl bg-gradient-to-br from-indigo-950/50 to-zinc-900/80 border border-indigo-500/20 text-center">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-indigo-500/25">
-                <Sparkles size={24} className="text-white" />
-              </div>
-              <h2 className="text-3xl lg:text-4xl font-bold mb-4 tracking-tight">
-                Ready to start?
-              </h2>
-              <p className="text-zinc-400 mb-10 text-base max-w-lg mx-auto leading-relaxed">
-                Join teams and candidates using evidence-based AI analysis to make better, faster hiring decisions.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link to="/register?role=candidate">
-                  <Button size="lg" icon={<Sparkles size={17} />}>
-                    I'm a candidate
-                  </Button>
-                </Link>
-                <Link to="/register?role=recruiter">
-                  <Button variant="secondary" size="lg" icon={<Users size={17} />}>
-                    I'm recruiting
-                  </Button>
-                </Link>
-              </div>
+      {/* Clean Call to Action */}
+      <section className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="p-8 sm:p-14 rounded-2xl bg-zinc-900/40 border border-zinc-800">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-3">
+              Start evaluating with evidence today
+            </h2>
+            <p className="text-sm sm:text-base text-zinc-400 max-w-lg mx-auto mb-8 leading-relaxed">
+              Transparent match scores and verifiable citations for engineers and hiring teams.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link to="/register" className="w-full sm:w-auto">
+                <Button size="lg" iconRight={<ChevronRight size={15} />} className="w-full sm:w-auto px-6">
+                  Create free account
+                </Button>
+              </Link>
+              <Link to="/login" className="w-full sm:w-auto">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto px-6">
+                  Sign in
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-10 px-6 border-t border-zinc-800/60">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-              <Sparkles size={14} className="text-white" />
+      <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/80 bg-zinc-950 mt-auto">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <div className="w-6 h-6 rounded-md bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300">
+              <Layers size={13} />
             </div>
-            <span className="font-semibold text-zinc-300 text-sm">AI Resume Analyzer</span>
+            <span className="text-xs font-semibold text-zinc-400">Resume Analyzer</span>
           </div>
           <div className="flex items-center gap-6 text-xs text-zinc-500">
             <Link to="/login" className="hover:text-zinc-300 transition-colors">Sign in</Link>
-            <Link to="/register" className="hover:text-zinc-300 transition-colors">Get started</Link>
-            <span>Evidence-based · Transparent · Privacy-first</span>
+            <Link to="/register" className="hover:text-zinc-300 transition-colors">Register</Link>
+            <span>Evidence-first architecture</span>
           </div>
         </div>
       </footer>

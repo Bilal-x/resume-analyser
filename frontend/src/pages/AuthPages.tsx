@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Button, Input, Card } from '../components/ui';
-import { Sparkles, Mail, Lock, User, Briefcase, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, Briefcase, ArrowLeft, Eye, EyeOff, Layers } from 'lucide-react';
 
 function AuthShell({ children, title, subtitle }: {
   children: React.ReactNode;
@@ -10,40 +10,29 @@ function AuthShell({ children, title, subtitle }: {
   subtitle: string;
 }) {
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] opacity-20"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.5) 0%, transparent 70%)' }} />
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
-          backgroundSize: '48px 48px',
-          maskImage: 'radial-gradient(ellipse 60% 50% at 50% 0%, black 50%, transparent 100%)',
-        }} />
-      </div>
-
-      <div className="relative w-full max-w-md animate-fade-in-up">
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-6 relative">
+      <div className="relative w-full max-w-md">
         {/* Back to home */}
-        <Link to="/" className="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors mb-8 group">
-          <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
-          Back to home
+        <Link to="/" className="inline-flex items-center gap-2 text-xs text-zinc-500 hover:text-zinc-300 transition-colors mb-6 group font-mono">
+          <ArrowLeft size={13} className="group-hover:-translate-x-0.5 transition-transform" />
+          Back to overview
         </Link>
 
         {/* Logo */}
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-            <Sparkles size={18} className="text-white" />
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-200">
+            <Layers size={16} />
           </div>
           <div>
-            <div className="font-bold text-white text-sm">AI Resume Analyzer</div>
-            <div className="text-xs text-zinc-500">Evidence-based hiring intelligence</div>
+            <div className="font-semibold text-white text-sm tracking-tight">Resume Analyzer</div>
+            <div className="text-[11px] text-zinc-500">Evidence-based hiring intelligence</div>
           </div>
         </div>
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white">{title}</h1>
-          <p className="text-zinc-400 mt-1.5 text-sm">{subtitle}</p>
+        <div className="mb-6">
+          <h1 className="text-xl font-bold text-white tracking-tight">{title}</h1>
+          <p className="text-zinc-400 mt-1 text-xs">{subtitle}</p>
         </div>
 
         {children}
@@ -76,13 +65,13 @@ export function LoginPage() {
   };
 
   return (
-    <AuthShell title="Welcome back" subtitle="Sign in to your account to continue">
-      <Card className="p-8">
-        <form onSubmit={handleSubmit} className="space-y-5">
+    <AuthShell title="Sign in" subtitle="Enter your credentials to access your dashboard">
+      <Card className="p-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3.5 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm flex items-start gap-2.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 shrink-0" />
-              {error}
+            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-start gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1 shrink-0" />
+              <span>{error}</span>
             </div>
           )}
 
@@ -93,49 +82,49 @@ export function LoginPage() {
             placeholder="you@example.com"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            icon={<Mail size={16} />}
+            icon={<Mail size={15} />}
             autoComplete="email"
             required
           />
 
           <div className="space-y-1.5">
-            <label htmlFor="login-password" className="block text-sm font-medium text-zinc-300">
+            <label htmlFor="login-password" className="block text-xs font-medium text-zinc-300">
               Password
             </label>
             <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none">
-                <Lock size={16} />
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none">
+                <Lock size={15} />
               </span>
               <input
                 id="login-password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Your password"
+                placeholder="Enter password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 autoComplete="current-password"
                 required
-                className="w-full bg-zinc-900/70 border border-zinc-700/50 rounded-xl text-zinc-100 placeholder-zinc-600 pl-10 pr-11 py-2.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 hover:border-zinc-600/60"
+                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-500 pl-9 pr-10 py-2 text-xs transition-colors focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:border-zinc-400"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
               >
-                {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
               </button>
             </div>
           </div>
 
-          <Button type="submit" loading={loading} className="w-full mt-2" size="lg">
-            {loading ? 'Signing in...' : 'Sign in'}
+          <Button type="submit" loading={loading} className="w-full mt-2" size="md">
+            {loading ? 'Authenticating...' : 'Sign in'}
           </Button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-zinc-800/60 text-center">
-          <p className="text-sm text-zinc-500">
+        <div className="mt-5 pt-5 border-t border-zinc-800 text-center">
+          <p className="text-xs text-zinc-500">
             Don't have an account?{' '}
-            <Link to="/register" className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">
-              Create one free
+            <Link to="/register" className="text-zinc-200 hover:text-white font-medium transition-colors underline underline-offset-4">
+              Create an account
             </Link>
           </p>
         </div>
@@ -175,13 +164,13 @@ export function RegisterPage() {
   };
 
   return (
-    <AuthShell title="Create your account" subtitle="Start analyzing resumes for free">
-      <Card className="p-8">
+    <AuthShell title="Create account" subtitle="Set up your workspace to start analyzing">
+      <Card className="p-6">
         {/* Role picker */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="grid grid-cols-2 gap-2.5 mb-5">
           {[
-            { id: 'candidate', label: "I'm a candidate", icon: User, desc: 'Analyze my resume', color: 'indigo' },
-            { id: 'recruiter', label: "I'm recruiting", icon: Briefcase, desc: 'Evaluate candidates', color: 'amber' },
+            { id: 'candidate', label: "Candidate", icon: User, desc: 'Analyze own resume' },
+            { id: 'recruiter', label: "Recruiter", icon: Briefcase, desc: 'Review applicants' },
           ].map(r => {
             const Icon = r.icon;
             const active = role === r.id;
@@ -190,33 +179,25 @@ export function RegisterPage() {
                 key={r.id}
                 type="button"
                 onClick={() => setRole(r.id)}
-                className={`p-4 rounded-xl border text-left transition-all duration-200 ${
+                className={`p-3 rounded-lg border text-left transition-colors ${
                   active
-                    ? r.color === 'indigo'
-                      ? 'border-indigo-500/40 bg-indigo-500/8 text-white'
-                      : 'border-amber-500/40 bg-amber-500/8 text-white'
-                    : 'border-zinc-700/50 text-zinc-400 hover:border-zinc-600/60 hover:text-zinc-300'
+                    ? 'border-zinc-400 bg-zinc-900 text-white font-medium'
+                    : 'border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-300'
                 }`}
               >
-                <Icon
-                  size={18}
-                  className={`mb-2 ${active
-                    ? r.color === 'indigo' ? 'text-indigo-400' : 'text-amber-400'
-                    : 'text-zinc-500'
-                  }`}
-                />
-                <div className="text-sm font-semibold">{r.label}</div>
-                <div className="text-xs opacity-60 mt-0.5">{r.desc}</div>
+                <Icon size={16} className={`mb-1.5 ${active ? 'text-zinc-100' : 'text-zinc-500'}`} />
+                <div className="text-xs font-semibold">{r.label}</div>
+                <div className="text-[11px] text-zinc-500">{r.desc}</div>
               </button>
             );
           })}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           {error && (
-            <div className="p-3.5 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm flex items-start gap-2.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 shrink-0" />
-              {error}
+            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-start gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1 shrink-0" />
+              <span>{error}</span>
             </div>
           )}
 
@@ -226,7 +207,7 @@ export function RegisterPage() {
             placeholder="Jane Smith"
             value={name}
             onChange={e => setName(e.target.value)}
-            icon={<User size={16} />}
+            icon={<User size={15} />}
             autoComplete="name"
             required
           />
@@ -238,18 +219,18 @@ export function RegisterPage() {
             placeholder="you@example.com"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            icon={<Mail size={16} />}
+            icon={<Mail size={15} />}
             autoComplete="email"
             required
           />
 
           <div className="space-y-1.5">
-            <label htmlFor="register-password" className="block text-sm font-medium text-zinc-300">
+            <label htmlFor="register-password" className="block text-xs font-medium text-zinc-300">
               Password
             </label>
             <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none">
-                <Lock size={16} />
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none">
+                <Lock size={15} />
               </span>
               <input
                 id="register-password"
@@ -259,25 +240,25 @@ export function RegisterPage() {
                 onChange={e => setPassword(e.target.value)}
                 autoComplete="new-password"
                 required
-                className="w-full bg-zinc-900/70 border border-zinc-700/50 rounded-xl text-zinc-100 placeholder-zinc-600 pl-10 pr-11 py-2.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 hover:border-zinc-600/60"
+                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-500 pl-9 pr-10 py-2 text-xs transition-colors focus:outline-none focus:ring-1 focus:ring-zinc-400 focus:border-zinc-400"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
               >
-                {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
               </button>
             </div>
             {password.length > 0 && (
-              <div className="flex gap-1.5 mt-2">
+              <div className="flex gap-1 mt-1.5">
                 {[...Array(4)].map((_, i) => (
                   <div
                     key={i}
-                    className={`flex-1 h-1 rounded-full transition-colors duration-300 ${
+                    className={`flex-1 h-0.5 rounded-full transition-colors ${
                       password.length >= [4, 7, 10, 14][i]
                         ? password.length >= 10 ? 'bg-emerald-500' : password.length >= 7 ? 'bg-amber-500' : 'bg-red-500'
-                        : 'bg-zinc-700'
+                        : 'bg-zinc-800'
                     }`}
                   />
                 ))}
@@ -285,23 +266,23 @@ export function RegisterPage() {
             )}
           </div>
 
-          <Button type="submit" loading={loading} className="w-full mt-2" size="lg">
+          <Button type="submit" loading={loading} className="w-full mt-2" size="md">
             {loading ? 'Creating account...' : 'Create account'}
           </Button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-zinc-800/60 text-center">
-          <p className="text-sm text-zinc-500">
+        <div className="mt-5 pt-5 border-t border-zinc-800 text-center">
+          <p className="text-xs text-zinc-500">
             Already have an account?{' '}
-            <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">
+            <Link to="/login" className="text-zinc-200 hover:text-white font-medium transition-colors underline underline-offset-4">
               Sign in
             </Link>
           </p>
         </div>
       </Card>
 
-      <p className="text-center text-xs text-zinc-600 mt-4">
-        By creating an account, you agree to evidence-based, privacy-first AI analysis.
+      <p className="text-center text-[11px] text-zinc-600 mt-4">
+        Evidence-based, deterministic analysis. No keyword stuffing required.
       </p>
     </AuthShell>
   );

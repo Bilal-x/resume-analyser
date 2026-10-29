@@ -1,67 +1,61 @@
 @import "tailwindcss";
 
 /* ============================================================
-   DESIGN TOKENS — AI Resume Analyzer Premium Theme
+   DESIGN TOKENS — Minimal Humanized Theme
+   Inspired by clean, quiet, high-craft developer software
    ============================================================ */
 :root {
-  /* Colors */
+  /* Surface & Base */
   --color-bg: #09090b;
-  --color-surface: #18181b;
-  --color-surface-2: #27272a;
+  --color-surface: #121215;
+  --color-surface-2: #18181b;
+  --color-surface-3: #222226;
   --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.15);
+  --color-border-hover: rgba(255, 255, 255, 0.16);
 
-  --color-primary: #6366f1;
-  --color-primary-hover: #818cf8;
-  --color-primary-muted: rgba(99, 102, 241, 0.15);
-  --color-primary-border: rgba(99, 102, 241, 0.3);
+  /* Primary Accent — Crisp, Restrained Modern Neutral */
+  --color-primary: #f4f4f5;
+  --color-primary-hover: #ffffff;
+  --color-primary-muted: rgba(255, 255, 255, 0.06);
+  --color-primary-border: rgba(255, 255, 255, 0.14);
 
-  --color-violet: #8b5cf6;
-  --color-violet-muted: rgba(139, 92, 246, 0.12);
-
+  /* Functional Status Accents — Clean, Muted */
   --color-success: #10b981;
-  --color-success-muted: rgba(16, 185, 129, 0.12);
+  --color-success-muted: rgba(16, 185, 129, 0.10);
   --color-warning: #f59e0b;
-  --color-warning-muted: rgba(245, 158, 11, 0.12);
+  --color-warning-muted: rgba(245, 158, 11, 0.10);
   --color-danger: #ef4444;
-  --color-danger-muted: rgba(239, 68, 68, 0.12);
+  --color-danger-muted: rgba(239, 68, 68, 0.10);
   --color-info: #3b82f6;
-  --color-info-muted: rgba(59, 130, 246, 0.12);
+  --color-info-muted: rgba(59, 130, 246, 0.10);
 
+  /* Typography */
   --color-text: #fafafa;
   --color-text-2: #a1a1aa;
   --color-text-3: #71717a;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Typography */
-  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
-
-  /* Spacing */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
+  /* Refined, Crisp Geometry */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
-  --shadow-primary: 0 4px 24px rgba(99, 102, 241, 0.3);
+  /* Subtle, Atmospheric Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
 }
 
 /* ============================================================
    BASE RESET
    ============================================================ */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -72,6 +66,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  max-width: 100%;
 }
 
 #root {
@@ -101,43 +96,42 @@ body {
    TYPOGRAPHY UTILITIES
    ============================================================ */
 .text-gradient {
-  background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 50%, #f9a8d4 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.text-gradient-green {
-  background: linear-gradient(135deg, #6ee7b7, #34d399);
+.text-gradient-subtle {
+  background: linear-gradient(180deg, #e4e4e7 0%, #71717a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* ============================================================
-   GLASS MORPHISM
+   CARDS & SURFACES
    ============================================================ */
-.glass {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+.minimal-card {
+  background: rgba(18, 18, 21, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.glass-card {
-  background: rgba(24, 24, 27, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.minimal-card-hover {
+  transition: all 0.2s ease;
+}
+.minimal-card-hover:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(24, 24, 28, 0.85);
 }
 
 /* ============================================================
-   ANIMATIONS
+   ANIMATIONS (Restrained & Calm)
    ============================================================ */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -150,136 +144,30 @@ body {
   to { opacity: 1; }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes scoreReveal {
-  from { stroke-dashoffset: 339; }
-  to { stroke-dashoffset: var(--target-offset); }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.25); }
-  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.5); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes progressFill {
-  from { width: 0%; }
-  to { width: var(--target-width); }
-}
-
-/* Animation classes */
 .animate-fade-in-up {
-  animation: fadeInUp 0.5s ease-out forwards;
+  animation: fadeInUp 0.4s ease-out forwards;
 }
 
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out forwards;
 }
 
-.animate-scale-in {
-  animation: scaleIn 0.3s ease-out forwards;
-}
-
-.animate-slide-in {
-  animation: slideInRight 0.4s ease-out forwards;
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 2.5s ease-in-out infinite;
-}
-
-.score-ring {
-  animation: scoreReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
+.stagger-1 { animation-delay: 0.04s; }
+.stagger-2 { animation-delay: 0.08s; }
+.stagger-3 { animation-delay: 0.12s; }
+.stagger-4 { animation-delay: 0.16s; }
+.stagger-5 { animation-delay: 0.20s; }
 
 /* ============================================================
-   SHIMMER SKELETON
-   ============================================================ */
-.shimmer {
-  background: linear-gradient(
-    90deg,
-    var(--color-surface) 25%,
-    var(--color-surface-2) 50%,
-    var(--color-surface) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.8s infinite;
-}
-
-/* ============================================================
-   STAGGER ANIMATION DELAYS
-   ============================================================ */
-.stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.10s; }
-.stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.20s; }
-.stagger-5 { animation-delay: 0.25s; }
-.stagger-6 { animation-delay: 0.30s; }
-
-/* ============================================================
-   FOCUS STYLES (Accessibility)
+   FOCUS STYLES
    ============================================================ */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid rgba(255, 255, 255, 0.4);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* ============================================================
-   SELECTION COLOR
-   ============================================================ */
 ::selection {
-  background-color: rgba(99, 102, 241, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
   color: #fff;
-}
-
-/* ============================================================
-   PRINT STYLES
-   ============================================================ */
-@media print {
-  body {
-    background: #fff !important;
-    color: #000 !important;
-  }
-  .no-print {
-    display: none !important;
-  }
 }

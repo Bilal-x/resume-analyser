@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppLayout, PageHeader } from '../components/Layout';
 import { Button, Card, EmptyState, Badge, Skeleton, Input, Textarea, Alert } from '../components/ui';
 import { jdsApi, type JobDescriptionResponse } from '../lib/api';
-import { Briefcase, Plus, Trash2, Calendar, ChevronDown, ChevronUp, X, Sparkles, AlertCircle } from 'lucide-react';
+import { Briefcase, Plus, Trash2, Calendar, ChevronDown, ChevronUp, X, AlertCircle, Play } from 'lucide-react';
 
 function CreateJDModal({ onClose, onCreate }: {
   onClose: () => void;
@@ -87,8 +87,8 @@ function CreateJDModal({ onClose, onCreate }: {
             <Button type="button" variant="ghost" onClick={onClose} className="flex-1">
               Cancel
             </Button>
-            <Button type="submit" loading={loading} icon={<Sparkles size={15} />} className="flex-1">
-              {loading ? 'Analyzing JD...' : 'Create & Extract Requirements'}
+            <Button type="submit" loading={loading} icon={<Plus size={14} />} className="flex-1">
+              {loading ? 'Processing...' : 'Save & Extract Requirements'}
             </Button>
           </div>
         </form>
@@ -128,7 +128,7 @@ function JDCard({ jd, onDelete, onAnalyze }: {
         </div>
 
         <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
-          <Button size="sm" icon={<Sparkles size={13} />} onClick={onAnalyze}>
+          <Button size="sm" icon={<Play size={13} />} onClick={onAnalyze}>
             Analyze Candidate
           </Button>
           <Button

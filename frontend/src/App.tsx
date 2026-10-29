@@ -16,10 +16,10 @@ function ProtectedRoute({ children, requiredRole }: { children: React.ReactNode;
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin" />
-          <p className="text-xs text-gray-400">Loading your profile...</p>
+          <div className="w-6 h-6 border-2 border-zinc-800 border-t-zinc-300 rounded-full animate-spin" />
+          <p className="text-xs text-zinc-500 font-mono">Authenticating...</p>
         </div>
       </div>
     );
@@ -41,8 +41,8 @@ function HomeRoute() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin" />
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+        <div className="w-6 h-6 border-2 border-zinc-800 border-t-zinc-300 rounded-full animate-spin" />
       </div>
     );
   }

@@ -231,7 +231,7 @@ export default function RecruiterDashboard() {
                     <tr key={a.id} className="hover:bg-zinc-800/20 transition-colors">
                       <td className="py-3.5 px-5">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border border-indigo-500/20 text-indigo-300 flex items-center justify-center text-xs font-bold shrink-0">
+                          <div className="w-8 h-8 rounded-lg bg-zinc-850 border border-zinc-800 text-zinc-300 flex items-center justify-center text-xs font-mono font-medium shrink-0">
                             {a.candidate_name.charAt(0)}
                           </div>
                           <span className="font-medium text-zinc-100 truncate max-w-[140px]">{a.candidate_name}</span>

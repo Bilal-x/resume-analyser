@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppLayout, PageHeader } from '../components/Layout';
 import { Button, Card, EmptyState, Badge, Skeleton, Alert } from '../components/ui';
 import { resumesApi, type ResumeResponse } from '../lib/api';
-import { Upload, FileText, Trash2, CheckCircle2, AlertCircle, Calendar, Sparkles, X } from 'lucide-react';
+import { Upload, FileText, Trash2, CheckCircle2, AlertCircle, Calendar, Play, X } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export default function ResumesPage() {
@@ -211,7 +211,7 @@ export default function ResumesPage() {
                     <Button
                       size="sm"
                       variant="secondary"
-                      icon={<Sparkles size={13} />}
+                      icon={<Play size={13} />}
                       onClick={() => navigate(`/analyses/new?resume_id=${r.id}`)}
                     >
                       Analyze
