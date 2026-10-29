@@ -180,6 +180,17 @@ class InterviewQuestion(BaseModel):
     resume_evidence: str
     evaluation_criteria: Optional[str] = None
 
+# --- Company Intelligence Schema ---
+class CompanyIntelligence(BaseModel):
+    company_name: str
+    work_culture_rating: float = 4.2
+    culture_summary: str
+    hiring_and_interview_style: str
+    candidate_tips: List[str] = Field(default_factory=list)
+    positive_sentiments: List[str] = Field(default_factory=list)
+    cautionary_notes: List[str] = Field(default_factory=list)
+    verified_sources: List[str] = Field(default_factory=list)
+
 # --- Complete Analysis Result Schema ---
 class AnalysisResponse(BaseModel):
     id: str
@@ -201,6 +212,8 @@ class AnalysisResponse(BaseModel):
     interview_questions: List[InterviewQuestion]
     analysis_limitations: List[str]
     created_at: str
+    company_intel: Optional[CompanyIntelligence] = None
+    role_level: Optional[str] = "Standard"
 
 # --- Candidate Comparison Schemas ---
 class CandidateComparisonSummary(BaseModel):

@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { analysesApi, resumesApi, type AnalysisResponse, type ResumeResponse } from '../lib/api';
 import {
   FileText, Briefcase, Plus, ArrowRight, CheckCircle2,
-  BarChart3, TrendingUp, Upload, Circle
+  BarChart3, TrendingUp, Upload, Circle, Sparkles, X, Check
 } from 'lucide-react';
 
 function AnalysisCard({ analysis, onClick }: { analysis: AnalysisResponse; onClick: () => void }) {
@@ -73,6 +73,8 @@ export default function CandidateDashboard() {
   const [resumes, setResumes] = useState<ResumeResponse[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [showOptimizerModal, setShowOptimizerModal] = useState(false);
+
   useEffect(() => {
     Promise.all([
       analysesApi.list().catch(() => []),
@@ -108,7 +110,68 @@ export default function CandidateDashboard() {
             <Skeleton className="h-48" />
           </div>
         </div>
-      </AppLayout>
+        {/* Optimizer Coming Soon Modal */}
+      {showOptimizerModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-lg rounded-2xl bg-zinc-900 border border-zinc-800 p-6 sm:p-7 shadow-2xl relative">
+            <button
+              onClick={() => setShowOptimizerModal(false)}
+              className="absolute top-4 right-4 text-zinc-500 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="flex items-center gap-2 mb-3">
+              <Badge variant="warning" size="xs">Coming Soon · Beta Preview</Badge>
+              <span className="text-[11px] font-mono text-zinc-500">ATS Engine v1.2</span>
+            </div>
+
+            <h3 className="text-lg font-bold text-white mb-2">
+              Automated Resume & ATS Optimizer
+            </h3>
+            <p className="text-xs text-zinc-400 leading-relaxed mb-5">
+              Select any target Job Description and automatically tailor your resume to pass automated ATS filters with 99%+ compliance and strong interview readiness.
+            </p>
+
+            <div className="space-y-3 mb-6">
+              {[
+                {
+                  title: 'Single-Column ATS Layout',
+                  desc: 'Re-exports your resume into an ATS-friendly single-column layout without tables or graphic blocks.'
+                },
+                {
+                  title: 'Project Bullet Rewriting',
+                  desc: 'Rewords existing project accomplishments with action verbs and metrics tailored to the target role.'
+                },
+                {
+                  title: 'Keyword Gap Integration',
+                  desc: 'Naturally integrates required skills and framework equivalents into your experience narrative.'
+                }
+              ].map((feature, i) => (
+                <div key={i} className="p-3 rounded-xl bg-zinc-850/60 border border-zinc-800/80 flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <Check size={12} />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-semibold text-zinc-200">{feature.title}</h4>
+                    <p className="text-[11px] text-zinc-400 mt-0.5">{feature.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+              <Button variant="secondary" size="sm" onClick={() => setShowOptimizerModal(false)}>
+                Close
+              </Button>
+              <Button size="sm" onClick={() => setShowOptimizerModal(false)}>
+                Notify Me When Live
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </AppLayout>
     );
   }
 
@@ -118,9 +181,19 @@ export default function CandidateDashboard() {
         title={`Welcome back, ${user?.name?.split(' ')[0] || 'there'} 👋`}
         subtitle="Track your resume alignment, discover project-backed skills, and improve your chances."
         actions={
-          <Button icon={<Plus size={15} />} onClick={() => navigate('/analyses/new')}>
-            New AI Analysis
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              icon={<Sparkles size={14} className="text-amber-400" />}
+              onClick={() => setShowOptimizerModal(true)}
+            >
+              Optimize Resume (ATS)
+            </Button>
+            <Button size="sm" icon={<Plus size={14} />} onClick={() => navigate('/analyses/new')}>
+              New AI Analysis
+            </Button>
+          </div>
         }
       />
 
@@ -272,6 +345,67 @@ export default function CandidateDashboard() {
                 </Card>
               );
             })}
+          </div>
+        </div>
+      )}
+      {/* Optimizer Coming Soon Modal */}
+      {showOptimizerModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-lg rounded-2xl bg-zinc-900 border border-zinc-800 p-6 sm:p-7 shadow-2xl relative">
+            <button
+              onClick={() => setShowOptimizerModal(false)}
+              className="absolute top-4 right-4 text-zinc-500 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="flex items-center gap-2 mb-3">
+              <Badge variant="warning" size="xs">Coming Soon · Beta Preview</Badge>
+              <span className="text-[11px] font-mono text-zinc-500">ATS Engine v1.2</span>
+            </div>
+
+            <h3 className="text-lg font-bold text-white mb-2">
+              Automated Resume & ATS Optimizer
+            </h3>
+            <p className="text-xs text-zinc-400 leading-relaxed mb-5">
+              Select any target Job Description and automatically tailor your resume to pass automated ATS filters with 99%+ compliance and strong interview readiness.
+            </p>
+
+            <div className="space-y-3 mb-6">
+              {[
+                {
+                  title: 'Single-Column ATS Layout',
+                  desc: 'Re-exports your resume into an ATS-friendly single-column layout without tables or graphic blocks.'
+                },
+                {
+                  title: 'Project Bullet Rewriting',
+                  desc: 'Rewords existing project accomplishments with action verbs and metrics tailored to the target role.'
+                },
+                {
+                  title: 'Keyword Gap Integration',
+                  desc: 'Naturally integrates required skills and framework equivalents into your experience narrative.'
+                }
+              ].map((feature, i) => (
+                <div key={i} className="p-3 rounded-xl bg-zinc-850/60 border border-zinc-800/80 flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <Check size={12} />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-semibold text-zinc-200">{feature.title}</h4>
+                    <p className="text-[11px] text-zinc-400 mt-0.5">{feature.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+              <Button variant="secondary" size="sm" onClick={() => setShowOptimizerModal(false)}>
+                Close
+              </Button>
+              <Button size="sm" onClick={() => setShowOptimizerModal(false)}>
+                Notify Me When Live
+              </Button>
+            </div>
           </div>
         </div>
       )}

@@ -7,7 +7,8 @@ import {
   ChevronDown, ChevronUp, CheckCircle2, XCircle, AlertCircle, Info,
   ArrowLeft, Trash2, MessageSquare, Wrench,
   BarChart3, Search, FolderOpen, BookOpen, Target, HelpCircle,
-  FileJson, Printer, Plus
+  FileJson, Printer, Plus, Sparkles, Building2, Star, X, Check,
+  ArrowRight
 } from 'lucide-react';
 
 const TABS = [
@@ -684,6 +685,311 @@ function InterviewTab({ analysis }: { analysis: AnalysisResponse }) {
 }
 
 /* ============================================================
+   AT A GLANCE SUMMARY COMPONENT (Executive / High-Signal)
+   ============================================================ */
+function AtAGlanceSummary({
+  analysis,
+  onOpenOptimizer,
+  onSwitchToDetailed,
+}: {
+  analysis: AnalysisResponse;
+  onOpenOptimizer: () => void;
+  onSwitchToDetailed: () => void;
+}) {
+  const intel = analysis.company_intel;
+  const sb = analysis.score_breakdown;
+  const roleLevel = analysis.role_level || 'Fresher / Early-Career';
+
+  // Detect engineering clusters from findings
+  const allFindingNames = [
+    ...analysis.direct_findings.map(f => f.requirement_name.toLowerCase()),
+    ...analysis.indirect_findings.map(f => f.requirement_name.toLowerCase()),
+    ...analysis.indirect_findings.map(f => f.related_technology_or_activity.toLowerCase())
+  ].join(' ');
+
+  const hasFrontend = ['html', 'css', 'javascript', 'react', 'frontend', 'ui', 'vue'].some(t => allFindingNames.includes(t));
+  const hasBackend = ['python', 'node', 'django', 'fastapi', 'backend', 'sql', 'postgres', 'api'].some(t => allFindingNames.includes(t));
+  const hasAI = ['ai', 'machine learning', 'neural', 'scikit', 'pytorch', 'model'].some(t => allFindingNames.includes(t));
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+      {/* Top Banner: Real HR Mindset Takeaway */}
+      <Card className="p-6 border-zinc-800 bg-zinc-900/40">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="flex items-start gap-5">
+            <ScoreRing score={analysis.overall_score} size={110} strokeWidth={9} />
+            <div className="space-y-1.5">
+              <div className="flex flex-wrap items-center gap-2">
+                <ScoreInterpretationBadge score={analysis.overall_score} />
+                <Badge variant="neutral" size="xs">
+                  Role Calibrated: {roleLevel}
+                </Badge>
+              </div>
+              <h2 className="text-lg font-bold text-white tracking-tight">
+                {sb.score_interpretation}
+              </h2>
+              <p className="text-xs text-zinc-400 max-w-xl leading-relaxed">
+                Evaluated with real HR hiring logic for <span className="text-zinc-200 font-medium">{analysis.job_title}</span>.
+                Candidate demonstrates practical capability across <span className="text-emerald-400 font-semibold">{analysis.direct_findings.length + analysis.indirect_findings.length} verified competencies</span>.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-2.5 w-full lg:w-auto shrink-0">
+            <Button
+              onClick={onOpenOptimizer}
+              icon={<Sparkles size={14} className="text-amber-400" />}
+              className="text-xs px-3.5 py-2"
+            >
+              Optimize Resume for this JD
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={onSwitchToDetailed}
+              icon={<Search size={14} />}
+              className="text-xs px-3.5 py-2"
+            >
+              Full Technical Deep-Dive
+            </Button>
+          </div>
+        </div>
+
+        {/* Competency Clusters recognized */}
+        <div className="mt-5 pt-4 border-t border-zinc-800/80 flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-zinc-500 font-mono text-[11px] uppercase tracking-wider mr-1">Recognized Clusters:</span>
+          {hasFrontend && (
+            <Badge variant="success" size="xs">
+              Frontend Engineering Verified
+            </Badge>
+          )}
+          {hasBackend && (
+            <Badge variant="info" size="xs">
+              Backend Engineering Verified
+            </Badge>
+          )}
+          {hasAI && (
+            <Badge variant="warning" size="xs">
+              Applied AI Engineering Demonstrated
+            </Badge>
+          )}
+          {analysis.project_analyses.length > 0 && (
+            <Badge variant="neutral" size="xs">
+              {analysis.project_analyses.length} Hands-on Projects Evaluated
+            </Badge>
+          )}
+        </div>
+      </Card>
+
+      {/* Company & Hiring Culture Briefing (if company specified) */}
+      {intel && (
+        <Card className="p-6 border-zinc-800 bg-zinc-900/30">
+          <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b border-zinc-800">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-zinc-850 border border-zinc-800 flex items-center justify-center text-zinc-300">
+                <Building2 size={16} />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-white">
+                  {intel.company_name} — Culture & Hiring Intelligence
+                </h3>
+                <p className="text-[11px] text-zinc-500">Aggregated from employee reviews, Glassdoor, and technical interview reports</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-mono font-medium">
+              <Star size={13} className="fill-amber-400 text-amber-400" />
+              <span>{intel.work_culture_rating.toFixed(1)} / 5.0 Culture Rating</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            {/* Culture & Interview Style */}
+            <div className="p-4 rounded-lg bg-zinc-900/60 border border-zinc-800/80 space-y-3">
+              <div>
+                <div className="text-[11px] text-zinc-400 font-medium uppercase tracking-wider mb-1">Work Culture</div>
+                <p className="text-zinc-300 leading-relaxed">{intel.culture_summary}</p>
+              </div>
+              <div>
+                <div className="text-[11px] text-zinc-400 font-medium uppercase tracking-wider mb-1">Hiring & Interview Format</div>
+                <p className="text-zinc-300 leading-relaxed">{intel.hiring_and_interview_style}</p>
+              </div>
+            </div>
+
+            {/* Candidate Advice & Sentiments */}
+            <div className="p-4 rounded-lg bg-zinc-900/60 border border-zinc-800/80 space-y-3">
+              <div>
+                <div className="text-[11px] text-emerald-400 font-medium uppercase tracking-wider mb-1.5">What Hiring Managers Look For</div>
+                <ul className="space-y-1.5">
+                  {intel.candidate_tips.map((tip, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-zinc-300 leading-relaxed">
+                      <CheckCircle2 size={13} className="text-emerald-400 mt-0.5 shrink-0" />
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {intel.cautionary_notes.length > 0 && (
+                <div className="pt-2 border-t border-zinc-800">
+                  <div className="text-[11px] text-amber-400 font-medium uppercase tracking-wider mb-1">Community Note</div>
+                  <p className="text-zinc-400">{intel.cautionary_notes.join(' · ')}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* 2-Column Summary: Verified Strengths vs Areas to Address */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Strengths Card */}
+        <Card className="p-6 border-zinc-800 bg-zinc-900/30">
+          <div className="flex items-center gap-2 mb-4 text-emerald-400">
+            <CheckCircle2 size={16} />
+            <h3 className="text-sm font-semibold text-zinc-100">Confirmed Strengths & Matches</h3>
+          </div>
+          <ul className="space-y-2.5 text-xs text-zinc-300">
+            {sb.key_positive_factors.map((pos, i) => (
+              <li key={i} className="flex items-start gap-2 leading-relaxed">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                <span>{pos}</span>
+              </li>
+            ))}
+            {analysis.direct_findings.slice(0, 4).map((f, i) => (
+              <li key={`df-${i}`} className="flex items-start gap-2 leading-relaxed text-zinc-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 mt-1.5 shrink-0" />
+                <span>
+                  <strong className="text-zinc-200">{f.requirement_name}</strong>: {f.relevance_explanation}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+
+        {/* Missing Requirements Card */}
+        <Card className="p-6 border-zinc-800 bg-zinc-900/30">
+          <div className="flex items-center gap-2 mb-4 text-amber-400">
+            <AlertCircle size={16} />
+            <h3 className="text-sm font-semibold text-zinc-100">Areas to Strengthen for this Role</h3>
+          </div>
+          {analysis.missing_requirements.length > 0 ? (
+            <div className="space-y-3">
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                The following skills were not detected in either your technical inventory or demonstrated projects:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {analysis.missing_requirements.map((req, i) => (
+                  <span
+                    key={i}
+                    className="px-2.5 py-1 rounded-md text-xs font-mono bg-zinc-900 border border-zinc-800 text-zinc-300"
+                  >
+                    {req}
+                  </span>
+                ))}
+              </div>
+              <div className="pt-3 border-t border-zinc-800 text-xs text-zinc-500">
+                Tip: Click <strong>"Optimize Resume for this JD"</strong> above to see suggested bullet rewrites that highlight these capabilities.
+              </div>
+            </div>
+          ) : (
+            <p className="text-xs text-emerald-400 flex items-center gap-2">
+              <CheckCircle2 size={14} /> All core role requirements are supported by your profile!
+            </p>
+          )}
+        </Card>
+      </div>
+
+      {/* Switch to detailed view footer callout */}
+      <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <div>
+          <span className="font-semibold text-zinc-200">Need full technical granularity?</span>
+          <p className="text-zinc-400 mt-0.5">Explore the complete requirement-by-requirement matrix, project architecture breakdowns, and tailored interview questions.</p>
+        </div>
+        <Button variant="secondary" size="sm" onClick={onSwitchToDetailed} iconRight={<ArrowRight size={13} />} className="shrink-0">
+          Open Technical Breakdown
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   OPTIMIZE RESUME MODAL (Coming Soon)
+   ============================================================ */
+function OptimizeResumeModal({
+  isOpen,
+  onClose,
+  jobTitle,
+  companyName
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  jobTitle: string;
+  companyName: string;
+}) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
+      <div className="w-full max-w-lg rounded-2xl bg-zinc-900 border border-zinc-800 p-6 sm:p-7 shadow-2xl relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-zinc-500 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+        >
+          <X size={16} />
+        </button>
+
+        <div className="flex items-center gap-2 mb-3">
+          <Badge variant="warning" size="xs">Coming Soon · Beta Preview</Badge>
+          <span className="text-[11px] font-mono text-zinc-500">ATS Engine v1.2</span>
+        </div>
+
+        <h3 className="text-lg font-bold text-white mb-2">
+          Automated Resume & ATS Optimizer
+        </h3>
+        <p className="text-xs text-zinc-400 leading-relaxed mb-5">
+          Tailors your resume directly to <span className="text-zinc-200 font-medium">{jobTitle}</span> {companyName && <span>at <span className="text-zinc-200 font-medium">{companyName}</span></span>} to maximize interview callbacks without keyword stuffing.
+        </p>
+
+        <div className="space-y-3 mb-6">
+          {[
+            {
+              title: 'Contextual Metric Rewrites',
+              desc: 'Transforms project bullets to highlight quantifiable impact matching this specific role.'
+            },
+            {
+              title: 'ATS Single-Column Format',
+              desc: 'Generates cleanly formatted, parseable PDF/DOCX templates guaranteed for 99%+ ATS compliance.'
+            },
+            {
+              title: 'Keyword Density Balancing',
+              desc: 'Harmonizes phrasing (e.g. JavaScript vs React) to satisfy automated recruiter scanners.'
+            }
+          ].map((feature, i) => (
+            <div key={i} className="p-3 rounded-xl bg-zinc-850/60 border border-zinc-800/80 flex items-start gap-3">
+              <div className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <Check size={12} />
+              </div>
+              <div>
+                <h4 className="text-xs font-semibold text-zinc-200">{feature.title}</h4>
+                <p className="text-[11px] text-zinc-400 mt-0.5">{feature.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+          <Button variant="secondary" size="sm" onClick={onClose}>
+            Close
+          </Button>
+          <Button size="sm" onClick={onClose}>
+            Got it, Notify Me!
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
    MAIN PAGE
    ============================================================ */
 export default function AnalysisDetailPage() {
@@ -693,6 +999,8 @@ export default function AnalysisDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('overview');
+  const [viewMode, setViewMode] = useState<'glance' | 'detailed'>('glance');
+  const [showOptimizerModal, setShowOptimizerModal] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -751,15 +1059,40 @@ export default function AnalysisDetailPage() {
 
   return (
     <AppLayout>
-      {/* Breadcrumb / Back */}
-      <div className="flex items-center justify-between mb-6 gap-4">
+      {/* Top Bar: Navigation, View Mode Switcher, and Export Actions */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors group"
+          className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors group w-fit"
         >
           <ArrowLeft size={15} className="group-hover:-translate-x-0.5 transition-transform" />
           Back
         </button>
+
+        {/* View Mode Switcher (Simple At a Glance vs Detailed) */}
+        <div className="inline-flex p-1 bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-medium self-start sm:self-center">
+          <button
+            onClick={() => setViewMode('glance')}
+            className={`px-3.5 py-1.5 rounded-md transition-all ${
+              viewMode === 'glance'
+                ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-sm'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            At a Glance
+          </button>
+          <button
+            onClick={() => setViewMode('detailed')}
+            className={`px-3.5 py-1.5 rounded-md transition-all ${
+              viewMode === 'detailed'
+                ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-sm'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Detailed Technical Deep-Dive
+          </button>
+        </div>
+
         <div className="flex items-center gap-2 flex-wrap justify-end">
           <Button size="sm" variant="secondary" icon={<FileJson size={13} />} onClick={handleExportJson}>
             Export JSON
@@ -776,68 +1109,99 @@ export default function AnalysisDetailPage() {
         </div>
       </div>
 
-      {/* Header card */}
-      <Card className="p-6 mb-6">
-        <div className="flex flex-col sm:flex-row items-start gap-5">
-          <ScoreRing score={analysis.overall_score} size={100} strokeWidth={8} />
-          <div className="flex-1 min-w-0">
-            <h1 className="text-2xl font-bold text-white">{analysis.candidate_name}</h1>
-            <p className="text-zinc-400 mt-1">
-              <span className="font-medium text-zinc-300">{analysis.job_title}</span>
-              {analysis.company_name && <span className="text-zinc-500"> at {analysis.company_name}</span>}
-            </p>
-            <div className="flex flex-wrap items-center gap-2 mt-3">
-              <ScoreInterpretationBadge score={analysis.overall_score} />
-              <Badge variant="neutral">
-                {analysis.score_breakdown.analysis_confidence} Confidence
-              </Badge>
-              <Badge variant="neutral">
-                {analysis.score_breakdown.evidence_coverage_percent.toFixed(0)}% Evidence Coverage
-              </Badge>
-              <span className="text-xs text-zinc-500">
-                {new Date(analysis.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-              </span>
+      {/* Header card with candidate details and optimize action */}
+      <Card className="p-6 mb-6 border-zinc-800 bg-zinc-900/40">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-5">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-zinc-850 border border-zinc-800 flex items-center justify-center text-sm font-bold font-mono text-zinc-200 shrink-0">
+              {analysis.candidate_name.charAt(0)}
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">{analysis.candidate_name}</h1>
+              <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
+                Target Role: <span className="font-medium text-zinc-200">{analysis.job_title}</span>
+                {analysis.company_name && <span className="text-zinc-500 font-normal"> at {analysis.company_name}</span>}
+              </p>
+              <div className="flex flex-wrap items-center gap-2 mt-2.5">
+                <Badge variant="neutral" size="xs">
+                  {analysis.role_level || 'Role Level: Standard'}
+                </Badge>
+                <Badge variant="neutral" size="xs">
+                  {analysis.score_breakdown.analysis_confidence} Confidence
+                </Badge>
+                <Badge variant="neutral" size="xs">
+                  {analysis.score_breakdown.evidence_coverage_percent.toFixed(0)}% Coverage
+                </Badge>
+              </div>
             </div>
           </div>
+
+          <Button
+            size="sm"
+            onClick={() => setShowOptimizerModal(true)}
+            icon={<Sparkles size={13} className="text-amber-400" />}
+            className="text-xs shrink-0 self-start sm:self-center"
+          >
+            Optimize Resume for this JD (ATS)
+          </Button>
         </div>
       </Card>
 
-      {/* Tabs */}
-      <div className="mb-6">
-        <Tabs
-          tabs={TABS}
-          activeTab={activeTab}
-          onChange={setActiveTab}
+      {/* Conditional View: At-a-Glance vs Detailed Technical Tabs */}
+      {viewMode === 'glance' ? (
+        <AtAGlanceSummary
+          analysis={analysis}
+          onOpenOptimizer={() => setShowOptimizerModal(true)}
+          onSwitchToDetailed={() => setViewMode('detailed')}
         />
-      </div>
+      ) : (
+        <div className="space-y-6 animate-fade-in">
+          {/* Tabs */}
+          <div className="mb-6">
+            <Tabs
+              tabs={TABS}
+              activeTab={activeTab}
+              onChange={setActiveTab}
+            />
+          </div>
 
-      {/* Tab content */}
-      <div>
-        {activeTab === 'overview' && <OverviewTab analysis={analysis} />}
-        {activeTab === 'skills' && <SkillMatchTab analysis={analysis} />}
-        {activeTab === 'projects' && <ProjectsTab analysis={analysis} />}
-        {activeTab === 'direct' && <DirectFindingsTab analysis={analysis} />}
-        {activeTab === 'indirect' && <IndirectFindingsTab analysis={analysis} />}
-        {activeTab === 'missing' && <MissingTab analysis={analysis} />}
-        {activeTab === 'recommendations' && <RecommendationsTab analysis={analysis} />}
-        {activeTab === 'interview' && <InterviewTab analysis={analysis} />}
-      </div>
+          {/* Tab content */}
+          <div>
+            {activeTab === 'overview' && <OverviewTab analysis={analysis} />}
+            {activeTab === 'skills' && <SkillMatchTab analysis={analysis} />}
+            {activeTab === 'projects' && <ProjectsTab analysis={analysis} />}
+            {activeTab === 'direct' && <DirectFindingsTab analysis={analysis} />}
+            {activeTab === 'indirect' && <IndirectFindingsTab analysis={analysis} />}
+            {activeTab === 'missing' && <MissingTab analysis={analysis} />}
+            {activeTab === 'recommendations' && <RecommendationsTab analysis={analysis} />}
+            {activeTab === 'interview' && <InterviewTab analysis={analysis} />}
+          </div>
+        </div>
+      )}
 
       {/* Limitations */}
       {analysis.analysis_limitations.length > 0 && (
-        <Card className="mt-8 p-5">
-          <h3 className="text-xs font-semibold text-zinc-500 mb-3 flex items-center gap-2 uppercase tracking-wider">
-            <Info size={13} /> Analysis Limitations
+        <Card className="mt-8 p-5 border-zinc-800 bg-zinc-900/30">
+          <h3 className="text-xs font-semibold text-zinc-500 mb-2 flex items-center gap-2 uppercase tracking-wider font-mono">
+            <Info size={13} /> Evaluation Notes & HR Methodology
           </h3>
-          <ul className="space-y-1.5">
+          <ul className="space-y-1">
             {analysis.analysis_limitations.map((l, i) => (
-              <li key={i} className="text-xs text-zinc-600 flex items-start gap-2">
+              <li key={i} className="text-xs text-zinc-500 flex items-start gap-2">
                 <span className="shrink-0 mt-0.5">•</span>{l}
               </li>
             ))}
           </ul>
         </Card>
       )}
+
+      {/* Optimizer Coming Soon Modal */}
+      <OptimizeResumeModal
+        isOpen={showOptimizerModal}
+        onClose={() => setShowOptimizerModal(false)}
+        jobTitle={analysis.job_title}
+        companyName={analysis.company_name}
+      />
     </AppLayout>
   );
 }

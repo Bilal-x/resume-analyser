@@ -31,6 +31,9 @@ def _db_row_to_analysis(row) -> AnalysisResponse:
             optional_learning_exercises=raw_dict.get("optional_learning_exercises", [])
         )
 
+    from ..services.company_intelligence import generate_company_intelligence
+    from ..services.scoring_engine import is_fresher_job
+
     return AnalysisResponse(
         id=row["id"],
         resume_id=row["resume_id"],
@@ -50,7 +53,9 @@ def _db_row_to_analysis(row) -> AnalysisResponse:
         recommendations=parse_recommendations(json.loads(row["recommendations"])),
         interview_questions=[InterviewQuestion(**x) for x in json.loads(row["interview_questions"])],
         analysis_limitations=json.loads(row["analysis_limitations"]),
-        created_at=row["created_at"]
+        created_at=row["created_at"],
+        company_intel=generate_company_intelligence(row["company_name"]),
+        role_level="Fresher / Early-Career" if is_fresher_job(row["job_title"], []) else "Experienced / Mid-Senior"
     )
 
 @router.post("/", response_model=AnalysisResponse)

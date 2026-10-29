@@ -119,6 +119,16 @@ export interface RecommendationsSection {
   interview_prep_topics: string[];
   optional_learning_exercises: string[];
 }
+export interface CompanyIntelligence {
+  company_name: string;
+  work_culture_rating: number;
+  culture_summary: string;
+  hiring_and_interview_style: string;
+  candidate_tips: string[];
+  positive_sentiments: string[];
+  cautionary_notes: string[];
+  verified_sources: string[];
+}
 export interface AnalysisResponse {
   id: string; resume_id: string; job_description_id: string; owner_id: string;
   candidate_name: string; resume_file_name: string; job_title: string; company_name: string;
@@ -128,6 +138,8 @@ export interface AnalysisResponse {
   project_analyses: ProjectAnalysisItem[]; missing_requirements: string[];
   recommendations: RecommendationsSection; interview_questions: InterviewQuestion[];
   analysis_limitations: string[]; created_at: string;
+  company_intel?: CompanyIntelligence | null;
+  role_level?: string;
 }
 export interface CandidateComparisonSummary {
   analysis_id: string; resume_id: string; candidate_name: string; file_name: string;

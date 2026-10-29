@@ -31,19 +31,35 @@ def evaluate_direct_matching(
     resume_data: ExtractedResumeData
 ) -> List[DirectFinding]:
     """
-    Perform Stage 3 Direct Skill Matching.
-    Find explicit evidence in Skills, Experience, Projects, or Certifications.
+    Perform Direct Skill Matching.
+    Finds evidence in Skills, Experience, Projects, or Certifications.
+    Skills declared in the Skills section are respected and credited as declared competencies,
+    not flagged as false skills or penalized.
     """
     direct_findings: List[DirectFinding] = []
-    explicit_skills_lower = {s.lower(): s for s in resume_data.technical_skills}
     
+    # Build dictionary of all normalized skills in candidate's skills list
+    explicit_skills_map: Dict[str, str] = {}
+    for s in resume_data.technical_skills:
+        s_norm = normalize_skill_name(s).lower()
+        s_raw_low = s.strip().lower()
+        explicit_skills_map[s_norm] = s
+        explicit_skills_map[s_raw_low] = s
+
     for req in requirements:
         skill = req.skill
         skill_norm = normalize_skill_name(skill)
         skill_low = skill_norm.lower()
+        req_synonyms = [s.lower() for s in req.synonyms_and_related]
         
-        # Check explicit Skills section
-        in_skills_section = (skill_low in explicit_skills_lower)
+        # Check explicit Skills section (direct match or synonym match)
+        in_skills_section = (skill_low in explicit_skills_map) or any(syn in explicit_skills_map for syn in req_synonyms)
+        matched_skill_label = explicit_skills_map.get(skill_low)
+        if not matched_skill_label:
+            for syn in req_synonyms:
+                if syn in explicit_skills_map:
+                    matched_skill_label = explicit_skills_map[syn]
+                    break
         
         # Check Experience section
         exp_text = "\n".join([
@@ -74,13 +90,13 @@ def evaluate_direct_matching(
             strength = "Strong"
             section = "Work Experience"
             excerpt = exp_mentions[0]
-            explanation = f"Directly applied in professional role: {excerpt[:80]}..."
+            explanation = f"Directly applied in professional role: {excerpt[:100]}..."
             classification = "Explicit professional experience"
         elif proj_mentions:
             strength = "Moderate"
             section = "Projects"
             excerpt = proj_mentions[0]
-            explanation = f"Hands-on implementation demonstrated in project: {excerpt[:80]}..."
+            explanation = f"Hands-on implementation demonstrated in project: {excerpt[:100]}..."
             classification = "Explicit project implementation"
         elif cert_mentions:
             strength = "Moderate"
@@ -89,12 +105,12 @@ def evaluate_direct_matching(
             explanation = f"Verified through formal accreditation/certification: {cert_mentions[0]}."
             classification = "Verified Certification"
         elif in_skills_section:
-            # Listed in skills, but no project or work details found
-            strength = "Unverified"
+            # Stated in Skills section: HR recognizes stated competencies
+            strength = "Declared"
             section = "Skills"
-            excerpt = f"Listed in skills: '{explicit_skills_lower[skill_low]}'"
-            explanation = f"Claimed in Skills section, but lacks detailed implementation evidence in work or project descriptions."
-            classification = "Claimed without project backing"
+            excerpt = f"Listed in skills inventory: '{matched_skill_label or skill_norm}'"
+            explanation = f"Directly declared in technical skills section. Validated as an active candidate competency."
+            classification = "Declared Technical Skill"
         else:
             # No direct evidence found
             continue
