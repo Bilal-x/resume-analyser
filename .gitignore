@@ -49,5 +49,11 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Internal task specs and previews
+task*.md
+task.md
+stitch_preview*
+/*.html
+
 # Temporary screenshots
 /*.png

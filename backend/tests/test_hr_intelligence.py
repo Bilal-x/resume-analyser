@@ -143,3 +143,4 @@ def test_company_intelligence_generation():
     assert custom_intel is not None
     assert custom_intel.company_name == "Acme AI Labs"
     assert len(custom_intel.candidate_tips) >= 2
+

@@ -131,3 +131,4 @@ def generate_company_intelligence(company_name: str) -> Optional[CompanyIntellig
             cautionary_notes=["Standard corporate hierarchy and approval cycles"],
             verified_sources=["Glassdoor Employee Reviews", "Indeed Company Pages"]
         )
+
