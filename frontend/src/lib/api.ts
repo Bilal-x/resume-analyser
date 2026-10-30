@@ -140,6 +140,10 @@ export interface AnalysisResponse {
   analysis_limitations: string[]; created_at: string;
   company_intel?: CompanyIntelligence | null;
   role_level?: string;
+  years_experience_required?: number | null;
+  years_experience_found?: number | null;
+  experience_assessment?: string | null;
+  creative_summary?: string | null;
 }
 export interface CandidateComparisonSummary {
   analysis_id: string; resume_id: string; candidate_name: string; file_name: string;

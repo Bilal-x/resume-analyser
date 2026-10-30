@@ -34,6 +34,28 @@ def _db_row_to_analysis(row) -> AnalysisResponse:
 
     from ..services.company_intelligence import generate_company_intelligence
     from ..services.scoring_engine import is_fresher_job
+    from ..services.experience_analyzer import (
+        extract_jd_experience,
+        extract_resume_experience,
+        assess_experience,
+        generate_creative_summary
+    )
+
+    conn_exp = get_connection()
+    jd_row_exp = conn_exp.execute("SELECT description, structured_requirements FROM job_descriptions WHERE id = ?", (row["job_description_id"],)).fetchone()
+    resume_row_exp = conn_exp.execute("SELECT extracted_text, structured_data FROM resumes WHERE id = ?", (row["resume_id"],)).fetchone()
+    conn_exp.close()
+
+    jd_desc_exp = jd_row_exp["description"] if jd_row_exp else ""
+    resume_raw_exp = resume_row_exp["extracted_text"] if resume_row_exp else ""
+    from ..models.schemas import ExtractedResumeData
+    structured_resume_exp = ExtractedResumeData(**json.loads(resume_row_exp["structured_data"])) if resume_row_exp else ExtractedResumeData()
+    reqs_exp = [RequirementMatrixItem(**x) for x in json.loads(row["requirements_matrix"])]
+
+    req_years = extract_jd_experience(jd_desc_exp, [], row["job_title"])
+    found_years = extract_resume_experience(structured_resume_exp, resume_raw_exp)
+    exp_assessment = assess_experience(req_years, found_years)
+    creative_summary = generate_creative_summary(row["overall_score"], req_years, found_years, row["candidate_name"])
 
     return AnalysisResponse(
         id=row["id"],
@@ -56,7 +78,11 @@ def _db_row_to_analysis(row) -> AnalysisResponse:
         analysis_limitations=json.loads(row["analysis_limitations"]),
         created_at=row["created_at"],
         company_intel=generate_company_intelligence(row["company_name"]),
-        role_level="Fresher / Early-Career" if is_fresher_job(row["job_title"], []) else "Experienced / Mid-Senior"
+        role_level="Fresher / Early-Career" if is_fresher_job(row["job_title"], []) else "Experienced / Mid-Senior",
+        years_experience_required=req_years,
+        years_experience_found=found_years,
+        experience_assessment=exp_assessment,
+        creative_summary=creative_summary
     )
 
 @router.post("/", response_model=AnalysisResponse)

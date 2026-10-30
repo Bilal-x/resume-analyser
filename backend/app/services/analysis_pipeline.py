@@ -173,6 +173,27 @@ def run_analysis_pipeline(
     
     created_at = datetime.now(timezone.utc).isoformat()
     
+    # Experience intelligence & creative summary
+    from .experience_analyzer import (
+        extract_jd_experience,
+        extract_resume_experience,
+        assess_experience,
+        generate_creative_summary
+    )
+    
+    conn = get_connection()
+    jd_row = conn.execute("SELECT description FROM job_descriptions WHERE id = ?", (job_description_id,)).fetchone()
+    resume_row = conn.execute("SELECT extracted_text FROM resumes WHERE id = ?", (resume_id,)).fetchone()
+    conn.close()
+    
+    jd_desc = jd_row["description"] if jd_row else ""
+    resume_raw = resume_row["extracted_text"] if resume_row else (resume_data.professional_summary or "")
+    
+    req_years = extract_jd_experience(jd_desc, requirements, job_title)
+    found_years = extract_resume_experience(resume_data, resume_raw)
+    exp_assessment = assess_experience(req_years, found_years)
+    creative_summary = generate_creative_summary(overall_score, req_years, found_years, candidate_name)
+
     response = AnalysisResponse(
         id=analysis_id,
         resume_id=resume_id,
@@ -194,7 +215,11 @@ def run_analysis_pipeline(
         analysis_limitations=limitations,
         created_at=created_at,
         company_intel=company_intel,
-        role_level=role_level
+        role_level=role_level,
+        years_experience_required=req_years,
+        years_experience_found=found_years,
+        experience_assessment=exp_assessment,
+        creative_summary=creative_summary
     )
     
     # Persist in SQLite

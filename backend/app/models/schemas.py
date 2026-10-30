@@ -214,6 +214,10 @@ class AnalysisResponse(BaseModel):
     created_at: str
     company_intel: Optional[CompanyIntelligence] = None
     role_level: Optional[str] = "Standard"
+    years_experience_required: Optional[float] = None
+    years_experience_found: Optional[float] = None
+    experience_assessment: Optional[str] = None
+    creative_summary: Optional[str] = None
 
 # --- Candidate Comparison Schemas ---
 class CandidateComparisonSummary(BaseModel):
