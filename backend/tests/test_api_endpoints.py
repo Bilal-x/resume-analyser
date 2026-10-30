@@ -231,3 +231,34 @@ def test_prompt_injection_safety():
     assert data["overall_score"] < 4.0
     assert data["score_breakdown"]["score_interpretation"] == "Limited Demonstrated Alignment"
 
+def test_instant_unauthenticated_analysis():
+    """Verify that any user can analyze resume + JD without logging in."""
+    sample_resume = """
+    Alex Johnson
+    alex@example.com
+    Technical Skills:
+    Python, FastAPI, Docker, PostgreSQL, React
+    Projects:
+    E-Commerce Platform:
+    Built microservices with FastAPI and PostgreSQL handling 5,000 req/s. Deployed with Docker.
+    """
+
+    res = client.post(
+        "/api/analyses/instant",
+        data={
+            "jd_text": "We are seeking a Backend Engineer with Python, FastAPI, and Docker experience.",
+            "job_title": "Backend Engineer",
+            "company_name": "Acme Corp"
+        },
+        files={"file": ("resume.txt", sample_resume.encode("utf-8"), "text/plain")}
+    )
+
+    assert res.status_code == 200
+    data = res.json()
+    assert data["overall_score"] >= 6.0
+    assert data["job_title"] == "Backend Engineer"
+    assert data["company_name"] == "Acme Corp"
+    assert len(data["requirements_matrix"]) > 0
+    assert "FastAPI" in [d["requirement_name"] for d in data["direct_findings"]]
+
+

@@ -1,6 +1,7 @@
 import uuid
 import json
-from fastapi import APIRouter, HTTPException, Depends
+from datetime import datetime
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
 from pydantic import BaseModel
 from typing import Optional, List
 from ..services.analysis_pipeline import run_analysis_pipeline
@@ -96,6 +97,90 @@ def run_analysis(req: AnalysisRequest, current_user: dict = Depends(get_current_
         requirements=requirements,
         resume_data=structured_data,
         custom_weights=req.custom_weights
+    )
+    return result
+
+@router.post("/instant", response_model=AnalysisResponse)
+async def run_instant_analysis(
+    file: Optional[UploadFile] = File(None),
+    resume_text: Optional[str] = Form(None),
+    jd_text: str = Form(...),
+    job_title: Optional[str] = Form("Target Role"),
+    company_name: Optional[str] = Form("")
+):
+    if not file and not resume_text:
+        raise HTTPException(status_code=400, detail="Please provide either a resume file or resume text.")
+    
+    conn = get_connection()
+    cursor = conn.cursor()
+    # Ensure guest user exists
+    cursor.execute("SELECT id FROM users WHERE id = 'guest'")
+    if not cursor.fetchone():
+        cursor.execute(
+            "INSERT INTO users (id, email, name, password_hash, role, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+            ('guest', 'guest@analyzer.local', 'Guest User', 'guest_hash', 'candidate', datetime.utcnow().isoformat())
+        )
+        conn.commit()
+
+    from ..services.parser import extract_raw_text, parse_resume
+    from ..services.jd_analyzer import parse_job_description
+
+    if file and file.filename:
+        file_bytes = await file.read()
+        filename = file.filename
+    else:
+        file_bytes = (resume_text or "").encode("utf-8")
+        filename = "resume.txt"
+
+    raw_resume_text = extract_raw_text(file_bytes, filename)
+    structured_resume = parse_resume(file_bytes, filename)
+    requirements = parse_job_description(jd_text)
+
+    resume_id = str(uuid.uuid4())
+    jd_id = str(uuid.uuid4())
+    analysis_id = str(uuid.uuid4())
+    now_iso = datetime.utcnow().isoformat()
+    file_type = "pdf" if filename.lower().endswith(".pdf") else ("docx" if filename.lower().endswith(".docx") else "txt")
+
+    cursor.execute("""
+        INSERT INTO resumes (id, owner_id, file_name, file_type, extracted_text, structured_data, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (
+        resume_id,
+        "guest",
+        filename,
+        file_type,
+        raw_resume_text,
+        json.dumps(structured_resume.model_dump()),
+        now_iso
+    ))
+
+    cursor.execute("""
+        INSERT INTO job_descriptions (id, owner_id, title, company, description, structured_requirements, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (
+        jd_id,
+        "guest",
+        job_title or "Target Role",
+        company_name or "",
+        jd_text,
+        json.dumps([r.model_dump() for r in requirements]),
+        now_iso
+    ))
+    conn.commit()
+    conn.close()
+
+    result = run_analysis_pipeline(
+        analysis_id=analysis_id,
+        resume_id=resume_id,
+        job_description_id=jd_id,
+        owner_id="guest",
+        candidate_name=structured_resume.full_name or "Candidate",
+        resume_file_name=filename,
+        job_title=job_title or "Target Role",
+        company_name=company_name or "",
+        requirements=requirements,
+        resume_data=structured_resume
     )
     return result
 

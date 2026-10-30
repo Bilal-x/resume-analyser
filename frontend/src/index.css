@@ -1,51 +1,51 @@
 @import "tailwindcss";
 
 /* ============================================================
-   DESIGN TOKENS — Minimal Humanized Theme
-   Inspired by clean, quiet, high-craft developer software
+   DESIGN TOKENS — Precision Optics Light Theme
+   Crisp White Background with Subtle Geometric Micro-Textures
    ============================================================ */
 :root {
-  /* Surface & Base */
-  --color-bg: #09090b;
-  --color-surface: #121215;
-  --color-surface-2: #18181b;
-  --color-surface-3: #222226;
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.16);
+  /* Crisp White Canvas & Structured Surfaces */
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-2: #f8fafc;
+  --color-surface-3: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-hover: #cbd5e1;
 
-  /* Primary Accent — Crisp, Restrained Modern Neutral */
-  --color-primary: #f4f4f5;
-  --color-primary-hover: #ffffff;
-  --color-primary-muted: rgba(255, 255, 255, 0.06);
-  --color-primary-border: rgba(255, 255, 255, 0.14);
+  /* Primary Accent — Sophisticated Dark Slate / Ink */
+  --color-primary: #0f172a;
+  --color-primary-hover: #1e293b;
+  --color-primary-muted: #f1f5f9;
+  --color-primary-border: #cbd5e1;
 
-  /* Functional Status Accents — Clean, Muted */
-  --color-success: #10b981;
-  --color-success-muted: rgba(16, 185, 129, 0.10);
-  --color-warning: #f59e0b;
-  --color-warning-muted: rgba(245, 158, 11, 0.10);
-  --color-danger: #ef4444;
-  --color-danger-muted: rgba(239, 68, 68, 0.10);
-  --color-info: #3b82f6;
-  --color-info-muted: rgba(59, 130, 246, 0.10);
+  /* Functional Status Accents — Crisp & Legible */
+  --color-success: #059669;
+  --color-success-muted: #ecfdf5;
+  --color-warning: #d97706;
+  --color-warning-muted: #fffbeb;
+  --color-danger: #dc2626;
+  --color-danger-muted: #fef2f2;
+  --color-info: #2563eb;
+  --color-info-muted: #eff6ff;
 
   /* Typography */
-  --color-text: #fafafa;
-  --color-text-2: #a1a1aa;
-  --color-text-3: #71717a;
+  --color-text: #0f172a;
+  --color-text-2: #475569;
+  --color-text-3: #94a3b8;
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Refined, Crisp Geometry */
+  /* Refined Geometry */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 18px;
   --radius-full: 9999px;
 
-  /* Subtle, Atmospheric Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+  /* Subtle, High-Definition Elevation */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.08);
 }
 
 /* ============================================================
@@ -56,11 +56,12 @@ html {
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
   max-width: 100%;
+  background-color: #ffffff;
 }
 
 body {
   font-family: var(--font-family);
-  background-color: var(--color-bg);
+  background-color: #ffffff;
   color: var(--color-text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -72,38 +73,64 @@ body {
 #root {
   min-height: 100vh;
   width: 100%;
+  background-color: #ffffff;
+}
+
+/* ============================================================
+   BACKGROUND TEXTURES (White Minimal with Subtle Micro-Patterns)
+   ============================================================ */
+.micro-grid {
+  background-color: #ffffff;
+  background-size: 20px 20px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+}
+
+.micro-grid-subtle {
+  background-color: #ffffff;
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+}
+
+.dot-matrix {
+  background-color: #ffffff;
+  background-size: 20px 20px;
+  background-image: radial-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px);
 }
 
 /* ============================================================
    CUSTOM SCROLLBAR
    ============================================================ */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-bg);
+  background: #f8fafc;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-surface-2);
+  background: #cbd5e1;
   border-radius: var(--radius-full);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #94a3b8;
 }
 
 /* ============================================================
    TYPOGRAPHY UTILITIES
    ============================================================ */
 .text-gradient {
-  background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+  background: linear-gradient(180deg, #0f172a 0%, #334155 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-subtle {
-  background: linear-gradient(180deg, #e4e4e7 0%, #71717a 100%);
+  background: linear-gradient(180deg, #334155 0%, #64748b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -113,25 +140,26 @@ body {
    CARDS & SURFACES
    ============================================================ */
 .minimal-card {
-  background: rgba(18, 18, 21, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .minimal-card-hover {
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .minimal-card-hover:hover {
-  border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(24, 24, 28, 0.85);
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
 }
 
 /* ============================================================
-   ANIMATIONS (Restrained & Calm)
+   ANIMATIONS & TYPEWRITER
    ============================================================ */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -144,30 +172,38 @@ body {
   to { opacity: 1; }
 }
 
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .animate-fade-in-up {
-  animation: fadeInUp 0.4s ease-out forwards;
+  animation: fadeInUp 0.35s ease-out forwards;
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.3s ease-out forwards;
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.animate-cursor-blink {
+  animation: cursorBlink 0.9s infinite;
 }
 
 .stagger-1 { animation-delay: 0.04s; }
 .stagger-2 { animation-delay: 0.08s; }
 .stagger-3 { animation-delay: 0.12s; }
 .stagger-4 { animation-delay: 0.16s; }
-.stagger-5 { animation-delay: 0.20s; }
 
 /* ============================================================
-   FOCUS STYLES
+   FOCUS & SELECTION
    ============================================================ */
 :focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.4);
+  outline: 2px solid #0f172a;
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 ::selection {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background-color: #e2e8f0;
+  color: #0f172a;
 }

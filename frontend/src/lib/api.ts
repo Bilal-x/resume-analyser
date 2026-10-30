@@ -154,6 +154,19 @@ export interface CandidateComparisonResponse {
 }
 
 export const analysesApi = {
+  instant: (file: File | null, jd_text: string, job_title?: string, company_name?: string, resume_text?: string) => {
+    const fd = new FormData();
+    if (file) {
+      fd.append('file', file);
+    }
+    if (resume_text) {
+      fd.append('resume_text', resume_text);
+    }
+    fd.append('jd_text', jd_text);
+    if (job_title) fd.append('job_title', job_title);
+    if (company_name) fd.append('company_name', company_name);
+    return request<AnalysisResponse>('/analyses/instant', { method: 'POST', body: fd });
+  },
   run: (resume_id: string, jd_id: string) =>
     request<AnalysisResponse>('/analyses/', { method: 'POST', body: JSON.stringify({ resume_id, jd_id }) }),
   list: () => request<AnalysisResponse[]>('/analyses/'),

@@ -100,6 +100,14 @@ def init_db():
         )
     """)
     
+    # 6. Default Guest User (for unauthenticated instant analysis)
+    cursor.execute("SELECT id FROM users WHERE id = 'guest'")
+    if not cursor.fetchone():
+        cursor.execute(
+            "INSERT INTO users (id, email, name, password_hash, role, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+            ('guest', 'guest@analyzer.local', 'Guest User', 'guest_hash', 'candidate', datetime.utcnow().isoformat())
+        )
+
     conn.commit()
     conn.close()
 
