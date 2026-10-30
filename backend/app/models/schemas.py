@@ -30,6 +30,37 @@ class ExtractedSection(BaseModel):
     content: str
     page_number: Optional[int] = 1
 
+class EmploymentEntry(BaseModel):
+    job_title: str
+    company: str
+    employment_type: str = "Full-time"  # Full-time, Internship, Contract, Part-time, Unspecified
+    start_date: Optional[str] = None  # YYYY-MM, YYYY
+    end_date: Optional[str] = None  # YYYY-MM, YYYY, or "Present"
+    is_current: bool = False
+    duration_months: Optional[int] = None
+    source_section: str = "Work Experience"
+    relevant_technologies: List[str] = Field(default_factory=list)
+    responsibilities: List[str] = Field(default_factory=list)
+    relevance_to_jd: Optional[str] = None
+    is_uncertain_date: bool = False
+
+class ExperienceEvaluation(BaseModel):
+    jd_required_years: Optional[float] = None
+    jd_max_years: Optional[float] = None
+    jd_experience_type: str = "general"  # "general" or "technology_specific"
+    jd_required_technology: Optional[str] = None
+    jd_internships_accepted: bool = False
+    total_experience_months: Optional[int] = None
+    relevant_experience_months: Optional[int] = None
+    internship_months: Optional[int] = 0
+    experience_status: str = "not_available"  # "meets_requirement", "partially_meets_requirement", "does_not_meet_requirement", "not_available", "unable_to_verify"
+    experience_gap_months: Optional[int] = None
+    employment_history: List[EmploymentEntry] = Field(default_factory=list)
+    calculation_methodology: str = ""
+    confidence_level: str = "High"  # High, Medium, Low
+    is_excluded_from_scoring: bool = False
+    warnings: List[str] = Field(default_factory=list)
+
 class ExtractedResumeData(BaseModel):
     full_name: Optional[str] = "Candidate"
     email: Optional[str] = None
@@ -44,6 +75,7 @@ class ExtractedResumeData(BaseModel):
     cloud_platforms: List[str] = Field(default_factory=list)
     devops_tools: List[str] = Field(default_factory=list)
     work_experience: List[Dict[str, Any]] = Field(default_factory=list)
+    structured_work_experience: List[EmploymentEntry] = Field(default_factory=list)
     projects: List[Dict[str, Any]] = Field(default_factory=list)
     education: List[Dict[str, Any]] = Field(default_factory=list)
     certifications: List[str] = Field(default_factory=list)
@@ -191,6 +223,37 @@ class CompanyIntelligence(BaseModel):
     cautionary_notes: List[str] = Field(default_factory=list)
     verified_sources: List[str] = Field(default_factory=list)
 
+# --- Resume Improvement Center Schemas ---
+class DemonstratedUnlistedSkill(BaseModel):
+    skill: str
+    found_in_project: str
+    excerpt: str
+    recommendation: str
+
+class ProjectDetailImprovement(BaseModel):
+    project_name: str
+    weakness: str
+    suggested_addition: str
+
+class UnquantifiedBullet(BaseModel):
+    section: str
+    role_or_project: str
+    original_bullet: str
+    quantification_advice: str
+
+class DateAmbiguityWarning(BaseModel):
+    role_or_project: str
+    issue: str
+    recommendation: str
+
+class ResumeImprovementData(BaseModel):
+    demonstrated_unlisted_skills: List[DemonstratedUnlistedSkill] = Field(default_factory=list)
+    project_detail_improvements: List[ProjectDetailImprovement] = Field(default_factory=list)
+    unquantified_bullets: List[UnquantifiedBullet] = Field(default_factory=list)
+    missing_supported_keywords: List[str] = Field(default_factory=list)
+    genuine_skill_gaps: List[str] = Field(default_factory=list)
+    date_ambiguities: List[DateAmbiguityWarning] = Field(default_factory=list)
+
 # --- Complete Analysis Result Schema ---
 class AnalysisResponse(BaseModel):
     id: str
@@ -218,6 +281,8 @@ class AnalysisResponse(BaseModel):
     years_experience_found: Optional[float] = None
     experience_assessment: Optional[str] = None
     creative_summary: Optional[str] = None
+    experience_evaluation: Optional[ExperienceEvaluation] = None
+    resume_improvements: Optional[ResumeImprovementData] = None
 
 # --- Candidate Comparison Schemas ---
 class CandidateComparisonSummary(BaseModel):
@@ -243,3 +308,76 @@ class CandidateComparisonResponse(BaseModel):
     scoring_weights: Dict[str, float]
     candidates: List[CandidateComparisonSummary]
     requirements_cross_matrix: List[Dict[str, Any]]
+
+# --- Applicant Tracking Pipeline Schemas (11 Stages) ---
+PIPELINE_STAGES: List[str] = [
+    "New Application",
+    "Resume Processing",
+    "AI Analysis Completed",
+    "Pending HR Review",
+    "Shortlisted",
+    "Interview Scheduled",
+    "Technical Round",
+    "HR Round",
+    "Selected",
+    "Rejected",
+    "On Hold"
+]
+
+class StageHistoryItem(BaseModel):
+    stage: str
+    timestamp: str
+    changed_by: str
+    notes: Optional[str] = None
+
+class RecruiterNoteItem(BaseModel):
+    id: str
+    author_name: str
+    timestamp: str
+    content: str
+
+class InterviewFeedbackItem(BaseModel):
+    id: str
+    interviewer: str
+    round_name: str
+    rating: float  # 1 to 5
+    recommendation: str  # Strong Hire, Hire, Leaning Hire, Leaning No, No Hire
+    feedback: str
+    timestamp: str
+
+class CandidatePipelineItem(BaseModel):
+    application_id: str
+    analysis_id: str
+    resume_id: str
+    job_description_id: str
+    candidate_name: str
+    resume_file_name: str
+    job_title: str
+    company_name: str
+    overall_score: float
+    current_stage: str
+    experience_status: str
+    total_experience_months: Optional[int] = None
+    relevant_experience_months: Optional[int] = None
+    key_strengths: List[str] = Field(default_factory=list)
+    key_gaps: List[str] = Field(default_factory=list)
+    notes_count: int = 0
+    created_at: str
+    updated_at: str
+    stage_history: List[StageHistoryItem] = Field(default_factory=list)
+    notes: List[RecruiterNoteItem] = Field(default_factory=list)
+    interview_feedbacks: List[InterviewFeedbackItem] = Field(default_factory=list)
+
+class UpdateCandidateStageRequest(BaseModel):
+    new_stage: str
+    notes: Optional[str] = None
+
+class AddRecruiterNoteRequest(BaseModel):
+    content: str
+
+class AddInterviewFeedbackRequest(BaseModel):
+    round_name: str
+    rating: float
+    recommendation: str
+    feedback: str
+

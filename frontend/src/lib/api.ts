@@ -129,6 +129,122 @@ export interface CompanyIntelligence {
   cautionary_notes: string[];
   verified_sources: string[];
 }
+export interface EmploymentEntry {
+  job_title: string;
+  company: string;
+  employment_type: string;
+  start_date?: string | null;
+  end_date?: string | null;
+  is_current: boolean;
+  duration_months?: number | null;
+  source_section: string;
+  relevant_technologies: string[];
+  responsibilities: string[];
+  relevance_to_jd?: string | null;
+  is_uncertain_date: boolean;
+}
+
+export interface ExperienceEvaluation {
+  jd_required_years?: number | null;
+  jd_max_years?: number | null;
+  jd_experience_type: string;
+  jd_required_technology?: string | null;
+  jd_internships_accepted: boolean;
+  total_experience_months?: number | null;
+  relevant_experience_months?: number | null;
+  internship_months?: number | null;
+  experience_status: string;
+  experience_gap_months?: number | null;
+  employment_history: EmploymentEntry[];
+  calculation_methodology: string;
+  confidence_level: string;
+  is_excluded_from_scoring: boolean;
+  warnings: string[];
+}
+
+export interface DemonstratedUnlistedSkill {
+  skill: string;
+  found_in_project: string;
+  excerpt: string;
+  recommendation: string;
+}
+
+export interface ProjectDetailImprovement {
+  project_name: string;
+  weakness: string;
+  suggested_addition: string;
+}
+
+export interface UnquantifiedBullet {
+  section: string;
+  role_or_project: string;
+  original_bullet: string;
+  quantification_advice: string;
+}
+
+export interface DateAmbiguityWarning {
+  role_or_project: string;
+  issue: string;
+  recommendation: string;
+}
+
+export interface ResumeImprovementData {
+  demonstrated_unlisted_skills: DemonstratedUnlistedSkill[];
+  project_detail_improvements: ProjectDetailImprovement[];
+  unquantified_bullets: UnquantifiedBullet[];
+  missing_supported_keywords: string[];
+  genuine_skill_gaps: string[];
+  date_ambiguities: DateAmbiguityWarning[];
+}
+
+export interface StageHistoryItem {
+  stage: string;
+  timestamp: string;
+  changed_by: string;
+  notes?: string | null;
+}
+
+export interface RecruiterNoteItem {
+  id: string;
+  author_name: string;
+  timestamp: string;
+  content: string;
+}
+
+export interface InterviewFeedbackItem {
+  id: string;
+  interviewer: string;
+  round_name: string;
+  rating: number;
+  recommendation: string;
+  feedback: string;
+  timestamp: string;
+}
+
+export interface CandidatePipelineItem {
+  application_id: string;
+  analysis_id: string;
+  resume_id: string;
+  job_description_id: string;
+  candidate_name: string;
+  resume_file_name: string;
+  job_title: string;
+  company_name: string;
+  overall_score: number;
+  current_stage: string;
+  experience_status: string;
+  total_experience_months?: number | null;
+  relevant_experience_months?: number | null;
+  key_strengths: string[];
+  key_gaps: string[];
+  notes_count: number;
+  created_at: string;
+  updated_at: string;
+  stage_history: StageHistoryItem[];
+  notes: RecruiterNoteItem[];
+  interview_feedbacks: InterviewFeedbackItem[];
+}
+
 export interface AnalysisResponse {
   id: string; resume_id: string; job_description_id: string; owner_id: string;
   candidate_name: string; resume_file_name: string; job_title: string; company_name: string;
@@ -144,6 +260,8 @@ export interface AnalysisResponse {
   years_experience_found?: number | null;
   experience_assessment?: string | null;
   creative_summary?: string | null;
+  experience_evaluation?: ExperienceEvaluation | null;
+  resume_improvements?: ResumeImprovementData | null;
 }
 export interface CandidateComparisonSummary {
   analysis_id: string; resume_id: string; candidate_name: string; file_name: string;
@@ -178,4 +296,25 @@ export const analysesApi = {
   listForJd: (jd_id: string) => request<AnalysisResponse[]>(`/analyses/jd/${jd_id}`),
   compare: (jd_id: string) => request<CandidateComparisonResponse>(`/analyses/compare/${jd_id}`),
   delete: (id: string) => request<void>(`/analyses/${id}`, { method: 'DELETE' }),
+};
+
+export const pipelineApi = {
+  getStages: () => request<string[]>('/pipeline/stages'),
+  getCandidates: (jdId: string) => request<CandidatePipelineItem[]>(`/pipeline/jd/${jdId}`),
+  getApplication: (appId: string) => request<CandidatePipelineItem>(`/pipeline/application/${appId}`),
+  updateStage: (appId: string, newStage: string, notes?: string) =>
+    request<CandidatePipelineItem>(`/pipeline/application/${appId}/stage`, {
+      method: 'PATCH',
+      body: JSON.stringify({ new_stage: newStage, notes }),
+    }),
+  addNote: (appId: string, content: string) =>
+    request<CandidatePipelineItem>(`/pipeline/application/${appId}/notes`, {
+      method: 'POST',
+      body: JSON.stringify({ content }),
+    }),
+  addFeedback: (appId: string, data: { round_name: string; rating: number; recommendation: string; feedback: string }) =>
+    request<CandidatePipelineItem>(`/pipeline/application/${appId}/interview-feedback`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 };

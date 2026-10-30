@@ -762,11 +762,13 @@ export default function LandingPage() {
                   <div className="p-3 rounded-lg bg-white border border-slate-200">
                     <span className="text-[11px] font-mono text-slate-500 block">Resume Experience Found</span>
                     <span className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 block">
-                      {analysisResult.years_experience_found !== null && analysisResult.years_experience_found !== undefined
+                      {analysisResult.experience_evaluation?.total_experience_months != null
+                        ? `${(analysisResult.experience_evaluation.total_experience_months / 12).toFixed(1)} Years Documented`
+                        : analysisResult.years_experience_found !== null && analysisResult.years_experience_found !== undefined
                         ? analysisResult.years_experience_found === 0
                           ? '0 Yrs (Fresher / Early-Career)'
-                          : `${analysisResult.years_experience_found.toFixed(1)} Years Demonstrated`
-                        : '0 Yrs (Early-Career)'}
+                          : `${analysisResult.years_experience_found.toFixed(1)} Years Documented`
+                        : 'Not Stated in Resume'}
                     </span>
                   </div>
 
@@ -774,13 +776,17 @@ export default function LandingPage() {
                   <div className="p-3 rounded-lg bg-white border border-slate-200 flex flex-col justify-between">
                     <span className="text-[11px] font-mono text-slate-500 block">Seniority Alignment</span>
                     <span className={`text-xs font-semibold mt-1 inline-flex items-center gap-1 ${
-                      (analysisResult.years_experience_found ?? 0) >= (analysisResult.years_experience_required ?? 2)
+                      analysisResult.experience_evaluation?.experience_status === 'not_available'
+                        ? 'text-indigo-700'
+                        : (analysisResult.years_experience_found ?? 0) >= (analysisResult.years_experience_required ?? 2)
                         ? 'text-emerald-700'
                         : (analysisResult.years_experience_found ?? 0) <= 1.0 && (analysisResult.years_experience_required ?? 2) >= 3.0
                         ? 'text-red-700'
                         : 'text-amber-700'
                     }`}>
-                      {(analysisResult.years_experience_found ?? 0) >= (analysisResult.years_experience_required ?? 2)
+                      {analysisResult.experience_evaluation?.experience_status === 'not_available'
+                        ? 'ℹ Excluded from Scoring (No Penalty)'
+                        : (analysisResult.years_experience_found ?? 0) >= (analysisResult.years_experience_required ?? 2)
                         ? '✓ Target Met / Qualified'
                         : (analysisResult.years_experience_found ?? 0) <= 1.0 && (analysisResult.years_experience_required ?? 2) >= 3.0
                         ? '⚠ Significant Seniority Gap'

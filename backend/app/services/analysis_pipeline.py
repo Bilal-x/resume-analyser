@@ -7,15 +7,21 @@ from ..models.schemas import (
     ExtractedResumeData, JDRequirement, DirectFinding,
     IndirectFinding, RequirementMatrixItem, ProjectAnalysisItem,
     ScoreBreakdown, RecommendationsSection, InterviewQuestion,
-    AnalysisResponse, CompanyIntelligence
+    AnalysisResponse, CompanyIntelligence, ExperienceEvaluation,
+    ResumeImprovementData
 )
 from .direct_matcher import evaluate_direct_matching
 from .indirect_discoverer import discover_indirect_skills
 from .project_analyzer import evaluate_all_projects
 from .scoring_engine import calculate_explainable_score, is_fresher_job
-from .recommendation_engine import generate_recommendations
+from .recommendation_engine import generate_recommendations, generate_resume_improvements
 from .interview_generator import generate_interview_questions
 from .company_intelligence import generate_company_intelligence
+from .experience_analyzer import (
+    evaluate_professional_experience,
+    assess_experience,
+    generate_creative_summary
+)
 from ..database import get_connection
 
 def build_requirement_matrix(
@@ -116,6 +122,20 @@ def run_analysis_pipeline(
     is_fresher = is_fresher_job(job_title, requirements)
     role_level = "Fresher / Early-Career" if is_fresher else "Experienced / Mid-Senior"
 
+    # Fetch JD description
+    conn = get_connection()
+    jd_row = conn.execute("SELECT description FROM job_descriptions WHERE id = ?", (job_description_id,)).fetchone()
+    conn.close()
+    jd_desc = jd_row["description"] if jd_row else ""
+
+    # Stage 2.5: Professional Experience Analysis (Deterministic Engine strictly isolating Work Experience)
+    experience_eval = evaluate_professional_experience(
+        resume_data=resume_data,
+        jd_text=jd_desc,
+        requirements=requirements,
+        job_title=job_title
+    )
+
     # Stage 3: Direct Skill Matching (respects declared skills in skills inventory)
     direct_findings = evaluate_direct_matching(requirements, resume_data)
     direct_matched_set = {f.requirement_name for f in direct_findings}
@@ -129,7 +149,7 @@ def run_analysis_pipeline(
     # Requirement Matrix
     matrix = build_requirement_matrix(requirements, direct_findings, indirect_findings)
     
-    # Stage 6: Deterministic Explainable Scoring (adapted for role level)
+    # Stage 6: Deterministic Explainable Scoring (with experience evaluation and weight redistribution)
     overall_score, score_breakdown = calculate_explainable_score(
         requirements=requirements,
         resume_data=resume_data,
@@ -137,7 +157,8 @@ def run_analysis_pipeline(
         indirect_findings=indirect_findings,
         project_analyses=project_analyses,
         job_title=job_title,
-        custom_weights=custom_weights
+        custom_weights=custom_weights,
+        experience_eval=experience_eval
     )
     
     # Missing Requirements
@@ -151,6 +172,16 @@ def run_analysis_pipeline(
         direct_findings=direct_findings,
         indirect_findings=indirect_findings,
         project_analyses=project_analyses
+    )
+
+    # Stage 7.5: Dedicated Resume Improvement Center Data (Task 4 Part 3)
+    resume_improvements = generate_resume_improvements(
+        requirements=requirements,
+        resume_data=resume_data,
+        direct_findings=direct_findings,
+        indirect_findings=indirect_findings,
+        project_analyses=project_analyses,
+        experience_eval=experience_eval
     )
     
     # Stage 9: Interview Questions
@@ -168,31 +199,16 @@ def run_analysis_pipeline(
     limitations = [
         "Assessment evaluates alignment between resume evidence and JD requirements as an objective screening aid.",
         "Skills stated in the technical skills inventory are respected as claimed competencies.",
+        "Professional experience is calculated exclusively from the designated Work Experience section.",
         "Indirect findings reflect verified technical deductions and framework ecosystems."
     ]
     
     created_at = datetime.now(timezone.utc).isoformat()
     
-    # Experience intelligence & creative summary
-    from .experience_analyzer import (
-        extract_jd_experience,
-        extract_resume_experience,
-        assess_experience,
-        generate_creative_summary
-    )
-    
-    conn = get_connection()
-    jd_row = conn.execute("SELECT description FROM job_descriptions WHERE id = ?", (job_description_id,)).fetchone()
-    resume_row = conn.execute("SELECT extracted_text FROM resumes WHERE id = ?", (resume_id,)).fetchone()
-    conn.close()
-    
-    jd_desc = jd_row["description"] if jd_row else ""
-    resume_raw = resume_row["extracted_text"] if resume_row else (resume_data.professional_summary or "")
-    
-    req_years = extract_jd_experience(jd_desc, requirements, job_title)
-    found_years = extract_resume_experience(resume_data, resume_raw)
-    exp_assessment = assess_experience(req_years, found_years)
-    creative_summary = generate_creative_summary(overall_score, req_years, found_years, candidate_name)
+    req_years = experience_eval.jd_required_years if experience_eval.jd_required_years is not None else 0.0
+    found_years = round(experience_eval.total_experience_months / 12.0, 1) if experience_eval.total_experience_months is not None else None
+    exp_assessment = assess_experience(req_years, found_years if found_years is not None else 0.0)
+    creative_summary = generate_creative_summary(overall_score, req_years, found_years if found_years is not None else 0.0, candidate_name)
 
     response = AnalysisResponse(
         id=analysis_id,
@@ -219,7 +235,9 @@ def run_analysis_pipeline(
         years_experience_required=req_years,
         years_experience_found=found_years,
         experience_assessment=exp_assessment,
-        creative_summary=creative_summary
+        creative_summary=creative_summary,
+        experience_evaluation=experience_eval,
+        resume_improvements=resume_improvements
     )
     
     # Persist in SQLite
@@ -232,8 +250,11 @@ def run_analysis_pipeline(
             overall_score, score_breakdown, requirements_matrix,
             direct_findings, indirect_findings, project_analyses,
             missing_requirements, recommendations, interview_questions,
-            analysis_limitations, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            analysis_limitations, created_at,
+            experience_evaluation, resume_improvements,
+            years_experience_required, years_experience_found,
+            experience_assessment, creative_summary, role_level
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         response.id,
         response.resume_id,
@@ -253,8 +274,59 @@ def run_analysis_pipeline(
         json.dumps(response.recommendations.model_dump()),
         json.dumps([q.model_dump() for q in response.interview_questions]),
         json.dumps(response.analysis_limitations),
-        response.created_at
+        response.created_at,
+        json.dumps(response.experience_evaluation.model_dump()) if response.experience_evaluation else None,
+        json.dumps(response.resume_improvements.model_dump()) if response.resume_improvements else None,
+        response.years_experience_required,
+        response.years_experience_found,
+        response.experience_assessment,
+        response.creative_summary,
+        response.role_level
     ))
+
+    # Also sync candidate into the ATS Pipeline (11 Stages)
+    app_id = f"app_{analysis_id[:8]}"
+    initial_history = [
+        {
+            "stage": "AI Analysis Completed",
+            "timestamp": created_at,
+            "changed_by": "AI Screening Engine",
+            "notes": "Automated deterministic multi-dimensional resume evaluation completed."
+        }
+    ]
+    cursor.execute("""
+        INSERT OR REPLACE INTO applications (
+            id, analysis_id, resume_id, job_description_id, recruiter_id,
+            candidate_name, resume_file_name, job_title, company_name,
+            overall_score, current_stage, experience_status,
+            total_experience_months, relevant_experience_months,
+            key_strengths, key_gaps, stage_history, notes, interview_feedbacks,
+            created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        app_id,
+        response.id,
+        response.resume_id,
+        response.job_description_id,
+        response.owner_id,
+        response.candidate_name,
+        response.resume_file_name,
+        response.job_title,
+        response.company_name,
+        response.overall_score,
+        "AI Analysis Completed",
+        experience_eval.experience_status,
+        experience_eval.total_experience_months,
+        experience_eval.relevant_experience_months,
+        json.dumps(response.score_breakdown.key_positive_factors[:3]),
+        json.dumps(response.score_breakdown.key_negative_factors[:3]),
+        json.dumps(initial_history),
+        json.dumps([]),
+        json.dumps([]),
+        created_at,
+        created_at
+    ))
+
     conn.commit()
     conn.close()
     

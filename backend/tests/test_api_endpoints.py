@@ -9,6 +9,7 @@ client = TestClient(app)
 def clean_db():
     conn = get_connection()
     # Clean tables for reproducible tests
+    conn.execute("DELETE FROM applications")
     conn.execute("DELETE FROM shortlists")
     conn.execute("DELETE FROM resume_analyses")
     conn.execute("DELETE FROM resumes")
@@ -260,5 +261,108 @@ def test_instant_unauthenticated_analysis():
     assert data["company_name"] == "Acme Corp"
     assert len(data["requirements_matrix"]) > 0
     assert "FastAPI" in [d["requirement_name"] for d in data["direct_findings"]]
+
+def test_pipeline_ats_workflow():
+    """Verify recruiter 11-stage ATS pipeline management, stage transitions, notes, and interview feedback."""
+    # 1. Check all 11 stages
+    stages_res = client.get("/api/pipeline/stages")
+    assert stages_res.status_code == 200
+    stages = stages_res.json()
+    assert len(stages) == 11
+    assert "Shortlisted" in stages
+    assert "Technical Round" in stages
+    assert "Selected" in stages
+
+    # 2. Register recruiter
+    rec_res = client.post("/api/auth/register", json={
+        "email": "lead_recruiter@company.com",
+        "name": "Sarah Recruiter",
+        "password": "Password123!",
+        "role": "recruiter"
+    })
+    rec_token = rec_res.json()["access_token"]
+    headers = {"Authorization": f"Bearer {rec_token}"}
+
+    # 3. Create JD
+    jd_res = client.post("/api/jds/", headers=headers, json={
+        "title": "Staff Python Architect",
+        "company": "TechNova",
+        "description": "Staff Python Architect. Requires Python, FastAPI, Docker, and Kubernetes."
+    })
+    jd_id = jd_res.json()["id"]
+
+    # 4. Upload and analyze a candidate resume
+    resume_text = """
+    Marcus Vance
+    marcus@example.com
+    Work Experience:
+    Senior Architect at GlobalTech
+    Jan 2020 - Dec 2024
+    - Architected Kubernetes microservices with FastAPI and Python.
+    Technical Skills:
+    Python, FastAPI, Docker, Kubernetes
+    """
+    resume_res = client.post(
+        "/api/resumes/upload",
+        headers=headers,
+        files={"file": ("marcus.txt", resume_text.encode("utf-8"), "text/plain")}
+    )
+    resume_id = resume_res.json()["id"]
+
+    analysis_res = client.post(
+        "/api/analyses/",
+        headers=headers,
+        json={"resume_id": resume_id, "jd_id": jd_id}
+    )
+    assert analysis_res.status_code == 200
+    analysis_data = analysis_res.json()
+    assert analysis_data["experience_evaluation"] is not None
+    assert analysis_data["experience_evaluation"]["total_experience_months"] == 60
+
+    # 5. Check candidates in pipeline for JD
+    pipe_res = client.get(f"/api/pipeline/jd/{jd_id}", headers=headers)
+    assert pipe_res.status_code == 200
+    candidates = pipe_res.json()
+    assert len(candidates) >= 1
+    cand = candidates[0]
+    app_id = cand["application_id"]
+    assert cand["current_stage"] == "AI Analysis Completed"
+    assert cand["candidate_name"] == "Marcus Vance"
+
+    # 6. Move stage to Shortlisted
+    stage_move = client.patch(
+        f"/api/pipeline/application/{app_id}/stage",
+        headers=headers,
+        json={"new_stage": "Shortlisted", "notes": "Strong 5-year track record."}
+    )
+    assert stage_move.status_code == 200
+    assert stage_move.json()["current_stage"] == "Shortlisted"
+    assert len(stage_move.json()["stage_history"]) >= 2
+
+    # 7. Add Recruiter Note
+    note_res = client.post(
+        f"/api/pipeline/application/{app_id}/notes",
+        headers=headers,
+        json={"content": "Candidate requested $160k compensation; matches department budget."}
+    )
+    assert note_res.status_code == 200
+    assert len(note_res.json()["notes"]) == 1
+    assert "160k" in note_res.json()["notes"][0]["content"]
+
+    # 8. Add Interview Feedback
+    feedback_res = client.post(
+        f"/api/pipeline/application/{app_id}/interview-feedback",
+        headers=headers,
+        json={
+            "round_name": "Technical Round",
+            "rating": 4.5,
+            "recommendation": "Strong Hire",
+            "feedback": "Flawlessly designed distributed queue architecture on whiteboard."
+        }
+    )
+    assert feedback_res.status_code == 200
+    assert len(feedback_res.json()["interview_feedbacks"]) == 1
+    assert feedback_res.json()["interview_feedbacks"][0]["recommendation"] == "Strong Hire"
+
 
 

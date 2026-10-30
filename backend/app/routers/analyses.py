@@ -1,6 +1,6 @@
 import uuid
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
 from pydantic import BaseModel
 from typing import Optional, List
@@ -20,7 +20,8 @@ def _db_row_to_analysis(row) -> AnalysisResponse:
     from ..models.schemas import (
         ScoreBreakdown, RequirementMatrixItem, DirectFinding,
         IndirectFinding, ProjectAnalysisItem, RecommendationsSection,
-        InterviewQuestion, SkillImprovement, BulletRewrite, KeywordAlignment
+        InterviewQuestion, SkillImprovement, BulletRewrite, KeywordAlignment,
+        ExperienceEvaluation, ResumeImprovementData, ExtractedResumeData
     )
     def parse_recommendations(raw_dict):
         return RecommendationsSection(
@@ -35,27 +36,43 @@ def _db_row_to_analysis(row) -> AnalysisResponse:
     from ..services.company_intelligence import generate_company_intelligence
     from ..services.scoring_engine import is_fresher_job
     from ..services.experience_analyzer import (
-        extract_jd_experience,
-        extract_resume_experience,
+        evaluate_professional_experience,
         assess_experience,
         generate_creative_summary
     )
 
-    conn_exp = get_connection()
-    jd_row_exp = conn_exp.execute("SELECT description, structured_requirements FROM job_descriptions WHERE id = ?", (row["job_description_id"],)).fetchone()
-    resume_row_exp = conn_exp.execute("SELECT extracted_text, structured_data FROM resumes WHERE id = ?", (row["resume_id"],)).fetchone()
-    conn_exp.close()
+    exp_eval = None
+    try:
+        if "experience_evaluation" in row.keys() and row["experience_evaluation"]:
+            exp_eval = ExperienceEvaluation(**json.loads(row["experience_evaluation"]))
+    except Exception:
+        pass
 
-    jd_desc_exp = jd_row_exp["description"] if jd_row_exp else ""
-    resume_raw_exp = resume_row_exp["extracted_text"] if resume_row_exp else ""
-    from ..models.schemas import ExtractedResumeData
-    structured_resume_exp = ExtractedResumeData(**json.loads(resume_row_exp["structured_data"])) if resume_row_exp else ExtractedResumeData()
-    reqs_exp = [RequirementMatrixItem(**x) for x in json.loads(row["requirements_matrix"])]
+    improvements = None
+    try:
+        if "resume_improvements" in row.keys() and row["resume_improvements"]:
+            improvements = ResumeImprovementData(**json.loads(row["resume_improvements"]))
+    except Exception:
+        pass
 
-    req_years = extract_jd_experience(jd_desc_exp, [], row["job_title"])
-    found_years = extract_resume_experience(structured_resume_exp, resume_raw_exp)
-    exp_assessment = assess_experience(req_years, found_years)
-    creative_summary = generate_creative_summary(row["overall_score"], req_years, found_years, row["candidate_name"])
+    if exp_eval is None:
+        conn_exp = get_connection()
+        jd_row_exp = conn_exp.execute("SELECT description FROM job_descriptions WHERE id = ?", (row["job_description_id"],)).fetchone()
+        resume_row_exp = conn_exp.execute("SELECT structured_data FROM resumes WHERE id = ?", (row["resume_id"],)).fetchone()
+        conn_exp.close()
+        jd_desc_exp = jd_row_exp["description"] if jd_row_exp else ""
+        structured_resume_exp = ExtractedResumeData(**json.loads(resume_row_exp["structured_data"])) if resume_row_exp else ExtractedResumeData()
+        exp_eval = evaluate_professional_experience(
+            resume_data=structured_resume_exp,
+            jd_text=jd_desc_exp,
+            requirements=[],
+            job_title=row["job_title"]
+        )
+
+    req_years = exp_eval.jd_required_years if exp_eval.jd_required_years is not None else 0.0
+    found_years = round(exp_eval.total_experience_months / 12.0, 1) if exp_eval.total_experience_months is not None else None
+    exp_assessment = assess_experience(req_years, found_years if found_years is not None else 0.0)
+    creative_summary = generate_creative_summary(row["overall_score"], req_years, found_years if found_years is not None else 0.0, row["candidate_name"])
 
     return AnalysisResponse(
         id=row["id"],
@@ -82,7 +99,9 @@ def _db_row_to_analysis(row) -> AnalysisResponse:
         years_experience_required=req_years,
         years_experience_found=found_years,
         experience_assessment=exp_assessment,
-        creative_summary=creative_summary
+        creative_summary=creative_summary,
+        experience_evaluation=exp_eval,
+        resume_improvements=improvements
     )
 
 @router.post("/", response_model=AnalysisResponse)
@@ -144,7 +163,7 @@ async def run_instant_analysis(
     if not cursor.fetchone():
         cursor.execute(
             "INSERT INTO users (id, email, name, password_hash, role, created_at) VALUES (?, ?, ?, ?, ?, ?)",
-            ('guest', 'guest@analyzer.local', 'Guest User', 'guest_hash', 'candidate', datetime.utcnow().isoformat())
+            ('guest', 'guest@analyzer.local', 'Guest User', 'guest_hash', 'candidate', datetime.now(timezone.utc).isoformat())
         )
         conn.commit()
 
@@ -165,7 +184,7 @@ async def run_instant_analysis(
     resume_id = str(uuid.uuid4())
     jd_id = str(uuid.uuid4())
     analysis_id = str(uuid.uuid4())
-    now_iso = datetime.utcnow().isoformat()
+    now_iso = datetime.now(timezone.utc).isoformat()
     file_type = "pdf" if filename.lower().endswith(".pdf") else ("docx" if filename.lower().endswith(".docx") else "txt")
 
     cursor.execute("""

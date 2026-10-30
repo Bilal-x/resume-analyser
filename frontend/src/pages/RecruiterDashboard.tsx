@@ -4,10 +4,8 @@ import { AppLayout, PageHeader, SectionHeader } from '../components/Layout';
 import { Button, Card, Badge, Skeleton, EmptyState, StatCard } from '../components/ui';
 import { useAuth } from '../contexts/AuthContext';
 import { jdsApi, analysesApi, resumesApi, type JobDescriptionResponse, type AnalysisResponse, type ResumeResponse } from '../lib/api';
-import {
-  Briefcase, Users, Plus, ArrowRight, CheckCircle2,
-  TrendingUp, Scale, FileText
-} from 'lucide-react';
+import { Briefcase, Users, Plus, ArrowRight, CheckCircle2, TrendingUp, Scale, FileText } from 'lucide-react';
+import { CandidatePipelineView } from '../components/CandidatePipelineView';
 
 function ScoreChip({ score }: { score: number }) {
   const style =
@@ -184,6 +182,17 @@ export default function RecruiterDashboard() {
           </div>
         )}
       </div>
+
+      {/* Applicant Tracking Pipeline (Part 4 ATS - 11 Stages) */}
+      {jds.length > 0 && (
+        <div className="mb-10">
+          <SectionHeader
+            title="Applicant Tracking Pipeline"
+            subtitle="Manage applicants across all 11 recruitment stages with Kanban board and detailed table view"
+          />
+          <CandidatePipelineView jds={jds} />
+        </div>
+      )}
 
       {/* Recent Evaluations Table */}
       <div>

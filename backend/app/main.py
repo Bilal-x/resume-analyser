@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import init_db
-from .routers import auth, resumes, jds, analyses
+from .routers import auth, resumes, jds, analyses, pipeline
 
 # Initialize database tables
 init_db()
@@ -28,6 +28,7 @@ app.include_router(auth.router, prefix="/api")
 app.include_router(resumes.router, prefix="/api")
 app.include_router(jds.router, prefix="/api")
 app.include_router(analyses.router, prefix="/api")
+app.include_router(pipeline.router, prefix="/api")
 
 @app.get("/api/health")
 def health_check():

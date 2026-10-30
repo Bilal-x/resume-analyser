@@ -19,7 +19,7 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" />
-  <img src="https://img.shields.io/badge/Tests-13%2F13_Passing-success?style=flat-square" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-33%2F33_Passing-success?style=flat-square" alt="Tests" />
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License" />
 </p>
 
@@ -59,20 +59,30 @@ When a target company is specified (e.g., Google, Vercel, Stripe, Amazon, or cus
 - **Candidate Tips**: Direct advice on what hiring managers at that company look for.
 - **Employee Sentiments**: Aggregated positive highlights and cautionary notes.
 
-### 4. Dual Workspace Experiences
-- **For Candidates**:
-  - Track alignment across target roles.
-  - Plain-English strengths and missing skill breakdowns.
-  - Evidence-backed interview questions tailored to their specific gaps.
-  - **One-Click Resume & ATS Optimizer** *(preview mode)*.
-- **For Recruiters**:
-  - Centralized candidate evaluation pipeline.
-  - Standardized multi-candidate comparison tables.
-  - Objective shortlisting and review workflow.
+### 4. Accurate Professional Experience Engine
+- **Strict Work Experience Extraction**: Professional YOE is extracted exclusively from designated employment sections (`Work Experience`, `Professional Experience`, `Employment History`). Never inflated by graduation dates, courses, or academic projects.
+- **Interval Merging & Overlap Elimination**: Overlapping jobs are merged into contiguous calendar periods so no month is double-counted.
+- **Separate Internship Accounting**: Identifies internships within work experience and accounts for them separately (`internship_months`) rather than treating them as full-time employment.
+- **Missing Experience Safeguard**: Resumes without work experience have the YOE dimension excluded from scoring and its weight proportionally redistributed, ensuring no unfair 0-point penalty.
+- **Domain & Tech-Specific Tenure**: Differentiates general career tenure from targeted technology experience (e.g., 3 years general vs 1.5 years Python).
 
-### 5. At-a-Glance Summary + Expandable Technical Deep-Dive
-- **At-a-Glance Executive View** (Default): Instant HR score ring, confirmed competency badges, company culture brief, and plain-English strengths/gaps.
-- **Detailed Technical View**: Full 8-tab matrix inspecting raw text excerpts, confidence ratings, project architecture evaluations, and custom interview prompts.
+### 5. 11-Stage ATS Candidate Hiring Pipeline
+- **Dual Recruiter Views**: Interactive **Kanban Board** and high-density **Table View**.
+- **11 Lifecycle Stages**: `New Application` → `Resume Processing` → `AI Analysis Completed` → `Pending HR Review` → `Shortlisted` → `Interview Scheduled` → `Technical Round` → `HR Round` → `Selected` / `Rejected` / `On Hold`.
+- **Collaborative Review**: Recruiter stage progression, timestamped internal notes, and interview feedback recording.
+
+### 6. Candidate Resume Improvement Center
+Actionable, evidence-backed recommendations covering 6 core dimensions:
+1. Demonstrated skills missing from the Skills section
+2. Measurable achievement & quantification improvements (with copyable rewrites)
+3. Project technical depth & architecture clarifications
+4. Supported JD terminology to include for ATS alignment
+5. Genuine skill gaps requiring targeted learning
+6. Work experience date ambiguity warnings
+
+### 7. Dual Workspace Experiences & 7 Analysis Modules
+- **At-a-Glance Executive View**: Instant HR score ring, confirmed competency badges, and plain-English evaluation summary.
+- **7 Detailed Modules**: Overview, Experience Analysis, Skills Analysis, Project Analysis, Evidence Explorer, Resume Improvement Center, and Interview Prep.
 
 ---
 
@@ -83,18 +93,19 @@ flowchart TD
     A["Resume (PDF / DOCX)"] --> B["Multi-Format Parser (PyMuPDF / Docx)"]
     C["Job Description"] --> D["JD Analyzer & Competency Matrix"]
     
-    B --> E["Extracted Sections & Structured Profile"]
-    D --> F["Structured Requirements"]
+    B --> E["Extracted Sections & Structured Employment Entries"]
+    D --> F["Structured Requirements & Experience Specs"]
     
-    E & F --> G["Stage 1: Direct Skill Matcher"]
-    E & F --> H["Stage 2: Indirect Discoverer & Ecosystem Mapper"]
+    E & F --> G["Stage 1: Deterministic Experience Engine (Interval Merging)"]
+    E & F --> H["Stage 2: Direct Skill Matcher & Ecosystem Inference"]
     E & F --> I["Stage 3: Project Technical Architecture Analyzer"]
     
-    G & H & I --> J["Stage 4: Role-Calibrated Scoring Engine"]
+    G & H & I --> J["Stage 4: Proportional Weight Redistributing Scoring Engine"]
     F --> K["Stage 5: Company Intelligence & Culture Synthesis"]
     
-    J & K --> L["Stage 6: Recommendations & Interview Q&A Generator"]
-    L --> M["Final Analysis Dossier (At-a-Glance + Detailed Deep-Dive)"]
+    J & K --> L["Stage 6: Resume Improvement Center & Interview Q&A Generator"]
+    L --> M["Final Analysis Dossier (At-a-Glance + 7 Deep-Dive Modules)"]
+    M --> N["11-Stage ATS Pipeline Tracking"]
 ```
 
 ---
@@ -108,7 +119,7 @@ flowchart TD
 | **Document Parsing** | PyMuPDF (fitz), python-docx |
 | **Persistence** | SQLite with structured JSON serialization |
 | **Authentication** | JWT (JSON Web Tokens) with Argon2/PBKDF2 hashing |
-| **Testing** | Pytest, HTTPX TestClient (13/13 unit and integration tests passing) |
+| **Testing** | Pytest, HTTPX TestClient (33/33 unit and integration tests passing) |
 
 ---
 
@@ -158,7 +169,7 @@ Both servers will launch simultaneously:
 | `npm run dev` | Starts FastAPI backend and React frontend concurrently |
 | `npm run dev:backend` | Runs only the FastAPI server with auto-reload |
 | `npm run dev:frontend` | Runs only the Vite dev server |
-| `npm run test:backend` | Executes the 13-test automated pytest suite |
+| `npm run test:backend` | Executes the 33-test automated pytest suite (including 12 mandatory experience cases) |
 | `npm run build` | Compiles the production React bundle with Tailwind v4 |
 | `npm run lint` | Runs the oxlint linter across frontend files |
 

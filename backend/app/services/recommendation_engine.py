@@ -1,8 +1,12 @@
-from typing import List, Dict, Any
+import re
+from typing import List, Dict, Any, Optional
 from ..models.schemas import (
     JDRequirement, ExtractedResumeData, DirectFinding,
     IndirectFinding, ProjectAnalysisItem, RecommendationsSection,
-    SkillImprovement, BulletRewrite, KeywordAlignment
+    SkillImprovement, BulletRewrite, KeywordAlignment,
+    DemonstratedUnlistedSkill, ProjectDetailImprovement,
+    UnquantifiedBullet, DateAmbiguityWarning, ResumeImprovementData,
+    ExperienceEvaluation
 )
 
 ACTION_VERB_MAP = {
@@ -58,12 +62,9 @@ def generate_recommendations(
         tech_str = ", ".join(techs[:3]) if techs else "the tech stack"
         for bullet in proj.get("bullets", []):
             b_clean = bullet.strip()
-            # If bullet is short or starts with a weak word
             first_word = b_clean.split()[0].lower() if b_clean.split() else ""
             if len(b_clean) < 70 or first_word in ACTION_VERB_MAP:
                 verb_replacement = ACTION_VERB_MAP.get(first_word, "Engineered")
-                
-                # Build rewrite grounded in their actual text
                 rest_of_sentence = " ".join(b_clean.split()[1:]) if b_clean.split() else b_clean
                 suggested = f"{verb_replacement} {rest_of_sentence} utilizing {tech_str}, ensuring robust modularity and reproducible execution."
                 
@@ -81,7 +82,7 @@ def generate_recommendations(
         if len(bullet_rewrites) >= 4:
             break
             
-    # 3. Keyword Alignment (Supported vs Needs Confirmation vs Genuine Gaps)
+    # 3. Keyword Alignment
     direct_req_names = {f.requirement_name.lower() for f in direct_findings}
     indirect_req_names = {f.requirement_name.lower() for f in indirect_findings}
     
@@ -105,7 +106,7 @@ def generate_recommendations(
         genuine_experience_gaps=genuine_gaps
     )
     
-    # 4. Prioritized Action Plan
+    # 4. Action Plan
     action_plan = []
     if skills_improvements:
         action_plan.append(f"Update Skills Section: Explicitly list {', '.join([s.skill for s in skills_improvements[:3]])} which you already demonstrate in your projects.")
@@ -134,4 +135,140 @@ def generate_recommendations(
         prioritized_action_plan=action_plan,
         interview_prep_topics=interview_topics,
         optional_learning_exercises=learning_exercises
+    )
+
+def generate_resume_improvements(
+    requirements: List[JDRequirement],
+    resume_data: ExtractedResumeData,
+    direct_findings: List[DirectFinding],
+    indirect_findings: List[IndirectFinding],
+    project_analyses: List[ProjectAnalysisItem],
+    experience_eval: Optional[ExperienceEvaluation] = None
+) -> ResumeImprovementData:
+    """
+    Dedicated Resume Improvement Center data generator per Task 4 Part 3.
+    Identifies:
+    1. Skills demonstrated but missing from Skills section.
+    2. Relevant project details needing explanation.
+    3. Work experience descriptions lacking measurable achievements.
+    4. Relevant JD terminology missing but supported by experience.
+    5. Genuine skill gaps.
+    6. Missing employment dates or unclear experience information.
+    """
+    explicit_skills_lower = {s.lower() for s in resume_data.technical_skills}
+
+    # 1. Demonstrated unlisted skills
+    demonstrated_unlisted: List[DemonstratedUnlistedSkill] = []
+    for proj in resume_data.projects:
+        p_name = proj.get("name", "Project")
+        for tech in proj.get("technologies", []):
+            if tech.lower() not in explicit_skills_lower and not any(d.skill == tech for d in demonstrated_unlisted):
+                demonstrated_unlisted.append(
+                    DemonstratedUnlistedSkill(
+                        skill=tech,
+                        found_in_project=p_name,
+                        excerpt=f"Found in {p_name} technology stack / description.",
+                        recommendation=f"Add '{tech}' directly to your formal Skills section to pass initial automated screening filters."
+                    )
+                )
+
+    for entry in getattr(resume_data, "structured_work_experience", []) or []:
+        for tech in entry.relevant_technologies:
+            if tech.lower() not in explicit_skills_lower and not any(d.skill == tech for d in demonstrated_unlisted):
+                demonstrated_unlisted.append(
+                    DemonstratedUnlistedSkill(
+                        skill=tech,
+                        found_in_project=f"{entry.job_title} at {entry.company}",
+                        excerpt=f"Employed during role at {entry.company}.",
+                        recommendation=f"Add '{tech}' to your Skills section; it is already evidenced in your employment history."
+                    )
+                )
+
+    # 2. Project details needing explanation
+    project_improvements: List[ProjectDetailImprovement] = []
+    for proj in resume_data.projects:
+        p_name = proj.get("name", "Project")
+        bullets = proj.get("bullets", [])
+        if len(bullets) < 2:
+            project_improvements.append(
+                ProjectDetailImprovement(
+                    project_name=p_name,
+                    weakness="Under-documented project with fewer than 2 descriptive bullets.",
+                    suggested_addition="Add at least 2 detailed bullet points highlighting the technical problem, architecture, and candidate contribution."
+                )
+            )
+        elif not any(re.search(r'\b(docker|aws|ci/cd|test|deploy|kubernetes|git|pytest|jest)\b', b.lower()) for b in bullets):
+            project_improvements.append(
+                ProjectDetailImprovement(
+                    project_name=p_name,
+                    weakness="Missing testing, CI/CD, or deployment context.",
+                    suggested_addition="Clarify how this system was tested and deployed (e.g. unit tests, Docker containerization, cloud hosting)."
+                )
+            )
+
+    # 3. Unquantified bullets (lacking numbers, %, scale)
+    unquantified_bullets: List[UnquantifiedBullet] = []
+    metric_regex = re.compile(r'\b(\d+|%|ms|sec|x|users|req|rpm|rps)\b', re.IGNORECASE)
+
+    for entry in getattr(resume_data, "structured_work_experience", []) or []:
+        for b in entry.responsibilities[:3]:
+            if not metric_regex.search(b) and len(b) > 20:
+                unquantified_bullets.append(
+                    UnquantifiedBullet(
+                        section="Work Experience",
+                        role_or_project=f"{entry.job_title} at {entry.company}",
+                        original_bullet=b,
+                        quantification_advice="Attach a quantifiable outcome: e.g. 'boosted throughput by 35%', 'reduced bug reports by 20%', or 'supported 10k+ monthly active users'."
+                    )
+                )
+
+    for proj in resume_data.projects[:3]:
+        p_name = proj.get("name", "Project")
+        for b in proj.get("bullets", [])[:2]:
+            if not metric_regex.search(b) and len(b) > 20:
+                unquantified_bullets.append(
+                    UnquantifiedBullet(
+                        section="Projects",
+                        role_or_project=p_name,
+                        original_bullet=b,
+                        quantification_advice="Add concrete benchmark or usage metrics: e.g. latency under 150ms, dataset size, or automated test coverage percentage."
+                    )
+                )
+
+    # 4. Missing supported keywords
+    direct_req_names = {f.requirement_name.lower() for f in direct_findings}
+    missing_supported: List[str] = []
+    for inf in indirect_findings:
+        if inf.requirement_name.lower() not in direct_req_names and inf.confidence_level in ["High", "Medium"]:
+            if inf.requirement_name not in missing_supported:
+                missing_supported.append(inf.requirement_name)
+
+    # 5. Genuine skill gaps
+    indirect_req_names = {f.requirement_name.lower() for f in indirect_findings}
+    genuine_gaps = [
+        r.skill for r in requirements
+        if r.importance == "Mandatory" and
+        r.skill.lower() not in direct_req_names and
+        r.skill.lower() not in indirect_req_names
+    ]
+
+    # 6. Date ambiguities / experience warnings
+    date_ambiguities: List[DateAmbiguityWarning] = []
+    if experience_eval and experience_eval.warnings:
+        for w in experience_eval.warnings:
+            date_ambiguities.append(
+                DateAmbiguityWarning(
+                    role_or_project="Work Experience Section",
+                    issue=w,
+                    recommendation="Ensure all professional positions have explicit start and end dates in MM/YYYY format."
+                )
+            )
+
+    return ResumeImprovementData(
+        demonstrated_unlisted_skills=demonstrated_unlisted[:6],
+        project_detail_improvements=project_improvements[:4],
+        unquantified_bullets=unquantified_bullets[:5],
+        missing_supported_keywords=missing_supported[:6],
+        genuine_skill_gaps=genuine_gaps[:6],
+        date_ambiguities=date_ambiguities[:4]
     )

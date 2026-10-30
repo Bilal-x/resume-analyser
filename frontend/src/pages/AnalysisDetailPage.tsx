@@ -4,22 +4,22 @@ import { AppLayout } from '../components/Layout';
 import { Button, Card, Badge, ScoreRing, ProgressBar, Skeleton, EmptyState, Alert, Tabs } from '../components/ui';
 import { analysesApi, type AnalysisResponse } from '../lib/api';
 import {
-  ChevronDown, ChevronUp, CheckCircle2, XCircle, AlertCircle, Info,
+  ChevronDown, ChevronUp, CheckCircle2, AlertCircle, Info,
   ArrowLeft, Trash2, MessageSquare, Wrench,
   BarChart3, Search, FolderOpen, BookOpen, Target, HelpCircle,
   FileJson, Printer, Plus, Sparkles, Building2, Star, X, Check,
-  ArrowRight
+  ArrowRight, Clock, Copy, Briefcase, AlertTriangle, ShieldCheck,
+  TrendingUp
 } from 'lucide-react';
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: <BarChart3 size={13} /> },
-  { id: 'skills', label: 'Skill Match', icon: <Target size={13} /> },
-  { id: 'projects', label: 'Projects', icon: <FolderOpen size={13} /> },
-  { id: 'direct', label: 'Direct Findings', icon: <CheckCircle2 size={13} /> },
-  { id: 'indirect', label: 'Indirect Findings', icon: <Search size={13} /> },
-  { id: 'missing', label: 'Gaps', icon: <XCircle size={13} /> },
-  { id: 'recommendations', label: 'Resume Tips', icon: <Wrench size={13} /> },
-  { id: 'interview', label: 'Interview Qs', icon: <MessageSquare size={13} /> },
+  { id: 'experience', label: 'Experience Analysis', icon: <Clock size={13} /> },
+  { id: 'skills', label: 'Skills Analysis', icon: <Target size={13} /> },
+  { id: 'projects', label: 'Project Analysis', icon: <FolderOpen size={13} /> },
+  { id: 'evidence', label: 'Evidence Explorer', icon: <Search size={13} /> },
+  { id: 'improvements', label: 'Resume Improvement Center', icon: <Wrench size={13} /> },
+  { id: 'interview', label: 'Interview Prep', icon: <MessageSquare size={13} /> },
 ];
 
 function ScoreInterpretationBadge({ score }: { score: number }) {
@@ -158,6 +158,190 @@ function OverviewTab({ analysis }: { analysis: AnalysisResponse }) {
             ))}
           </ul>
         </Card>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   EXPERIENCE ANALYSIS TAB (Part 1 & Part 5 YOE Intelligence)
+   ============================================================ */
+function ExperienceAnalysisTab({ analysis }: { analysis: AnalysisResponse }) {
+  const exp = analysis.experience_evaluation;
+  const reqYrs = exp?.jd_required_years ?? (analysis.years_experience_required ?? 0);
+  const totalMos = exp?.total_experience_months;
+  const relMos = exp?.relevant_experience_months;
+  const internMos = exp?.internship_months ?? 0;
+  const gapMos = exp?.experience_gap_months;
+  const status = exp?.experience_status ?? 'not_available';
+
+  const statusMap: Record<string, { label: string; variant: 'success' | 'warning' | 'danger' | 'info' | 'neutral' }> = {
+    meets_requirement: { label: 'Meets Documented Requirement', variant: 'success' },
+    partially_meets_requirement: { label: 'Partially Meets (Specific Tech Gap)', variant: 'warning' },
+    does_not_meet_requirement: { label: 'Does Not Meet Stated Requirement', variant: 'danger' },
+    not_available: { label: 'Work Experience Not Stated in Resume', variant: 'neutral' },
+    unable_to_verify: { label: 'Unable to Verify Employment Dates', variant: 'warning' },
+  };
+
+  const statusConfig = statusMap[status] || { label: status, variant: 'neutral' };
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+      {/* Top Banner / Assessment */}
+      <div className="p-5 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex flex-wrap items-center gap-2 mb-1.5">
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono">Seniority Evaluation</span>
+            <Badge variant={statusConfig.variant}>{statusConfig.label}</Badge>
+            {exp?.is_excluded_from_scoring && (
+              <Badge variant="info">Score Weight Proportionally Redistributed</Badge>
+            )}
+          </div>
+          <p className="text-sm font-semibold text-zinc-100">
+            {analysis.experience_assessment || 'Professional experience evaluated against position requirements.'}
+          </p>
+        </div>
+        {gapMos != null && gapMos > 0 ? (
+          <div className="text-left sm:text-right shrink-0">
+            <span className="text-xs text-rose-400 font-semibold block">Experience Shortfall</span>
+            <span className="text-base font-bold text-rose-400">{gapMos} Months Delta</span>
+          </div>
+        ) : (
+          <div className="text-left sm:text-right shrink-0">
+            <span className="text-xs text-emerald-400 font-semibold block">Requirement Delta</span>
+            <span className="text-sm font-bold text-emerald-400">Zero Gap</span>
+          </div>
+        )}
+      </div>
+
+      {/* Metrics Row */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <Card className="p-4 text-center border-zinc-800">
+          <span className="text-xs text-zinc-500 font-mono block mb-1">Target JD Requirement</span>
+          <span className="text-2xl font-bold text-zinc-100">
+            {reqYrs === 0 ? 'Fresher (0 yrs)' : `${reqYrs} yrs`}
+          </span>
+          <span className="text-[11px] text-zinc-500 block mt-1">
+            {exp?.jd_experience_type === 'technology_specific' && exp.jd_required_technology
+              ? `Specific to ${exp.jd_required_technology}`
+              : 'General software experience'}
+          </span>
+        </Card>
+
+        <Card className="p-4 text-center border-zinc-800">
+          <span className="text-xs text-zinc-500 font-mono block mb-1">Total Documented</span>
+          <span className="text-2xl font-bold text-zinc-100">
+            {totalMos != null ? `${(totalMos / 12).toFixed(1)} yrs` : 'Not Available'}
+          </span>
+          <span className="text-[11px] text-zinc-500 block mt-1">
+            {totalMos != null ? `${totalMos} months merged` : 'Excluded without penalty'}
+          </span>
+        </Card>
+
+        <Card className="p-4 text-center border-zinc-800">
+          <span className="text-xs text-zinc-500 font-mono block mb-1">Target Tech Relevant</span>
+          <span className="text-2xl font-bold text-indigo-400">
+            {relMos != null ? `${(relMos / 12).toFixed(1)} yrs` : '—'}
+          </span>
+          <span className="text-[11px] text-zinc-500 block mt-1">
+            {relMos != null ? `${relMos} months matching` : 'No tech filter required'}
+          </span>
+        </Card>
+
+        <Card className="p-4 text-center border-zinc-800">
+          <span className="text-xs text-zinc-500 font-mono block mb-1">Internship Duration</span>
+          <span className="text-2xl font-bold text-amber-400">
+            {internMos > 0 ? `${internMos} mos` : '0 mos'}
+          </span>
+          <span className="text-[11px] text-zinc-500 block mt-1">
+            Tracked separately
+          </span>
+        </Card>
+      </div>
+
+      {/* Warnings Callout if any */}
+      {exp?.warnings && exp.warnings.length > 0 && (
+        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs space-y-1">
+          <div className="font-semibold flex items-center gap-1.5 mb-1 text-amber-400">
+            <AlertTriangle size={14} /> Attention Needed:
+          </div>
+          {exp.warnings.map((w, i) => (
+            <p key={i}>• {w}</p>
+          ))}
+        </div>
+      )}
+
+      {/* Calculation Methodology Callout */}
+      <Card className="p-5 border-zinc-800 bg-zinc-900/40">
+        <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono mb-2 flex items-center gap-2">
+          <ShieldCheck size={14} className="text-indigo-400" />
+          Deterministic Calculation Methodology
+        </h4>
+        <p className="text-xs text-zinc-300 leading-relaxed">
+          {exp?.calculation_methodology || 'Professional experience calculated exclusively from designated Work Experience section. Overlapping intervals merged deterministically without double counting. Education and projects strictly excluded from professional employment duration.'}
+        </p>
+      </Card>
+
+      {/* Employment History Timeline */}
+      <div>
+        <h3 className="text-sm font-semibold text-zinc-200 mb-4 flex items-center gap-2">
+          <Briefcase size={15} /> Documented Employment Records ({exp?.employment_history?.length || 0})
+        </h3>
+        {(!exp?.employment_history || exp.employment_history.length === 0) ? (
+          <Card className="p-8 text-center border-dashed border-zinc-800">
+            <AlertCircle size={28} className="mx-auto text-zinc-600 mb-2" />
+            <p className="text-sm font-semibold text-zinc-300">No Professional Experience Section Detected</p>
+            <p className="text-xs text-zinc-500 mt-1 max-w-md mx-auto">
+              This candidate's resume contains no dedicated Work Experience section. Under deterministic evaluation rules, this dimension was safely excluded and its weight redistributed to skills and projects without penalizing the candidate.
+            </p>
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {exp.employment_history.map((job, i) => (
+              <Card key={i} className="p-5 border-zinc-800 hover:border-zinc-700 transition-colors">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                  <div>
+                    <h4 className="font-semibold text-zinc-100 text-base">{job.job_title}</h4>
+                    <p className="text-xs text-zinc-400 font-medium">{job.company}</p>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2 self-start sm:self-center">
+                    <Badge variant={job.employment_type === 'Internship' ? 'warning' : 'neutral'} size="xs">
+                      {job.employment_type}
+                    </Badge>
+                    <Badge variant="info" size="xs">
+                      {job.start_date || 'Unknown'} → {job.is_current ? 'Present' : (job.end_date || 'Unknown')}
+                    </Badge>
+                    {job.duration_months != null && (
+                      <span className="text-xs font-mono font-bold text-zinc-300 bg-zinc-800 px-2 py-0.5 rounded">
+                        {job.duration_months} mos
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {job.relevant_technologies.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                    <span className="text-[11px] text-zinc-500 font-mono">Technologies:</span>
+                    {job.relevant_technologies.map(t => (
+                      <Badge key={t} variant="neutral" size="xs">{t}</Badge>
+                    ))}
+                  </div>
+                )}
+
+                {job.responsibilities.length > 0 && (
+                  <ul className="space-y-1.5 border-t border-zinc-800/80 pt-3">
+                    {job.responsibilities.map((r, ri) => (
+                      <li key={ri} className="text-xs text-zinc-300 flex items-start gap-2">
+                        <span className="text-zinc-500 shrink-0 mt-0.5">•</span>
+                        <span>{r}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -385,258 +569,6 @@ function ProjectsTab({ analysis }: { analysis: AnalysisResponse }) {
 }
 
 /* ============================================================
-   DIRECT FINDINGS TAB
-   ============================================================ */
-function DirectFindingsTab({ analysis }: { analysis: AnalysisResponse }) {
-  const strengthColors: Record<string, string> = {
-    Strong: 'text-emerald-400',
-    Moderate: 'text-amber-400',
-    Limited: 'text-orange-400',
-    Unverified: 'text-zinc-400',
-  };
-
-  return (
-    <div className="space-y-4 animate-fade-in">
-      <Alert variant="success" icon={<CheckCircle2 size={15} />}>
-        Direct findings are skills and requirements explicitly supported by resume text — no inference required.
-      </Alert>
-
-      {analysis.direct_findings.length === 0 ? (
-        <EmptyState icon={<CheckCircle2 size={28} />} title="No direct findings" description="No direct evidence was found." />
-      ) : (
-        analysis.direct_findings.map((f, i) => (
-          <Card key={i} className="p-5">
-            <div className="flex items-start justify-between gap-4 mb-3">
-              <div>
-                <h3 className="font-semibold text-zinc-100 text-sm">{f.requirement_name}</h3>
-                <p className="text-xs text-zinc-500 mt-0.5">{f.evidence_classification} · {f.resume_section}</p>
-              </div>
-              <Badge variant="neutral" size="xs">
-                <span className={strengthColors[f.strength_of_evidence] || 'text-zinc-400'}>
-                  {f.strength_of_evidence}
-                </span>
-              </Badge>
-            </div>
-            <blockquote className="border-l-2 border-emerald-500/40 pl-3.5 text-sm text-zinc-300 italic mb-3 leading-relaxed">
-              "{f.supporting_excerpt}"
-            </blockquote>
-            <p className="text-sm text-zinc-400 leading-relaxed">{f.relevance_explanation}</p>
-          </Card>
-        ))
-      )}
-    </div>
-  );
-}
-
-/* ============================================================
-   INDIRECT FINDINGS TAB
-   ============================================================ */
-function IndirectFindingsTab({ analysis }: { analysis: AnalysisResponse }) {
-  return (
-    <div className="space-y-4 animate-fade-in">
-      <Alert variant="info" icon={<Info size={15} />}>
-        Indirect findings are skills inferred from related technologies, projects, or transferable experience. Each includes a confidence level and what remains unverified.
-      </Alert>
-
-      {analysis.indirect_findings.length === 0 ? (
-        <EmptyState icon={<Search size={28} />} title="No indirect findings" description="No indirect evidence was inferred." />
-      ) : (
-        analysis.indirect_findings.map((f, i) => (
-          <Card key={i} className="p-5">
-            <div className="flex items-start justify-between gap-4 mb-3">
-              <div>
-                <h3 className="font-semibold text-zinc-100 text-sm">{f.requirement_name}</h3>
-                <p className="text-xs text-zinc-500 mt-0.5">{f.related_technology_or_activity} · {f.source_project_or_experience}</p>
-              </div>
-              <ConfidenceBadge confidence={f.confidence_level} />
-            </div>
-            <blockquote className="border-l-2 border-blue-500/40 pl-3.5 text-sm text-zinc-300 italic mb-3 leading-relaxed">
-              "{f.supporting_excerpt}"
-            </blockquote>
-            <p className="text-sm text-zinc-400 mb-3 leading-relaxed">{f.relationship_explanation}</p>
-            <Alert variant="warning" icon={<AlertCircle size={13} />}>
-              <span className="font-semibold">Unverified: </span>{f.what_remains_unverified}
-            </Alert>
-          </Card>
-        ))
-      )}
-    </div>
-  );
-}
-
-/* ============================================================
-   MISSING / GAPS TAB
-   ============================================================ */
-function MissingTab({ analysis }: { analysis: AnalysisResponse }) {
-  const missingFromMatrix = analysis.requirements_matrix.filter(r => r.status === 'Not evidenced');
-  const unverified = analysis.score_breakdown.unverified_requirements;
-
-  return (
-    <div className="space-y-6 animate-fade-in">
-      <Alert variant="danger" icon={<AlertCircle size={15} />}>
-        "Not evidenced" does not mean the candidate lacks a skill — it means the resume provides no evidence. These are important discussion points for interviews.
-      </Alert>
-
-      {analysis.missing_requirements.length > 0 && (
-        <Card className="p-6">
-          <h3 className="font-semibold text-zinc-100 mb-4 text-sm">Missing Requirements Summary</h3>
-          <ul className="space-y-2.5">
-            {analysis.missing_requirements.map((r, i) => (
-              <li key={i} className="flex items-center gap-2.5 text-sm text-zinc-300">
-                <XCircle size={14} className="text-rose-400 shrink-0" />
-                {r}
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
-
-      {missingFromMatrix.length > 0 && (
-        <Card className="p-6">
-          <h3 className="font-semibold text-zinc-100 mb-4 text-sm">
-            Not Evidenced in Matrix
-            <span className="text-zinc-500 font-normal ml-2">({missingFromMatrix.length})</span>
-          </h3>
-          <div className="space-y-2">
-            {missingFromMatrix.map((item, i) => (
-              <div key={i} className="flex items-center justify-between gap-4 py-2.5 border-b border-zinc-800/40 last:border-0">
-                <div>
-                  <span className="text-zinc-100 text-sm font-medium">{item.requirement_name}</span>
-                  <span className="text-zinc-500 text-xs ml-2">{item.category}</span>
-                </div>
-                <Badge variant={item.importance === 'Mandatory' ? 'danger' : 'neutral'} size="xs">{item.importance}</Badge>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
-
-      {unverified.length > 0 && (
-        <Card className="p-6">
-          <h3 className="font-semibold text-amber-400 mb-4 text-sm flex items-center gap-2">
-            <AlertCircle size={15} /> Unverified Claims
-          </h3>
-          <ul className="space-y-2.5">
-            {unverified.map((r, i) => (
-              <li key={i} className="flex items-center gap-2.5 text-sm text-zinc-300">
-                <AlertCircle size={14} className="text-amber-400 shrink-0" />
-                {r}
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
-    </div>
-  );
-}
-
-/* ============================================================
-   RECOMMENDATIONS TAB
-   ============================================================ */
-function RecommendationsTab({ analysis }: { analysis: AnalysisResponse }) {
-  const rec = analysis.recommendations;
-  return (
-    <div className="space-y-6 animate-fade-in">
-      {rec.prioritized_action_plan.length > 0 && (
-        <Card className="p-6">
-          <h3 className="font-semibold text-zinc-100 mb-4 flex items-center gap-2 text-sm">
-            <Target size={15} className="text-indigo-400" /> Prioritized Action Plan
-          </h3>
-          <ol className="space-y-3">
-            {rec.prioritized_action_plan.map((action, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <span className="w-6 h-6 rounded-lg bg-indigo-500/15 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
-                  {i + 1}
-                </span>
-                <span className="text-sm text-zinc-300">{action}</span>
-              </li>
-            ))}
-          </ol>
-        </Card>
-      )}
-
-      {rec.skills_section_improvements.length > 0 && (
-        <Card className="p-6">
-          <h3 className="font-semibold text-zinc-100 mb-4 text-sm">Skills Section Improvements</h3>
-          <div className="space-y-3">
-            {rec.skills_section_improvements.map((s, i) => (
-              <div key={i} className="p-4 rounded-xl bg-zinc-800/30 border border-zinc-700/30">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <Badge variant="success" size="xs">Add: {s.skill}</Badge>
-                  <span className="text-xs text-zinc-500">Found in: {s.evidence_location}</span>
-                </div>
-                <p className="text-sm text-zinc-300">{s.recommendation}</p>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
-
-      {rec.project_bullet_rewrites.length > 0 && (
-        <Card className="p-6">
-          <h3 className="font-semibold text-zinc-100 mb-4 text-sm">Project Description Improvements</h3>
-          <div className="space-y-5">
-            {rec.project_bullet_rewrites.map((r, i) => (
-              <div key={i} className="space-y-2">
-                <p className="text-sm font-semibold text-zinc-200">{r.project_name}</p>
-                <div className="p-3.5 rounded-xl bg-red-500/6 border border-red-500/15">
-                  <p className="text-xs text-red-400 mb-1 font-semibold uppercase tracking-wide">Original</p>
-                  <p className="text-sm text-zinc-400 italic">"{r.original_bullet}"</p>
-                </div>
-                <div className="p-3.5 rounded-xl bg-emerald-500/6 border border-emerald-500/15">
-                  <p className="text-xs text-emerald-400 mb-1 font-semibold uppercase tracking-wide">Suggested</p>
-                  <p className="text-sm text-zinc-200">"{r.suggested_rewrite}"</p>
-                </div>
-                <p className="text-xs text-zinc-500">{r.rationale}</p>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
-
-      <Card className="p-6">
-        <h3 className="font-semibold text-zinc-100 mb-4 text-sm">Keyword Alignment</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          <div>
-            <p className="text-xs text-emerald-400 font-semibold mb-2.5 uppercase tracking-wide">✓ Supported</p>
-            <div className="flex flex-wrap gap-1.5">
-              {rec.keyword_alignment.supported_keywords.map(k => <Badge key={k} variant="success" size="xs">{k}</Badge>)}
-            </div>
-          </div>
-          <div>
-            <p className="text-xs text-amber-400 font-semibold mb-2.5 uppercase tracking-wide">? Needs Confirmation</p>
-            <div className="flex flex-wrap gap-1.5">
-              {rec.keyword_alignment.potential_keywords_needs_confirmation.map(k => <Badge key={k} variant="warning" size="xs">{k}</Badge>)}
-            </div>
-          </div>
-          <div>
-            <p className="text-xs text-rose-400 font-semibold mb-2.5 uppercase tracking-wide">✗ Genuine Gaps</p>
-            <div className="flex flex-wrap gap-1.5">
-              {rec.keyword_alignment.genuine_experience_gaps.map(k => <Badge key={k} variant="danger" size="xs">{k}</Badge>)}
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      {rec.optional_learning_exercises.length > 0 && (
-        <Card className="p-6">
-          <h3 className="font-semibold text-zinc-100 mb-4 flex items-center gap-2 text-sm">
-            <BookOpen size={15} className="text-violet-400" /> Optional Learning Exercises
-          </h3>
-          <ul className="space-y-2.5">
-            {rec.optional_learning_exercises.map((e, i) => (
-              <li key={i} className="flex items-start gap-2.5 text-sm text-zinc-300">
-                <span className="text-violet-400 shrink-0">📚</span>{e}
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
-    </div>
-  );
-}
-
-/* ============================================================
    INTERVIEW TAB
    ============================================================ */
 function InterviewTab({ analysis }: { analysis: AnalysisResponse }) {
@@ -680,6 +612,360 @@ function InterviewTab({ analysis }: { analysis: AnalysisResponse }) {
           </div>
         </Card>
       ))}
+    </div>
+  );
+}
+
+/* ============================================================
+   EVIDENCE EXPLORER TAB (Part 5 Interactive Excerpt Inspector)
+   ============================================================ */
+function EvidenceExplorerTab({ analysis }: { analysis: AnalysisResponse }) {
+  const [selectedItem, setSelectedItem] = useState<any>(analysis.requirements_matrix[0] || null);
+  const [filter, setFilter] = useState('all');
+
+  const items = analysis.requirements_matrix.filter(m => {
+    if (filter === 'all') return true;
+    if (filter === 'supported') return m.status === 'Supported';
+    if (filter === 'project') return m.status === 'Project-derived';
+    if (filter === 'transferable') return m.status === 'Transferable';
+    if (filter === 'missing') return m.status === 'Not evidenced';
+    return true;
+  });
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+      <Alert variant="info" icon={<Search size={15} />}>
+        Click on any evaluated requirement below to inspect the verified supporting resume excerpt, the origin section, and confidence rationale.
+      </Alert>
+
+      {/* Filters */}
+      <div className="flex flex-wrap items-center gap-2">
+        {[
+          { id: 'all', label: `All (${analysis.requirements_matrix.length})` },
+          { id: 'supported', label: 'Direct Matches' },
+          { id: 'project', label: 'Project-Derived' },
+          { id: 'transferable', label: 'Transferable' },
+          { id: 'missing', label: 'Not Evidenced' },
+        ].map(f => (
+          <button
+            key={f.id}
+            onClick={() => setFilter(f.id)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              filter === f.id
+                ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40'
+                : 'text-zinc-400 hover:text-white bg-zinc-900 border border-zinc-800'
+            }`}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left Column: Requirements List */}
+        <div className="lg:col-span-5 space-y-2 max-h-[600px] overflow-y-auto pr-1">
+          {items.map((item, i) => (
+            <div
+              key={i}
+              onClick={() => setSelectedItem(item)}
+              className={`p-3.5 rounded-xl border transition-all cursor-pointer ${
+                selectedItem?.requirement_name === item.requirement_name
+                  ? 'bg-zinc-850 border-indigo-500 shadow-md'
+                  : 'bg-zinc-900/60 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-850/50'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2 mb-1.5">
+                <span className="font-semibold text-xs text-zinc-100">{item.requirement_name}</span>
+                <StatusBadge status={item.status} />
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-zinc-500">
+                <span>{item.category}</span>
+                <span className="font-mono">{item.confidence} Conf.</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Right Column: Deep Evidence Inspection Card */}
+        <div className="lg:col-span-7">
+          {selectedItem ? (
+            <Card className="p-6 border-zinc-800 bg-zinc-900/40 space-y-5 sticky top-6">
+              <div className="flex items-start justify-between gap-4 border-b border-zinc-800 pb-4">
+                <div>
+                  <span className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">JD Requirement</span>
+                  <h3 className="text-lg font-bold text-zinc-100">{selectedItem.requirement_name}</h3>
+                  <p className="text-xs text-zinc-400 mt-0.5">Category: {selectedItem.category} · Priority: {selectedItem.importance}</p>
+                </div>
+                <div className="text-right">
+                  <StatusBadge status={selectedItem.status} />
+                  <p className="text-[11px] text-zinc-500 mt-1 font-mono">Score: +{selectedItem.score_contribution.toFixed(2)}</p>
+                </div>
+              </div>
+
+              {/* Source Section & Excerpt */}
+              <div>
+                <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono block mb-2">
+                  Verified Source Evidence ({selectedItem.source_section || 'Resume Profile'})
+                </span>
+                {selectedItem.supporting_excerpt ? (
+                  <blockquote className="p-4 rounded-xl bg-zinc-850/80 border-l-4 border-indigo-500 text-xs sm:text-sm text-zinc-200 italic leading-relaxed">
+                    "{selectedItem.supporting_excerpt}"
+                  </blockquote>
+                ) : (
+                  <div className="p-4 rounded-xl bg-zinc-850/40 border border-dashed border-zinc-800 text-xs text-zinc-500 italic">
+                    No explicit textual excerpt was identified in the resume for this requirement.
+                  </div>
+                )}
+              </div>
+
+              {/* Classification & Evaluation Logic */}
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="p-3 rounded-lg bg-zinc-850/50 border border-zinc-800">
+                  <span className="text-zinc-500 block mb-0.5">Direct Proof</span>
+                  <span className="text-zinc-200 font-medium">{selectedItem.direct_evidence}</span>
+                </div>
+                <div className="p-3 rounded-lg bg-zinc-850/50 border border-zinc-800">
+                  <span className="text-zinc-500 block mb-0.5">Project Proof</span>
+                  <span className="text-zinc-200 font-medium">{selectedItem.project_evidence}</span>
+                </div>
+              </div>
+            </Card>
+          ) : (
+            <Card className="p-12 text-center text-zinc-500 text-sm">
+              Select a requirement on the left to inspect verbatim resume evidence.
+            </Card>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   RESUME IMPROVEMENT CENTER TAB (Part 3 Dedicated Candidate Feature)
+   ============================================================ */
+function ResumeImprovementCenterTab({ analysis }: { analysis: AnalysisResponse }) {
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const imp = analysis.resume_improvements;
+
+  const handleCopy = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
+  return (
+    <div className="space-y-8 animate-fade-in">
+      <div className="p-5 rounded-xl bg-zinc-900 border border-zinc-800">
+        <h3 className="text-base font-bold text-white flex items-center gap-2">
+          <Sparkles size={16} className="text-amber-400" />
+          Resume Improvement Center
+        </h3>
+        <p className="text-xs text-zinc-400 mt-1 max-w-2xl leading-relaxed">
+          Evidence-grounded optimizations designed to help you build an ATS-friendly, job-ready resume without fabricating qualifications or experience.
+        </p>
+      </div>
+
+      {/* 1. Demonstrated But Unlisted Skills */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="text-sm font-semibold text-zinc-200 flex items-center gap-2">
+            <CheckCircle2 size={15} className="text-emerald-400" />
+            1. Demonstrated Skills Missing from Skills Section
+          </h4>
+          <Badge variant="success" size="xs">
+            {imp?.demonstrated_unlisted_skills?.length || 0} Found
+          </Badge>
+        </div>
+        {(!imp?.demonstrated_unlisted_skills || imp.demonstrated_unlisted_skills.length === 0) ? (
+          <Card className="p-5 text-center text-xs text-zinc-500">
+            All skills demonstrated in projects and work experience are already present in your skills list.
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {imp.demonstrated_unlisted_skills.map((s, i) => (
+              <Card key={i} className="p-4 border-zinc-800 bg-zinc-900/50">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="font-bold text-sm text-emerald-400">{s.skill}</span>
+                  <div className="flex items-center gap-1.5">
+                    <Badge variant="neutral" size="xs">{s.found_in_project}</Badge>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(s.skill, i)}
+                      className="p-1 rounded hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
+                      title="Copy skill name"
+                    >
+                      {copiedIndex === i ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                    </button>
+                  </div>
+                </div>
+                <p className="text-xs text-zinc-400">{s.recommendation}</p>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 2. Unquantified Bullets with Copyable Rewrites */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="text-sm font-semibold text-zinc-200 flex items-center gap-2">
+            <TrendingUp size={15} className="text-indigo-400" />
+            2. Measurable Achievements & Quantification Improvements
+          </h4>
+        </div>
+        {(!imp?.unquantified_bullets || imp.unquantified_bullets.length === 0) ? (
+          <Card className="p-5 text-center text-xs text-zinc-500">
+            Your bullet points contain strong quantifiable metrics.
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {imp.unquantified_bullets.map((b, i) => (
+              <Card key={i} className="p-4 border-zinc-800 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-zinc-300">{b.role_or_project} ({b.section})</span>
+                  <Badge variant="warning" size="xs">Lacks Metrics</Badge>
+                </div>
+                <p className="text-xs text-zinc-400 italic bg-zinc-850 p-2.5 rounded-lg border border-zinc-800">
+                  "{b.original_bullet}"
+                </p>
+                <div className="p-3 rounded-lg bg-indigo-500/8 border border-indigo-500/20 text-xs text-zinc-200">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-semibold text-indigo-400">Recommended Metric Addition:</span>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(b.quantification_advice, 100 + i)}
+                      className="flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 transition-colors"
+                      title="Copy rewrite advice"
+                    >
+                      {copiedIndex === 100 + i ? (
+                        <>
+                          <Check size={11} className="text-emerald-400" />
+                          <span>Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={11} />
+                          <span>Copy Advice</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <p>{b.quantification_advice}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 3. Project Details Needing Better Explanation */}
+      <div>
+        <h4 className="text-sm font-semibold text-zinc-200 mb-3 flex items-center gap-2">
+          <FolderOpen size={15} className="text-amber-400" />
+          3. Project Technical Depth & Architecture Improvements
+        </h4>
+        {(!imp?.project_detail_improvements || imp.project_detail_improvements.length === 0) ? (
+          <Card className="p-5 text-center text-xs text-zinc-500">
+            Project descriptions provide sufficient technical depth and context.
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {imp.project_detail_improvements.map((p, i) => (
+              <Card key={i} className="p-4 border-zinc-800">
+                <h5 className="font-semibold text-xs text-zinc-100 mb-1">{p.project_name}</h5>
+                <p className="text-xs text-amber-400 mb-1.5 font-medium">{p.weakness}</p>
+                <p className="text-xs text-zinc-400">{p.suggested_addition}</p>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 4. Supported Keywords & Genuine Gaps */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <Card className="p-5 border-zinc-800">
+          <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono mb-3">
+            4. Supported JD Terminology to Include
+          </h4>
+          <p className="text-xs text-zinc-500 mb-3">
+            Your technical ecosystem supports these keywords from the JD. Add them to enhance ATS alignment.
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {imp?.missing_supported_keywords?.map(k => (
+              <Badge key={k} variant="info" size="xs">{k}</Badge>
+            ))}
+          </div>
+        </Card>
+
+        <Card className="p-5 border-zinc-800">
+          <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono mb-3">
+            5. Genuine Skill Gaps (Mandatory)
+          </h4>
+          <p className="text-xs text-zinc-500 mb-3">
+            Skills requiring dedicated learning or a targeted portfolio mini-project before applying.
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {imp?.genuine_skill_gaps?.map(k => (
+              <Badge key={k} variant="danger" size="xs">{k}</Badge>
+            ))}
+          </div>
+        </Card>
+      </div>
+
+      {/* 6. Date Ambiguities */}
+      {imp?.date_ambiguities && imp.date_ambiguities.length > 0 && (
+        <Card className="p-5 border-amber-500/20 bg-amber-500/5">
+          <h4 className="text-xs font-semibold text-amber-400 uppercase tracking-wider font-mono mb-2 flex items-center gap-2">
+            <AlertTriangle size={14} /> 6. Date Ambiguity & Work Experience Warnings
+          </h4>
+          <ul className="space-y-1.5 text-xs text-zinc-300">
+            {imp.date_ambiguities.map((d, i) => (
+              <li key={i}>
+                • <strong className="text-amber-300">{d.issue}</strong> — {d.recommendation}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+
+      {/* 7. Strategic Action Plan */}
+      {analysis.recommendations?.prioritized_action_plan && analysis.recommendations.prioritized_action_plan.length > 0 && (
+        <Card className="p-5 border-zinc-800">
+          <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono mb-3 flex items-center gap-2">
+            <Target size={14} className="text-indigo-400" />
+            7. Strategic Action Plan
+          </h4>
+          <ol className="space-y-2.5">
+            {analysis.recommendations.prioritized_action_plan.map((action, i) => (
+              <li key={i} className="flex items-start gap-2.5 text-xs text-zinc-300">
+                <span className="w-5 h-5 rounded-md bg-indigo-500/15 text-indigo-400 text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  {i + 1}
+                </span>
+                <span className="leading-relaxed">{action}</span>
+              </li>
+            ))}
+          </ol>
+        </Card>
+      )}
+
+      {/* 8. Optional Learning Exercises */}
+      {analysis.recommendations?.optional_learning_exercises && analysis.recommendations.optional_learning_exercises.length > 0 && (
+        <Card className="p-5 border-zinc-800">
+          <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono mb-3 flex items-center gap-2">
+            <BookOpen size={14} className="text-violet-400" />
+            8. Recommended Learning Roadmap
+          </h4>
+          <ul className="space-y-2">
+            {analysis.recommendations.optional_learning_exercises.map((e, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-zinc-300">
+                <span className="text-violet-400 shrink-0">→</span>
+                <span>{e}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
     </div>
   );
 }
@@ -778,6 +1064,74 @@ function AtAGlanceSummary({
             </Badge>
           )}
         </div>
+      </Card>
+
+      {/* Experience Intelligence Summary Card (Part 1 Deterministic YOE) */}
+      <Card className="p-6 border-zinc-800 bg-zinc-900/40">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 pb-3 border-b border-zinc-800">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-zinc-850 border border-zinc-800 flex items-center justify-center text-indigo-400">
+              <Clock size={16} />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-white">
+                Professional Experience & Seniority Assessment
+              </h3>
+              <p className="text-[11px] text-zinc-500">
+                Calculated exclusively from Work Experience section (no education/project inflation)
+              </p>
+            </div>
+          </div>
+          <Badge
+            variant={
+              analysis.experience_evaluation?.experience_status === 'meets_requirement' ? 'success' :
+              analysis.experience_evaluation?.experience_status === 'partially_meets_requirement' ? 'warning' :
+              analysis.experience_evaluation?.experience_status === 'not_available' ? 'info' : 'danger'
+            }
+          >
+            {analysis.experience_evaluation?.experience_status === 'meets_requirement' ? 'Meets Requirement' :
+             analysis.experience_evaluation?.experience_status === 'partially_meets_requirement' ? 'Partially Meets' :
+             analysis.experience_evaluation?.experience_status === 'not_available' ? 'Not Stated in Resume' : 'Does Not Meet'}
+          </Badge>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mb-4">
+          <div className="p-3 rounded-lg bg-zinc-850/60 border border-zinc-800">
+            <span className="text-zinc-500 block mb-0.5">Required YOE</span>
+            <span className="text-zinc-100 font-bold text-sm">
+              {(analysis.experience_evaluation?.jd_required_years ?? analysis.years_experience_required ?? 0) === 0 ? 'Fresher (0 yrs)' : `${analysis.experience_evaluation?.jd_required_years ?? analysis.years_experience_required} yrs`}
+            </span>
+          </div>
+          <div className="p-3 rounded-lg bg-zinc-850/60 border border-zinc-800">
+            <span className="text-zinc-500 block mb-0.5">Total Documented</span>
+            <span className="text-zinc-100 font-bold text-sm">
+              {analysis.experience_evaluation?.total_experience_months != null
+                ? `${(analysis.experience_evaluation.total_experience_months / 12).toFixed(1)} yrs (${analysis.experience_evaluation.total_experience_months} mos)`
+                : 'Not Available'}
+            </span>
+          </div>
+          <div className="p-3 rounded-lg bg-zinc-850/60 border border-zinc-800">
+            <span className="text-zinc-500 block mb-0.5">Target Tech Relevant</span>
+            <span className="text-indigo-400 font-bold text-sm">
+              {analysis.experience_evaluation?.relevant_experience_months != null
+                ? `${(analysis.experience_evaluation.relevant_experience_months / 12).toFixed(1)} yrs`
+                : '—'}
+            </span>
+          </div>
+          <div className="p-3 rounded-lg bg-zinc-850/60 border border-zinc-800">
+            <span className="text-zinc-500 block mb-0.5">Internship Months</span>
+            <span className="text-amber-400 font-bold text-sm">
+              {analysis.experience_evaluation?.internship_months ? `${analysis.experience_evaluation.internship_months} mos` : '0 mos'}
+            </span>
+          </div>
+        </div>
+
+        {analysis.creative_summary && (
+          <div className="p-3 rounded-lg bg-indigo-500/8 border border-indigo-500/20 text-xs text-indigo-300 italic flex items-start gap-2">
+            <Sparkles size={14} className="text-indigo-400 shrink-0 mt-0.5" />
+            <span>{analysis.creative_summary}</span>
+          </div>
+        )}
       </Card>
 
       {/* Company & Hiring Culture Briefing (if company specified) */}
@@ -1168,12 +1522,11 @@ export default function AnalysisDetailPage() {
           {/* Tab content */}
           <div>
             {activeTab === 'overview' && <OverviewTab analysis={analysis} />}
+            {activeTab === 'experience' && <ExperienceAnalysisTab analysis={analysis} />}
             {activeTab === 'skills' && <SkillMatchTab analysis={analysis} />}
             {activeTab === 'projects' && <ProjectsTab analysis={analysis} />}
-            {activeTab === 'direct' && <DirectFindingsTab analysis={analysis} />}
-            {activeTab === 'indirect' && <IndirectFindingsTab analysis={analysis} />}
-            {activeTab === 'missing' && <MissingTab analysis={analysis} />}
-            {activeTab === 'recommendations' && <RecommendationsTab analysis={analysis} />}
+            {activeTab === 'evidence' && <EvidenceExplorerTab analysis={analysis} />}
+            {activeTab === 'improvements' && <ResumeImprovementCenterTab analysis={analysis} />}
             {activeTab === 'interview' && <InterviewTab analysis={analysis} />}
           </div>
         </div>

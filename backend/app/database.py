@@ -2,7 +2,7 @@ import sqlite3
 import json
 import os
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
 
 DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "resume_analyzer.db"))
@@ -78,6 +78,13 @@ def init_db():
             interview_questions TEXT NOT NULL,
             analysis_limitations TEXT NOT NULL,
             created_at TEXT NOT NULL,
+            experience_evaluation TEXT,
+            resume_improvements TEXT,
+            years_experience_required REAL,
+            years_experience_found REAL,
+            experience_assessment TEXT,
+            creative_summary TEXT,
+            role_level TEXT,
             FOREIGN KEY (resume_id) REFERENCES resumes (id),
             FOREIGN KEY (job_description_id) REFERENCES job_descriptions (id),
             FOREIGN KEY (owner_id) REFERENCES users (id)
@@ -99,13 +106,59 @@ def init_db():
             FOREIGN KEY (analysis_id) REFERENCES resume_analyses (id)
         )
     """)
+
+    # 6. Applications Pipeline Table (11 Stages ATS)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS applications (
+            id TEXT PRIMARY KEY,
+            analysis_id TEXT NOT NULL,
+            resume_id TEXT NOT NULL,
+            job_description_id TEXT NOT NULL,
+            recruiter_id TEXT NOT NULL,
+            candidate_name TEXT NOT NULL,
+            resume_file_name TEXT NOT NULL,
+            job_title TEXT NOT NULL,
+            company_name TEXT NOT NULL,
+            overall_score REAL NOT NULL,
+            current_stage TEXT NOT NULL DEFAULT 'AI Analysis Completed',
+            experience_status TEXT NOT NULL DEFAULT 'not_available',
+            total_experience_months INTEGER,
+            relevant_experience_months INTEGER,
+            key_strengths TEXT NOT NULL DEFAULT '[]',
+            key_gaps TEXT NOT NULL DEFAULT '[]',
+            stage_history TEXT NOT NULL DEFAULT '[]',
+            notes TEXT NOT NULL DEFAULT '[]',
+            interview_feedbacks TEXT NOT NULL DEFAULT '[]',
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            FOREIGN KEY (analysis_id) REFERENCES resume_analyses (id),
+            FOREIGN KEY (resume_id) REFERENCES resumes (id),
+            FOREIGN KEY (job_description_id) REFERENCES job_descriptions (id)
+        )
+    """)
     
-    # 6. Default Guest User (for unauthenticated instant analysis)
+    # 7. Safe Migration for existing resume_analyses table
+    cursor.execute("PRAGMA table_info(resume_analyses)")
+    existing_cols = [row["name"] for row in cursor.fetchall()]
+    new_cols = [
+        ("experience_evaluation", "TEXT"),
+        ("resume_improvements", "TEXT"),
+        ("years_experience_required", "REAL"),
+        ("years_experience_found", "REAL"),
+        ("experience_assessment", "TEXT"),
+        ("creative_summary", "TEXT"),
+        ("role_level", "TEXT"),
+    ]
+    for col_name, col_type in new_cols:
+        if col_name not in existing_cols:
+            cursor.execute(f"ALTER TABLE resume_analyses ADD COLUMN {col_name} {col_type}")
+
+    # 8. Default Guest User (for unauthenticated instant analysis)
     cursor.execute("SELECT id FROM users WHERE id = 'guest'")
     if not cursor.fetchone():
         cursor.execute(
             "INSERT INTO users (id, email, name, password_hash, role, created_at) VALUES (?, ?, ?, ?, ?, ?)",
-            ('guest', 'guest@analyzer.local', 'Guest User', 'guest_hash', 'candidate', datetime.utcnow().isoformat())
+            ('guest', 'guest@analyzer.local', 'Guest User', 'guest_hash', 'candidate', datetime.now(timezone.utc).isoformat())
         )
 
     conn.commit()

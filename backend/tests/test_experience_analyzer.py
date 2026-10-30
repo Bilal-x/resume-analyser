@@ -19,9 +19,20 @@ def test_extract_jd_experience_fresher():
     assert years == 0.0
 
 def test_extract_resume_experience_stated():
+    from app.models.schemas import EmploymentEntry
     resume = ExtractedResumeData(
         full_name="Alex Chen",
         professional_summary="Senior Full-Stack Engineer with 6+ years of experience building distributed systems.",
+        raw_sections={"experience": "Senior Engineer at Acme Corp\nJan 2020 - Dec 2025\n- Architected distributed systems"},
+        structured_work_experience=[
+            EmploymentEntry(
+                job_title="Senior Engineer",
+                company="Acme Corp",
+                start_date="2020-01",
+                end_date="2025-12",
+                duration_months=72
+            )
+        ],
         projects=[]
     )
     years = extract_resume_experience(resume, resume.professional_summary)
